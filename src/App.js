@@ -1,5 +1,5 @@
 function App() {
-  return <div>Home</div>;
+  return <div>Try deploy app</div>;
 }
 
 export default App;
