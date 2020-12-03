@@ -1,5 +1,5 @@
 function App() {
-  return <div>Hello app</div>;
+  return <div>Hello firebase</div>;
 }
 
 export default App;
