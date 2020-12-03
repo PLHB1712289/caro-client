@@ -32,7 +32,7 @@ jobs:
           name: build
           path: build
       - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
+        uses: efa89/firebase-action@master
         with:
           args: deploy --only hosting
         env:
