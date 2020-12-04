@@ -29,6 +29,25 @@ export default makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(1, 0, 2),
+  },
+  socialLoginFB: {
+    margin: theme.spacing(1, 0, 1),
+    width: "100%",
+    borderRadius: 4,
+    backgroundColor: "rgba(24,119,242,0.8)",
+    height: 40,
+    color: "white",
+
+    "&:hover": {
+      backgroundColor: "rgba(24,119,242,0.6)",
+    },
+  },
+  titleSocialLogin: {
+    fontSize: "0.875rem",
+    textTransform: "uppercase",
+    color: "white",
+    margin: "0 10px",
+    fontWeight: 500,
   },
 }));

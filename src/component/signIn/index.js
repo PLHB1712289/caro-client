@@ -1,18 +1,27 @@
-import Avatar from "@material-ui/core/Avatar";
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
-import Checkbox from "@material-ui/core/Checkbox";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Grid from "@material-ui/core/Grid";
-import Link from "@material-ui/core/Link";
-import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
+import {
+  Avatar,
+  Box,
+  Button,
+  Checkbox,
+  CssBaseline,
+  FormControlLabel,
+  Grid,
+  IconButton,
+  Link,
+  Paper,
+  TextField,
+  Typography,
+} from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import React, { useState } from "react";
-import useStyles from "./style";
+import React, { useEffect, useState } from "react";
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
+import GoogleLogin from "react-google-login";
+import { useHistory } from "react-router-dom";
+import { ReactComponent as FacebookIcon } from "../../assert/svg-icon/facebook-icon.svg";
+import { ReactComponent as GoogleIcon } from "../../assert/svg-icon/google-icon.svg";
+import config from "../../config";
 import Progress from "../progress";
+import useStyles from "./style";
 
 function Copyright() {
   return (
@@ -31,25 +40,76 @@ const SignIn = () => {
   // Style
   const classes = useStyles();
 
+  // React router hook
+  const history = useHistory();
+
   // State
   const [isLoad, setIsLoad] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isRememberMe, setIsRememberMe] = useState(false);
 
   // handle event change input form
   const handleChangeEmail = (e) => {
-    setEmail(e.target.value);
+    const { value } = e.target;
+    setEmail(value);
+
+    if (isRememberMe) {
+      localStorage.setItem("email", value);
+    }
   };
 
   const handleChangePassword = (e) => {
-    setPassword(e.target.value);
+    const { value } = e.target;
+    setPassword(value);
+
+    if (isRememberMe) {
+      localStorage.setItem("password", value);
+    }
+  };
+
+  const handleChangeRemeberMe = (e) => {
+    const { checked } = e.target;
+
+    setIsRememberMe(checked);
+
+    if (checked) {
+      localStorage.setItem("email", email);
+      localStorage.setItem("password", password);
+    } else {
+      localStorage.removeItem("email");
+      localStorage.removeItem("password");
+    }
   };
 
   // handle event submit form
   const handleSubmitForm = (e) => {
     e.preventDefault();
     setIsLoad(true);
+
+    setTimeout(() => {
+      setIsLoad(false);
+      history.push("/");
+    }, 500);
   };
+
+  // handle click
+  const handleOnClickSignUp = () => {
+    history.push("/sign-up");
+  };
+  const handleOnClickForgotPassword = () => {
+    history.push("/forgot-password");
+  };
+
+  // handle component didmount
+  useEffect(() => {
+    if (!localStorage.getItem("email") && !localStorage.getItem("password"))
+      return;
+
+    setEmail(localStorage.getItem("email"));
+    setPassword(localStorage.getItem("password"));
+    setIsRememberMe(true);
+  }, []);
 
   return (
     <Progress isDisplay={isLoad}>
@@ -98,6 +158,8 @@ const SignIn = () => {
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
+                checked={isRememberMe}
+                onChange={handleChangeRemeberMe}
               />
               <Button
                 type="submit"
@@ -110,16 +172,93 @@ const SignIn = () => {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
+                  <Link
+                    variant="body2"
+                    onClick={handleOnClickForgotPassword}
+                    style={{ cursor: "pointer" }}
+                  >
                     Forgot password?
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link
+                    variant="body2"
+                    onClick={handleOnClickSignUp}
+                    style={{ cursor: "pointer" }}
+                  >
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
               </Grid>
+              <div
+                style={{
+                  marginTop: 20,
+                  fontSize: "1rem",
+                  textAlign: "center",
+                }}
+              >
+                or connect with
+              </div>
+
+              <FacebookLogin
+                appId={config.FB_APP_ID}
+                autoLoad={false}
+                fields="name,email,picture"
+                callback={() => {
+                  alert("FB login");
+                }}
+                render={(renderProps) => (
+                  <IconButton
+                    className={classes.socialLoginFB}
+                    onClick={renderProps.onClick}
+                  >
+                    <div
+                      style={{
+                        width: 25,
+                        height: 25,
+                      }}
+                    >
+                      <FacebookIcon />
+                    </div>
+                    <span className={classes.titleSocialLogin}>
+                      Sign in with Facebook
+                    </span>
+                  </IconButton>
+                )}
+              />
+
+              <GoogleLogin
+                clientId={config.GG_APP_ID}
+                render={(renderProps) => (
+                  <IconButton
+                    className={classes.socialLoginFB}
+                    onClick={renderProps.onClick}
+                  >
+                    <div
+                      style={{
+                        width: 25,
+                        height: 25,
+                        textAlign: "center",
+                      }}
+                    >
+                      <GoogleIcon />
+                    </div>
+
+                    <span className={classes.titleSocialLogin}>
+                      Sign in with Google
+                    </span>
+                  </IconButton>
+                )}
+                onSuccess={(response) => {
+                  alert("GG login success");
+                  console.log(response);
+                }}
+                onFailure={() => {
+                  alert("Login with GG failed");
+                }}
+                cookiePolicy={"single_host_origin"}
+              />
+
               <Box mt={5}>
                 <Copyright />
               </Box>

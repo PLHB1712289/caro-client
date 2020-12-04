@@ -4,6 +4,7 @@ import SignIn from "./component/signIn";
 import SignUp from "./component/signUp";
 import Page from "./component/page";
 import NotFound from "./component/notFound";
+import ForgotPassword from "./component/forgotPassword";
 
 function App() {
   return (
@@ -15,6 +16,10 @@ function App() {
 
         <Route path="/sign-up">
           <SignUp />
+        </Route>
+
+        <Route path="/forgot-password">
+          <ForgotPassword />
         </Route>
 
         <Route path="/">
