@@ -1,7 +1,5 @@
-import config from "./config";
-
 function App() {
-  return <div>Hello firebase test auto deploy</div>;
+  return <div>Test</div>;
 }
 
 export default App;
