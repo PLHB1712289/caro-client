@@ -1,16 +1,24 @@
 const PRODUCTION_ENVIRONEMT = {
   title: "Production",
+  URL_SERVER: process.env.REACT_APP_URL_SERVER,
 };
 
-const DEVERLOPMENT_ENVIRONEMT = {
-  title: "Environment",
+const DEVELOPMENT_ENVIRONEMT = {
+  title: "Development",
+  URL_SERVER: "http://localhost:3000",
 };
 
 const ENVIRONMENT =
   process.env.REACT_APP_ENVIRONMENT === "PRODUCTION"
     ? { ...PRODUCTION_ENVIRONEMT }
-    : { ...DEVERLOPMENT_ENVIRONEMT };
+    : { ...DEVELOPMENT_ENVIRONEMT };
 
-console.log(ENVIRONMENT);
+console.log(
+  `Run on ${
+    process.env.REACT_APP_ENVIRONMENT === "PRODUCTION"
+      ? "PRODUCTION ENVIRONMENT"
+      : "DEVELOPMENT ENVIRONMENT"
+  }`
+);
 
 export default ENVIRONMENT;
