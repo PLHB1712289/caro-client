@@ -22,6 +22,7 @@ import { ReactComponent as GoogleIcon } from "../../assert/svg-icon/google-icon.
 import config from "../../config";
 import Progress from "../progress";
 import useStyles from "./style";
+import apiService from "./apiService";
 
 function Copyright() {
   return (
@@ -83,14 +84,24 @@ const SignIn = () => {
   };
 
   // handle event submit form
-  const handleSubmitForm = (e) => {
+  const handleSubmitForm = async (e) => {
     e.preventDefault();
     setIsLoad(true);
 
-    setTimeout(() => {
-      setIsLoad(false);
+    const { success, message, token } = await apiService.signIn(
+      email,
+      password
+    );
+
+    if (success) {
+      localStorage.setItem("token", token);
       history.push("/");
-    }, 500);
+      setIsLoad(false);
+      return;
+    }
+
+    setIsLoad(false);
+    alert(message);
   };
 
   // handle click
@@ -101,8 +112,62 @@ const SignIn = () => {
     history.push("/forgot-password");
   };
 
+  // callback FB
+  const callbackFB = async (response) => {
+    setIsLoad(true);
+
+    // get accessToken
+    const { id, accessToken } = response;
+
+    // request to server
+    const { success, message, token } = await apiService.signInWithFB(
+      id,
+      accessToken
+    );
+
+    if (success) {
+      localStorage.setItem("token", token);
+      history.push("/");
+      setIsLoad(false);
+      return;
+    }
+
+    setIsLoad(false);
+    alert(message);
+  };
+
+  // callback GG
+  const callbackGG = async (response) => {
+    setIsLoad(true);
+    console.log(response);
+
+    // get accessToken
+    const { tokenId, accessToken } = response;
+
+    // request to server
+    const { success, message, token } = await apiService.signInWithGG(
+      tokenId,
+      accessToken
+    );
+
+    if (success) {
+      localStorage.setItem("token", token);
+      history.push("/");
+      setIsLoad(false);
+      return;
+    }
+
+    setIsLoad(false);
+    alert(message);
+  };
+
   // handle component didmount
   useEffect(() => {
+    if (localStorage.getItem("token")) {
+      history.push("/");
+      return;
+    }
+
     if (!localStorage.getItem("email") && !localStorage.getItem("password"))
       return;
 
@@ -204,9 +269,7 @@ const SignIn = () => {
                 appId={config.FB_APP_ID}
                 autoLoad={false}
                 fields="name,email,picture"
-                callback={() => {
-                  alert("FB login");
-                }}
+                callback={callbackFB}
                 render={(renderProps) => (
                   <IconButton
                     className={classes.socialLoginFB}
@@ -249,10 +312,7 @@ const SignIn = () => {
                     </span>
                   </IconButton>
                 )}
-                onSuccess={(response) => {
-                  alert("GG login success");
-                  console.log(response);
-                }}
+                onSuccess={callbackGG}
                 onFailure={() => {
                   alert("Login with GG failed");
                 }}

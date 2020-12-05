@@ -1,11 +1,24 @@
-import React from "react";
-import { Switch, Route, useRouteMatch } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Switch, Route, useRouteMatch, useHistory } from "react-router-dom";
 
 import Header from "../header";
 import NotFound from "../notFound";
 
 const Page = () => {
+  // React router hook
   const match = useRouteMatch();
+  const history = useHistory();
+
+  // component didmount
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      history.push("/sign-in");
+      return;
+    }
+  }, [history]);
+
   return (
     <>
       <Header />
