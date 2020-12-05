@@ -10,19 +10,19 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route path="/sign-in">
+        <Route path={"/sign-in"}>
           <SignIn />
         </Route>
 
-        <Route path="/sign-up">
+        <Route path={"/sign-up"}>
           <SignUp />
         </Route>
 
-        <Route path="/forgot-password">
+        <Route path={"/forgot-password"}>
           <ForgotPassword />
         </Route>
 
-        <Route path="/">
+        <Route path={"/"}>
           <Page />
         </Route>
 
