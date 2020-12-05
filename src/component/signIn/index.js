@@ -174,7 +174,7 @@ const SignIn = () => {
     setEmail(localStorage.getItem("email"));
     setPassword(localStorage.getItem("password"));
     setIsRememberMe(true);
-  }, []);
+  }, [history]);
 
   return (
     <Progress isDisplay={isLoad}>
