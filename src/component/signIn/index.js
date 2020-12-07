@@ -51,7 +51,7 @@ const SignIn = () => {
   const [isRememberMe, setIsRememberMe] = useState(false);
 
   // handle event change input form
-  const handleChangeEmail = (e) => {
+  const _handleChangeEmail = (e) => {
     const { value } = e.target;
     setEmail(value);
 
@@ -60,7 +60,7 @@ const SignIn = () => {
     }
   };
 
-  const handleChangePassword = (e) => {
+  const _handleChangePassword = (e) => {
     const { value } = e.target;
     setPassword(value);
 
@@ -69,7 +69,7 @@ const SignIn = () => {
     }
   };
 
-  const handleChangeRemeberMe = (e) => {
+  const _handleChangeRemeberMe = (e) => {
     const { checked } = e.target;
 
     setIsRememberMe(checked);
@@ -84,7 +84,7 @@ const SignIn = () => {
   };
 
   // handle event submit form
-  const handleSubmitForm = async (e) => {
+  const _handleSubmitForm = async (e) => {
     e.preventDefault();
     setIsLoad(true);
 
@@ -105,16 +105,16 @@ const SignIn = () => {
   };
 
   // handle click
-  const handleOnClickSignUp = () => {
+  const _handleOnClickSignUp = () => {
     history.push("/sign-up");
   };
-  const handleOnClickForgotPassword = () => {
+  const _handleOnClickForgotPassword = () => {
     history.push("/forgot-password");
   };
 
   // callback FB
-  const callbackFB = async (response) => {
-    setIsLoad(true);
+  const _callbackFB = async (response) => {
+    // setIsLoad(true);
 
     // get accessToken
     const { id, accessToken } = response;
@@ -124,22 +124,21 @@ const SignIn = () => {
       id,
       accessToken
     );
-
+    // setIsLoad(false);
     if (success) {
       localStorage.setItem("token", token);
       history.push("/");
-      setIsLoad(false);
+      // setIsLoad(false);
       return;
     }
 
-    setIsLoad(false);
+    // setIsLoad(false);
     alert(message);
   };
 
   // callback GG
-  const callbackGG = async (response) => {
-    setIsLoad(true);
-    console.log(response);
+  const _callbackGG = async (response) => {
+    // setIsLoad(true);
 
     // get accessToken
     const { tokenId, accessToken } = response;
@@ -153,15 +152,19 @@ const SignIn = () => {
     if (success) {
       localStorage.setItem("token", token);
       history.push("/");
-      setIsLoad(false);
+      // setIsLoad(false);
       return;
     }
 
-    setIsLoad(false);
+    // setIsLoad(false);
     alert(message);
   };
 
-  // handle component didmount
+  const _callbackGGFailed = async (response) => {
+    alert(response.details);
+  };
+
+  // _handle component didmount
   useEffect(() => {
     if (localStorage.getItem("token")) {
       history.push("/");
@@ -192,7 +195,7 @@ const SignIn = () => {
             <form
               className={classes.form}
               noValidate
-              onSubmit={handleSubmitForm}
+              onSubmit={_handleSubmitForm}
             >
               <TextField
                 variant="outlined"
@@ -205,7 +208,7 @@ const SignIn = () => {
                 autoComplete="email"
                 autoFocus
                 value={email}
-                onChange={handleChangeEmail}
+                onChange={_handleChangeEmail}
               />
               <TextField
                 variant="outlined"
@@ -218,13 +221,13 @@ const SignIn = () => {
                 id="password"
                 autoComplete="current-password"
                 value={password}
-                onChange={handleChangePassword}
+                onChange={_handleChangePassword}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
                 checked={isRememberMe}
-                onChange={handleChangeRemeberMe}
+                onChange={_handleChangeRemeberMe}
               />
               <Button
                 type="submit"
@@ -239,7 +242,7 @@ const SignIn = () => {
                 <Grid item xs>
                   <Link
                     variant="body2"
-                    onClick={handleOnClickForgotPassword}
+                    onClick={_handleOnClickForgotPassword}
                     style={{ cursor: "pointer" }}
                   >
                     Forgot password?
@@ -248,7 +251,7 @@ const SignIn = () => {
                 <Grid item>
                   <Link
                     variant="body2"
-                    onClick={handleOnClickSignUp}
+                    onClick={_handleOnClickSignUp}
                     style={{ cursor: "pointer" }}
                   >
                     {"Don't have an account? Sign Up"}
@@ -269,7 +272,7 @@ const SignIn = () => {
                 appId={config.FB_APP_ID}
                 autoLoad={false}
                 fields="name,email,picture"
-                callback={callbackFB}
+                callback={_callbackFB}
                 render={(renderProps) => (
                   <IconButton
                     className={classes.socialLoginFB}
@@ -312,11 +315,8 @@ const SignIn = () => {
                     </span>
                   </IconButton>
                 )}
-                onSuccess={callbackGG}
-                onFailure={() => {
-                  alert("Login with GG failed");
-                }}
-                cookiePolicy={"single_host_origin"}
+                onSuccess={_callbackGG}
+                onFailure={_callbackGGFailed}
               />
 
               <Box mt={5}>
