@@ -20,7 +20,7 @@
   },
   "scripts": {
     "devMac": "PORT=3001 REACT_APP_ENVIRONMENT=DEVELOPMENT react-scripts start",
-    "devWin": "set PORT=3001 && REACT_APP_ENVIRONMENT=DEVELOPMENT && react-scripts start",
+    "devWin": "set PORT=3001 && set REACT_APP_ENVIRONMENT=DEVELOPMENT && react-scripts start",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
