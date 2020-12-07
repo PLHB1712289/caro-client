@@ -164,19 +164,17 @@ const SignIn = () => {
     alert(response.details);
   };
 
-  // _handle component didmount
+  // handle component didmount
   useEffect(() => {
     if (localStorage.getItem("token")) {
       history.push("/");
-      return;
+    } else {
+      if (!localStorage.getItem("email") && !localStorage.getItem("password"))
+        return;
+      setEmail(localStorage.getItem("email"));
+      setPassword(localStorage.getItem("password"));
+      setIsRememberMe(true);
     }
-
-    if (!localStorage.getItem("email") && !localStorage.getItem("password"))
-      return;
-
-    setEmail(localStorage.getItem("email"));
-    setPassword(localStorage.getItem("password"));
-    setIsRememberMe(true);
   }, [history]);
 
   return (
