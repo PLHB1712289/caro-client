@@ -4,14 +4,15 @@ import io from "socket.io-client";
 import config from "../../config";
 import Header from "../header";
 import NotFound from "../notFound";
-const socket = io(config.URL_SERVER, { transports: ["websocket"] });
+import SOCKET_TAG from "./dataConst";
 
 const Page = () => {
   // React router hook
   const match = useRouteMatch();
   const history = useHistory();
   const [numOfOnlineUsers, setNumOfOnlineUsers] = useState(0);
-  socket.on("updateNumOfOnlineUsers", (data) => setNumOfOnlineUsers(data));
+  const [, setSocket] = useState(null);
+
   // component didmount
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -20,6 +21,26 @@ const Page = () => {
       return;
     }
   }, [history]);
+
+  // setup socket.io
+  useEffect(() => {
+    // create new connection
+    const newSocket = io(`${config.URL_SERVER}`, { transports: ["websocket"] });
+
+    // setup event recieve data from server
+    newSocket.on(SOCKET_TAG.RESPONSE_UPDATE_USER_ONLINE, ({ numberUser }) => {
+      console.log("new user online");
+      setNumOfOnlineUsers(numberUser);
+    });
+
+    // update socket
+    setSocket(newSocket);
+
+    // disconnect
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
 
   return (
     <>
