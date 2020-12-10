@@ -29,7 +29,6 @@ const Page = () => {
 
     // setup event recieve data from server
     newSocket.on(SOCKET_TAG.RESPONSE_UPDATE_USER_ONLINE, ({ numberUser }) => {
-      console.log("new user online");
       setNumOfOnlineUsers(numberUser);
     });
 
