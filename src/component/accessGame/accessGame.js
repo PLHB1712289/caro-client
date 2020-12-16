@@ -7,35 +7,35 @@ import {
 } from "@material-ui/core";
 import useStyles from "./style";
 import Progress from "../progress";
-import apiService from "./apiService";
+import apiService from "../game/apiService";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import config from "../../config";
 import {ReactComponent as FacebookIcon} from "../../assert/svg-icon/facebook-icon.svg";
 import GoogleLogin from "react-google-login";
 import {ReactComponent as GoogleIcon} from "../../assert/svg-icon/google-icon.svg";
-const CreateNewGame=(props)=>{
+const AccessGame=(props)=>{
     let history = useHistory();
 
     const classes = useStyles();
     const size=30;
-    const [name,setName]=useState("");
+    const [id,setID]=useState("");
     // State
     const [isLoad, setIsLoad] = useState(false);
-    const onChangeName=(e)=>{
-        setName(e.target.value);
+    const onChangeID=(e)=>{
+        setID(e.target.value);
     }
     // handle event submit form
     const _handleSubmitForm = async (e) => {
         e.preventDefault();
 
         console.log("Check name game");
-        console.log(name);
-        const {success, message,game} = await apiService.createNewGame(
-            name
+        console.log(id);
+        const {success, message} = await apiService.accessGame(
+            id
         );
         console.log("Check message");
-        console.log(success,message,game);
-        history.push(`/game/${game._id}`);
+        console.log(success,message);
+        history.push(`/game/${id}`);
 
     };
     return(
@@ -51,8 +51,8 @@ const CreateNewGame=(props)=>{
                 fullWidth
 
                 autoFocus
-                value={name}
-                onChange={onChangeName}
+                value={id}
+                onChange={onChangeID}
             />
             <Button
                 type="submit"
@@ -60,7 +60,7 @@ const CreateNewGame=(props)=>{
                 color="primary"
                 className={classes.submit}
             >
-                New Game
+                Access Game
             </Button>
 
         </form>
@@ -68,5 +68,5 @@ const CreateNewGame=(props)=>{
     );
 };
 
-export default CreateNewGame;
+export default AccessGame;
 

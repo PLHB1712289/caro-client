@@ -2,11 +2,10 @@ import axiosClient from "../../apiClient";
 import URL from "../../apiClient/URL";
 
 const APIService = {
-    createNewGame: async(squares)  => {
-        const player1=null;
-        const player2=null;
-        const payload = { squares,player1,player2 };
-        const response = await axiosClient.post(URL.NEW_BOARD, payload);
+    createNewGame: async(name)  => {
+
+        const payload = { name };
+        const response = await axiosClient.post(URL.NEW_GAME, payload);
 
         return response;
     },

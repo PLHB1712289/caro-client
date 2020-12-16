@@ -5,7 +5,9 @@ import config from "../../config";
 import Header from "../header";
 import NotFound from "../notFound";
 import SOCKET_TAG from "./dataConst";
-
+import CreateNewGame from "../createGame";
+import Game from "../game/game";
+import AccessGame from "../accessGame/accessGame";
 const Page = () => {
   // React router hook
   const match = useRouteMatch();
@@ -48,9 +50,15 @@ const Page = () => {
         <Route path={`${match.url}profile`}>
           <div>Profile</div>
         </Route>
+
+        <Route path={`${match.url}game/:id`}>
+          <Game/>
+        </Route>
         <Route path={`${match.url}`} exact>
           <div>Home Page</div>
           <div>Số lượng người đang online: {numOfOnlineUsers}</div>
+          <CreateNewGame/>
+          <AccessGame/>
         </Route>
 
         <Route>

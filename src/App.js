@@ -8,10 +8,11 @@ import ForgotPassword from "./component/forgotPassword";
 import Board from "../src/component/board/board";
 import Game from "./component/game/game";
 import CreateNewGame from "./component/createGame";
+import AccessGame from "./component/accessGame/accessGame";
 function App() {
 
   return (
-     /* <Router>
+    <Router>
          <Switch>
            <Route path={"/sign-in"}>
              <SignIn />
@@ -34,8 +35,6 @@ function App() {
            </Route>
          </Switch>
        </Router>
-*/
-        <CreateNewGame/>
 
   );
 
