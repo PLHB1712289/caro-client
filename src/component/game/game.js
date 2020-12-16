@@ -1,29 +1,26 @@
-import React,{useEffect} from "react";
-import "../../index.css"
+import React, { useEffect } from "react";
+import "../../index.css";
 import Board from "../board/board";
+import { useRouteMatch } from "react-router-dom";
+import Chat from "../chat";
 
-const Game=(props)=>{
-    /*useEffect(()=>{
-        axios.get(`/user/${userID}/boards` )
-            .then(response=>{
-                setBoards(response.data);
-            })
-            .catch(function (error) {
-                console.log(error);
+const Game = ({ socket }) => {
+  const match = useRouteMatch();
+  const { id: idGame } = match.params;
 
-            })
-    });*/
-    return (
-        <div className="game">
-            <div className="game-board">
-                <Board />
-            </div>
-            <div className="game-info">
-                <div>{/* status */}</div>
-                <ol>{/* TODO */}</ol>
-            </div>
-        </div>
-    );
+  return (
+    <div className="game">
+      <div className="game-board">
+        <Board />
+      </div>
+      <div className="game-info">
+        <div>status</div>
+        <ol>{/* TODO */}</ol>
+
+        <Chat idGame={idGame} socket={socket} />
+      </div>
+    </div>
+  );
 };
 
-export  default Game;
+export default Game;

@@ -13,7 +13,7 @@ const Page = () => {
   const match = useRouteMatch();
   const history = useHistory();
   const [numOfOnlineUsers, setNumOfOnlineUsers] = useState(0);
-  const [, setSocket] = useState(null);
+  const [socket, setSocket] = useState(null);
 
   // component didmount
   useEffect(() => {
@@ -52,13 +52,14 @@ const Page = () => {
         </Route>
 
         <Route path={`${match.url}game/:id`}>
-          <Game/>
+          <Game socket={socket} />
         </Route>
+
         <Route path={`${match.url}`} exact>
           <div>Home Page</div>
           <div>Số lượng người đang online: {numOfOnlineUsers}</div>
-          <CreateNewGame/>
-          <AccessGame/>
+          <CreateNewGame />
+          <AccessGame />
         </Route>
 
         <Route>
