@@ -28,7 +28,7 @@ const AccessGame=(props)=>{
     const _handleSubmitForm = async (e) => {
         e.preventDefault();
 
-        console.log("Check name game");
+        console.log("Check id game");
         console.log(id);
         const {success, message} = await apiService.accessGame(
             id

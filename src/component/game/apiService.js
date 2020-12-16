@@ -9,8 +9,10 @@ const APIService = {
         return response;
     },
     accessGame:async(idGame)=>{
-        const response = await axiosClient.post(URL.ACCESS_GAME);
-
+        console.log("Check id game of access game in client");
+        console.log(idGame);
+        const payload={idGame};
+        const response = await axiosClient.post(URL.ACCESS_GAME,payload);
         return response;
     }
 
