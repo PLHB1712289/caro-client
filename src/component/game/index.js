@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "../../index.css";
-import Board from "../board/board";
+// import Board from "../board/board";
 import { useRouteMatch } from "react-router-dom";
-import Chat from "../chat";
+// import Chat from "../chat";
 
 const Game = ({ socket }) => {
   const match = useRouteMatch();

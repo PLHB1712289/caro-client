@@ -1,5 +1,5 @@
 import axiosClient from "../../apiClient";
-import URL from "../../apiClient/URL";
+// import URL from "../../apiClient/URL";
 
 const APIService = {
   getGame: async (id) => {

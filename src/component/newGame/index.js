@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import useStyles from "./style";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -21,7 +21,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const NewGame = ({ open, onClose, onSignInSuccess }) => {
   // React router hook
-  const history = useHistory();
+  // const history = useHistory();
 
   // Style
   const classes = useStyles();
@@ -77,11 +77,8 @@ const NewGame = ({ open, onClose, onSignInSuccess }) => {
                   margin="normal"
                   required
                   fullWidth
-                  name="roomName"
                   label="Room Name"
                   type="text"
-                  id="room-name"
-                  autoComplete="room name"
                   value={roomName}
                   onChange={_handleChangeRoomName}
                 />
@@ -104,11 +101,8 @@ const NewGame = ({ open, onClose, onSignInSuccess }) => {
                     margin="normal"
                     required
                     fullWidth
-                    name="password"
                     label="Password"
                     type="password"
-                    id="password"
-                    autoComplete="current-password"
                     value={password}
                     onChange={_handleChangePassword}
                   />
@@ -116,13 +110,9 @@ const NewGame = ({ open, onClose, onSignInSuccess }) => {
                   <TextField
                     id="standard-basic"
                     margin="normal"
-                    required
                     fullWidth
-                    name="password"
                     label="Password"
                     type="password"
-                    id="password"
-                    autoComplete="current-password"
                     value={password}
                     onChange={_handleChangePassword}
                     disabled

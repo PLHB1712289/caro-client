@@ -13,9 +13,9 @@ const Board = () => {
 
   useEffect(() => {
     APIService.getGame(id).then((game) => {
-      if (squares) {
-        // do sth
-      }
+      // if (squares) {
+      // do sth
+      // }
     });
   }, [id]);
 

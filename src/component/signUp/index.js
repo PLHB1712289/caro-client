@@ -83,7 +83,7 @@ const SignUpForm = ({ token, turnOnLoading, turnOffLoading }) => {
     if (localStorage.getItem("token")) {
       history.push("/");
     }
-  }, []);
+  }, [history]);
 
   (() => {
     if (token) history.push("/");
