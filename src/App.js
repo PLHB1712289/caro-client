@@ -1,13 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ForgotPassword from "./component/forgotPassword";
+import Game from "./component/game";
 import Header from "./component/header";
 import HomePage from "./component/homePage";
-import NotFound from "./component/notFound";
-import SignUp from "./component/signUp";
-import SignIn from "./component/signIn";
-import Game from "./component/game";
 import Loading from "./component/loading";
+import NotFound from "./component/notFound";
+import SignIn from "./component/signIn";
+import SignUp from "./component/signUp";
 
 function App() {
   return (
