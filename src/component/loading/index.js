@@ -2,7 +2,9 @@ import { CircularProgress } from "@material-ui/core";
 import React from "react";
 import useStyles from "./styles";
 
-const Progress = (props) => {
+import { connect } from "react-redux";
+
+const Loading = (props) => {
   const classes = useStyles();
 
   const { isDisplay, children } = props;
@@ -43,4 +45,8 @@ const Progress = (props) => {
   );
 };
 
-export default Progress;
+const mapStateToProps = (state) => ({
+  isDisplay: state.loading,
+});
+
+export default connect(mapStateToProps, () => {})(Loading);
