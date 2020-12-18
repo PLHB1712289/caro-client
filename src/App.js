@@ -1,46 +1,54 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import SignIn from "./component/signIn";
-import SignUp from "./component/signUp";
-import Page from "./component/page";
-import NotFound from "./component/notFound";
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ForgotPassword from "./component/forgotPassword";
-import Board from "../src/component/board/board";
-import Game from "./component/game/game";
-import CreateNewGame from "./component/createGame";
-import AccessGame from "./component/accessGame/accessGame";
+import Header from "./component/header";
+import HomePage from "./component/homePage";
+import NotFound from "./component/notFound";
+import SignUp from "./component/signUp";
+import SignIn from "./component/signIn";
+import Game from "./component/game";
+import Loading from "./component/loading";
+
 function App() {
   return (
     <Router>
-      <Switch>
-        <Route path={"/sign-in"}>
-          <SignIn />
-        </Route>
+      <Loading>
+        <Header />
 
-        <Route path={"/sign-up"}>
-          <SignUp />
-        </Route>
+        <Switch>
+          <Route path={"/sign-in"}>
+            <SignIn />
+          </Route>
 
-        <Route path={"/forgot-password"}>
-          <ForgotPassword />
-        </Route>
+          <Route path={"/sign-up"}>
+            <SignUp />
+          </Route>
 
-        <Route path={"/new-game"}>
-          <CreateNewGame />
-        </Route>
+          <Route path={"/forgot-password"}>
+            <ForgotPassword />
+          </Route>
 
-        <Route path={"/game/:id"}>
-          <Board />
-        </Route>
+          <Route path={"/profile"}>
+            <div>Profile</div>
+          </Route>
 
-        <Route path={"/"}>
-          <Page />
-        </Route>
+          <Route path={"/game/:id"}>
+            <Game />
+          </Route>
 
-        <Route>
-          <NotFound />
-        </Route>
-      </Switch>
+          <Route path={"/player/:id"}>
+            <div>Player</div>
+          </Route>
+
+          <Route path={"/"}>
+            <HomePage />
+          </Route>
+
+          <Route>
+            <NotFound />
+          </Route>
+        </Switch>
+      </Loading>
     </Router>
   );
 }

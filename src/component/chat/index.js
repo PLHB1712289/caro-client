@@ -2,7 +2,7 @@ import { Grid } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import Message from "../message";
 import apiService from "./api";
-import SOCKET_TAG from "../page/dataConst";
+import SOCKET_TAG from "../homePage/dataConst";
 
 const Chat = ({ idGame, socket }) => {
   const [listMess, setListMess] = useState([]);

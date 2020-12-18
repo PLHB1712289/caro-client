@@ -10,14 +10,13 @@ const Game = ({ socket }) => {
 
   return (
     <div className="game">
-      <div className="game-board">
-        <Board />
-      </div>
+      Game - ID: {idGame}
+      <div className="game-board">{/* <Board /> */}</div>
       <div className="game-info">
         <div>status</div>
         <ol>{/* TODO */}</ol>
 
-        <Chat idGame={idGame} socket={socket} />
+        {/* <Chat idGame={idGame} socket={socket} /> */}
       </div>
     </div>
   );
