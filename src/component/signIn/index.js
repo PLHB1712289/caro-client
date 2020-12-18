@@ -15,14 +15,14 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import React, { useState } from "react";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import GoogleLogin from "react-google-login";
+import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { ReactComponent as FacebookIcon } from "../../assert/svg-icon/facebook-icon.svg";
 import { ReactComponent as GoogleIcon } from "../../assert/svg-icon/google-icon.svg";
 import config from "../../config";
+import action from "../../storage/action";
 import apiService from "./apiService";
 import useStyles from "./style";
-import action from "../../storage/action";
-import { connect } from "react-redux";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -42,13 +42,13 @@ const SignIn = ({
   const classes = useStyles();
 
   // State
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   // handle event change input form
-  const _handleChangeEmail = (e) => {
+  const _handleChangeUsername = (e) => {
     const { value } = e.target;
-    setEmail(value);
+    setUsername(value);
   };
 
   const _handleChangePassword = (e) => {
@@ -61,7 +61,7 @@ const SignIn = ({
     e.preventDefault();
     turnOnLoading();
     const { success, message, token } = await apiService.signIn(
-      email,
+      username,
       password
     );
 
@@ -170,24 +170,18 @@ const SignIn = ({
                   margin="normal"
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
+                  label="Username"
                   autoFocus
-                  value={email}
-                  onChange={_handleChangeEmail}
+                  value={username}
+                  onChange={_handleChangeUsername}
                 />
                 <TextField
                   variant="outlined"
                   margin="normal"
                   required
                   fullWidth
-                  name="password"
                   label="Password"
                   type="password"
-                  id="password"
-                  autoComplete="current-password"
                   value={password}
                   onChange={_handleChangePassword}
                 />

@@ -7,43 +7,45 @@ import {
   Typography,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
+import action from "../../storage/action";
 import signUp from "./services";
 import useStyles from "./styles";
-import { connect } from "react-redux";
 
-const SignUpForm = ({ token }) => {
+const SignUpForm = ({ token, turnOnLoading, turnOffLoading }) => {
   // Styles
   const classes = useStyles();
   const history = useHistory();
 
   // States
-  const [isLoad, setIsLoad] = useState(false);
-  const [email, setEmail] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState(null);
+  const [username, setUsername] = useState(null);
+  const [password, setPassword] = useState(null);
 
   // Setup
-  const handleSubmitForm = (e) => {
+  const _handleSubmitForm = (e) => {
     e.preventDefault();
 
     // Check
-    if (!fullName || !email || !password) {
-      alert("Please fill all!");
+    if (!username || !email || !password) {
+      setUsername(username ? username : "");
+      setEmail(email ? email : "");
+      setPassword(password ? password : "");
       return;
     }
 
-    setIsLoad(true);
+    turnOnLoading();
 
     (async () => {
       try {
         const { success, message } = await signUp({
           email,
-          fullName,
+          username,
           password,
         });
-        setIsLoad(false);
+        turnOffLoading();
 
         if (success) {
           const redirectSignIn = window.confirm(
@@ -56,23 +58,23 @@ const SignUpForm = ({ token }) => {
           alert(message);
         }
       } catch (e) {
-        setIsLoad(false);
+        turnOffLoading();
         alert("Can't connect server!");
       }
     })();
   };
 
-  const handleChangeEmail = (e) => {
+  const _handleChangeEmail = (e) => {
     const { value } = e.target;
     setEmail(value);
   };
 
-  const handleChangeFullName = (e) => {
+  const _handleChangeUsername = (e) => {
     const { value } = e.target;
-    setFullName(value);
+    setUsername(value);
   };
 
-  const handleChangePassword = (e) => {
+  const _handleChangePassword = (e) => {
     const { value } = e.target;
     setPassword(value);
   };
@@ -112,38 +114,77 @@ const SignUpForm = ({ token }) => {
           <Typography component="h1" variant="h5">
             Sign Up
           </Typography>
-          <form className={classes.form} noValidate onSubmit={handleSubmitForm}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="fullName"
-              label="Full Name"
-              name="fullName"
-              autoComplete="fullName"
-              autoFocus
-              onChange={handleChangeFullName}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              label="Email Address"
-              type="email"
-              onChange={handleChangeEmail}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              onChange={handleChangePassword}
-            />
+          <form
+            className={classes.form}
+            noValidate
+            onSubmit={_handleSubmitForm}
+          >
+            {username === null || username.length > 0 ? (
+              <TextField
+                autoFocus
+                fullWidth
+                variant="outlined"
+                margin="normal"
+                label="Username"
+                onChange={_handleChangeUsername}
+              />
+            ) : (
+              <TextField
+                error
+                autoFocus
+                fullWidth
+                variant="outlined"
+                margin="normal"
+                label="Username"
+                onChange={_handleChangeUsername}
+                helperText="Please fill username"
+              />
+            )}
+
+            {email === null || email.length > 0 ? (
+              <TextField
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                label="Email Address"
+                type="email"
+                onChange={_handleChangeEmail}
+              />
+            ) : (
+              <TextField
+                error
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                label="Email Address"
+                type="email"
+                onChange={_handleChangeEmail}
+                helperText="Please fill email"
+              />
+            )}
+
+            {password === null || password.length > 0 ? (
+              <TextField
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                label="Password"
+                type="password"
+                onChange={_handleChangePassword}
+              />
+            ) : (
+              <TextField
+                error
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                label="Password"
+                type="password"
+                onChange={_handleChangePassword}
+                helperText="Please fill password"
+              />
+            )}
+
             <Button
               type="submit"
               fullWidth
@@ -164,6 +205,14 @@ const mapStateToProps = (state, ownProps) => ({
   token: state.token,
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+  turnOnLoading: () => {
+    dispatch(action.LOADING.turnOn());
+  },
+
+  turnOffLoading: () => {
+    dispatch(action.LOADING.turnOff());
+  },
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUpForm);
