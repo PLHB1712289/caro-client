@@ -23,6 +23,7 @@ import config from "../../config";
 import action from "../../storage/action";
 import apiService from "./apiService";
 import useStyles from "./style";
+import realtime from "../../realtime";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -64,6 +65,7 @@ const SignIn = ({ open, onClose, setToken, turnOnLoading, turnOffLoading }) => {
       if (success) {
         localStorage.setItem("token", data.token);
         setToken(data.token);
+        realtime.updateListUserOnline(data.token);
         onClose();
         turnOffLoading();
         return;
@@ -102,6 +104,7 @@ const SignIn = ({ open, onClose, setToken, turnOnLoading, turnOffLoading }) => {
         setToken(data.token);
         onClose();
         turnOffLoading();
+        realtime.updateListUserOnline(data.token);
         return;
       }
 
@@ -131,6 +134,7 @@ const SignIn = ({ open, onClose, setToken, turnOnLoading, turnOffLoading }) => {
       setToken(data.token);
       onClose();
       turnOffLoading();
+      realtime.updateListUserOnline(data.token);
       return;
     }
 

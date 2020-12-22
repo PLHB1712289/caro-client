@@ -17,6 +17,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import SignIn from "../signIn";
 import { connect } from "react-redux";
 import action from "../../storage/action";
+import realtime from "../../realtime";
 
 const ITEM_HEIGHT = 48;
 
@@ -49,6 +50,9 @@ const Navbar = ({ token, setToken }) => {
   };
 
   const _handleClickSignOut = () => {
+    const token = localStorage.getItem("token");
+    realtime.signOut(token);
+
     localStorage.removeItem("token");
     setToken(null);
     _handleClickCloseMenu();

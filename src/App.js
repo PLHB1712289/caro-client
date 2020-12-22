@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ForgotPassword from "./component/forgotPassword";
 import Game from "./component/game";
@@ -8,8 +8,13 @@ import Loading from "./component/loading";
 import NotFound from "./component/notFound";
 import SignIn from "./component/signIn";
 import SignUp from "./component/signUp";
+import realtime from "./realtime";
 
 function App() {
+  useEffect(() => {
+    realtime.connect();
+  }, []);
+
   return (
     <Router>
       <Loading>

@@ -63,17 +63,18 @@ const Page = ({
       <Grid container item md={10} xs={12}>
         <Grid item xs={9}>
           <ListGame onFilterByID={_handleFilterByID}>
-            {filterListRoom.map((item) => (
-              <ItemGame data={item} />
+            {filterListRoom.map((item, index) => (
+              <ItemGame key={index} data={item} />
             ))}
           </ListGame>
         </Grid>
 
         <Grid item xs={3}>
           <ListUserOnline>
-            {listUser.map((item) => (
-              <ItemUserOnline data={item} />
-            ))}
+            {listUser.map((item, index) => {
+              console.log(item);
+              return <ItemUserOnline key={index} data={item} />;
+            })}
           </ListUserOnline>
         </Grid>
       </Grid>

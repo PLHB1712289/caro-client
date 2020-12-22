@@ -37,6 +37,11 @@ const listRoomReducer = (listRoom = INITIAL_STATE, action) => {
   switch (action.type) {
     case TAG.LIST_ROOM.UPDATE:
       return action.payload.data;
+
+    case TAG.LIST_ROOM.ADD: {
+      return listRoom.concat(action.payload.user);
+    }
+
     default:
       return listRoom;
   }
