@@ -3,7 +3,7 @@ import boardReducer from "./sevice/board";
 import profileReducer from "./sevice/profile";
 import loadingReducer from "./sevice/loading";
 import tokenReducer from "./sevice/token";
-import listGameReducer from "./sevice/listGame";
+import listRoomReducer from "./sevice/listRoom";
 import listUserReducer from "./sevice/listUser";
 
 const reducer = combineReducers({
@@ -11,7 +11,7 @@ const reducer = combineReducers({
   profile: profileReducer,
   loading: loadingReducer,
   token: tokenReducer,
-  listGame: listGameReducer,
+  listRoom: listRoomReducer,
   listUser: listUserReducer,
 });
 

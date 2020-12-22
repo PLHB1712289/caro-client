@@ -1,32 +1,61 @@
-import React, { useState } from "react";
 import { Grid } from "@material-ui/core";
-import ListGame from "../listGame";
-import ItemGame from "../itemGame";
-import ListUserOnline from "../listUserOnline";
-import ItemUserOnline from "../itemUserOnline";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import ItemGame from "../itemGame";
+import ItemUserOnline from "../itemUserOnline";
+import ListGame from "../listGame";
+import ListUserOnline from "../listUserOnline";
+import apiService from "./api";
+import action from "../../storage/action";
 
-const Page = ({ listGame, listUser }) => {
-  const [filterListGame, setFilterListGame] = useState(listGame);
+const Page = ({
+  listRoom,
+  listUser,
+  setListRoom,
+  turnOffLoading,
+  turnOnLoading,
+}) => {
+  const [filterListRoom, setFilterListRoom] = useState(listRoom);
 
   const _handleFilterByID = (id) => {
     if (id) {
-      setFilterListGame(
-        listGame.filter((item) => {
+      setFilterListRoom(
+        listRoom.filter((item) => {
           if (item.id.search(id) !== -1) return item;
         })
       );
     } else {
-      setFilterListGame(listGame);
+      setFilterListRoom(listRoom);
     }
   };
+
+  useEffect(() => {
+    turnOnLoading();
+    (async () => {
+      try {
+        const { success, message, data } = await apiService.getListRoom();
+
+        if (success) {
+          setListRoom(data.listRoom);
+          setFilterListRoom(data.listRoom);
+        } else {
+          alert(message);
+        }
+      } catch (e) {
+        alert("Cannot connect to server");
+        // console.log("[ERROR]:", e);
+      }
+
+      turnOffLoading();
+    })();
+  }, []);
 
   return (
     <Grid container style={{ justifyContent: "center", height: "90vh" }}>
       <Grid container item md={10} xs={12}>
         <Grid item xs={9}>
           <ListGame onFilterByID={_handleFilterByID}>
-            {filterListGame.map((item) => (
+            {filterListRoom.map((item) => (
               <ItemGame data={item} />
             ))}
           </ListGame>
@@ -45,10 +74,22 @@ const Page = ({ listGame, listUser }) => {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  listGame: state.listGame,
+  listRoom: state.listRoom,
   listUser: state.listUser,
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+  setListRoom: (listRoom) => {
+    dispatch(action.LIST_ROOM.update(listRoom));
+  },
+
+  turnOnLoading: () => {
+    dispatch(action.LOADING.turnOn());
+  },
+
+  turnOffLoading: () => {
+    dispatch(action.LOADING.turnOff());
+  },
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Page);

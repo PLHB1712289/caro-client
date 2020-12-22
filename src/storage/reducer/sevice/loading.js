@@ -2,7 +2,7 @@ import TAG from "../../TAG";
 
 const INITIAL_STATE = false;
 
-const testReducer = (isLoading = INITIAL_STATE, action) => {
+const loadingReducer = (isLoading = INITIAL_STATE, action) => {
   switch (action.type) {
     case TAG.LOADING.TURN_ON:
       return true;
@@ -14,4 +14,4 @@ const testReducer = (isLoading = INITIAL_STATE, action) => {
   }
 };
 
-export default testReducer;
+export default loadingReducer;

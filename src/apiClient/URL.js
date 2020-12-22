@@ -7,6 +7,7 @@ const _URL = {
   ACCESS_GAME: "/game/accessGame",
   SEND_MESSAGE: "/game/message",
   GET_MESSAGE: "/game/message",
+  GET_LISTROOM: "/game",
 };
 
 const URL = { ..._URL };

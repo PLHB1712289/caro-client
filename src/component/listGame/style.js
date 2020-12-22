@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core";
 export default makeStyles((theme) => ({
   container: {
     margin: 10,
+    fontWeight: 700,
   },
   title: {
     width: "100%",
@@ -31,7 +32,7 @@ export default makeStyles((theme) => ({
     height: "79vh",
     overflowY: "scroll",
     width: "100%",
-    background: "rgba(0,0,0,0.05)",
+    background: "#eeeeee",
   },
   column: { width: "20%", textAlign: "center" },
 }));

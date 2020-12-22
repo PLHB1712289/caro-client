@@ -28,13 +28,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const SignIn = ({
-  open,
-  onClose,
-  onSignInSuccess,
-  turnOnLoading,
-  turnOffLoading,
-}) => {
+const SignIn = ({ open, onClose, setToken, turnOnLoading, turnOffLoading }) => {
   // React router hook
   const history = useHistory();
 
@@ -57,23 +51,26 @@ const SignIn = ({
   };
 
   // handle event submit form
-  const _handleSubmitForm = async (e) => {
+  const _handleSubmitForm = (e) => {
     e.preventDefault();
     turnOnLoading();
-    const { success, message, token } = await apiService.signIn(
-      username,
-      password
-    );
 
-    if (success) {
-      localStorage.setItem("token", token);
-      onSignInSuccess(token);
-      onClose();
+    (async () => {
+      const { success, message, data } = await apiService.signIn(
+        username,
+        password
+      );
+
+      if (success) {
+        localStorage.setItem("token", data.token);
+        setToken(data.token);
+        onClose();
+        turnOffLoading();
+        return;
+      }
       turnOffLoading();
-      return;
-    }
-    turnOffLoading();
-    alert(message);
+      alert(message);
+    })();
   };
 
   // handle click
@@ -93,22 +90,27 @@ const SignIn = ({
     // get accessToken
     const { id, accessToken } = response;
 
-    // request to server
-    const { success, message, token } = await apiService.signInWithFB(
-      id,
-      accessToken
-    );
-    turnOffLoading();
-    if (success) {
-      localStorage.setItem("token", token);
-      onSignInSuccess(token);
-      onClose();
-      turnOffLoading();
-      return;
+    try {
+      // request to server
+      const { success, message, data } = await apiService.signInWithFB(
+        id,
+        accessToken
+      );
+
+      if (success) {
+        localStorage.setItem("token", data.token);
+        setToken(data.token);
+        onClose();
+        turnOffLoading();
+        return;
+      }
+
+      alert(message);
+    } catch (e) {
+      alert("Cannot connect to server");
     }
 
     turnOffLoading();
-    alert(message);
   };
 
   // callback GG
@@ -119,14 +121,14 @@ const SignIn = ({
     const { tokenId, accessToken } = response;
 
     // request to server
-    const { success, message, token } = await apiService.signInWithGG(
+    const { success, message, data } = await apiService.signInWithGG(
       tokenId,
       accessToken
     );
 
     if (success) {
-      localStorage.setItem("token", token);
-      onSignInSuccess(token);
+      localStorage.setItem("token", data.token);
+      setToken(data.token);
       onClose();
       turnOffLoading();
       return;
@@ -293,6 +295,10 @@ const mapDispatchToProps = (dispatch) => ({
   turnOffLoading: () => {
     dispatch(action.LOADING.turnOff());
   },
+
+  setToken: (token) => {
+    dispatch(action.TOKEN.update(token));
+  },
 });
 
-export default connect(() => {}, mapDispatchToProps)(SignIn);
+export default connect(() => ({}), mapDispatchToProps)(SignIn);

@@ -7,11 +7,11 @@ import { connect } from "react-redux";
 const Loading = (props) => {
   const classes = useStyles();
 
-  const { isDisplay, children } = props;
+  const { isdisplay, children } = props;
 
   return (
     <>
-      {isDisplay ? (
+      {isdisplay ? (
         <>
           <div className={classes.root}>
             <span className={classes.case}>
@@ -36,17 +36,16 @@ const Loading = (props) => {
               />
             </span>
           </div>
-          <div>{children}</div>
         </>
       ) : (
-        <>{children}</>
+        <></>
       )}
+      {children}
     </>
   );
 };
 
-const mapStateToProps = (state) => ({
-  isDisplay: state.loading,
-});
+const mapStateToProps = (state) => ({ isdisplay: state.loading });
 
-export default connect(mapStateToProps, () => {})(Loading);
+export default connect(mapStateToProps, () => ({}))(Loading);
+// export default Loading;

@@ -1,9 +1,9 @@
 const TAG = {
   TOKEN: {
-    UPDATE: "update",
+    UPDATE: "update_token",
   },
-  LIST_GAME: {
-    UPDATE: "update",
+  LIST_ROOM: {
+    UPDATE: "update_list_room",
   },
   LOADING: {
     TURN_ON: "turn_on",

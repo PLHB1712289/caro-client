@@ -66,7 +66,7 @@ const Navbar = ({ token, setToken }) => {
 
   // Component didmount
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (typeof localStorage.getItem("token") !== "undefined") {
       setToken(localStorage.getItem("token"));
     }
   }, []);
@@ -117,11 +117,7 @@ const Navbar = ({ token, setToken }) => {
   return (
     <>
       {token === null ? (
-        <SignIn
-          open={openDialog}
-          onClose={_handleClickCloseDialog}
-          onSignInSuccess={(token) => setToken(token)}
-        />
+        <SignIn open={openDialog} onClose={_handleClickCloseDialog} />
       ) : (
         <></>
       )}

@@ -1,12 +1,11 @@
 import React from "react";
 import useStyle from "./style";
 import { useHistory } from "react-router-dom";
+import { Tooltip, Grid, withStyles } from "@material-ui/core";
 
 const ItemUserOnline = ({ data }) => {
   const classes = useStyle();
   const { id, username, status } = data;
-
-  console.log(data);
 
   const history = useHistory();
 
@@ -20,6 +19,7 @@ const ItemUserOnline = ({ data }) => {
         <div className={classes.username}>{username}</div>
         <div className={classes.id}>ID: {id}</div>
       </div>
+
       <div className={classes.status}>{status}</div>
     </div>
   );
