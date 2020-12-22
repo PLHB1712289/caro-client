@@ -12,6 +12,7 @@ const Page = ({
   listRoom,
   listUser,
   setListRoom,
+  setListUser,
   turnOffLoading,
   turnOnLoading,
 }) => {
@@ -31,13 +32,20 @@ const Page = ({
 
   useEffect(() => {
     turnOnLoading();
+
     (async () => {
       try {
-        const { success, message, data } = await apiService.getListRoom();
+        const {
+          success,
+          message,
+          data,
+        } = await apiService.getListRoomUserOnline();
 
         if (success) {
           setListRoom(data.listRoom);
           setFilterListRoom(data.listRoom);
+
+          setListUser(data.listUserOnline);
         } else {
           alert(message);
         }
@@ -81,6 +89,10 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch) => ({
   setListRoom: (listRoom) => {
     dispatch(action.LIST_ROOM.update(listRoom));
+  },
+
+  setListUser: (listUser) => {
+    dispatch(action.LIST_USER.update(listUser));
   },
 
   turnOnLoading: () => {
