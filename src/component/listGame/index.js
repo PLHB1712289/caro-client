@@ -1,18 +1,8 @@
+import { Button, Tooltip, Zoom } from "@material-ui/core";
 import React, { useState } from "react";
-import useStyle from "./style";
-import NewGame from "../newGame";
-import { Button, Tooltip, Zoom, withStyles } from "@material-ui/core";
 import { connect } from "react-redux";
-
-const HtmlTooltip = withStyles((theme) => ({
-  tooltip: {
-    backgroundColor: "#f5f5f9",
-    color: "rgba(0, 0, 0, 0.87)",
-    maxWidth: 220,
-    fontSize: theme.typography.pxToRem(12),
-    border: "1px solid #dadde9",
-  },
-}))(Tooltip);
+import NewGame from "../newGame";
+import useStyle from "./style";
 
 const ListGame = ({ children, onFilterByID, token }) => {
   const classes = useStyle();

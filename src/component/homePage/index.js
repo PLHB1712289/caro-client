@@ -23,6 +23,7 @@ const Page = ({
       setFilterListRoom(
         listRoom.filter((item) => {
           if (item.id.search(id) !== -1) return item;
+          return null;
         })
       );
     } else {
@@ -56,6 +57,7 @@ const Page = ({
 
       turnOffLoading();
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -71,10 +73,9 @@ const Page = ({
 
         <Grid item xs={3}>
           <ListUserOnline>
-            {listUser.map((item, index) => {
-              console.log(item);
-              return <ItemUserOnline key={index} data={item} />;
-            })}
+            {listUser.map((item, index) => (
+              <ItemUserOnline key={index} data={item} />
+            ))}
           </ListUserOnline>
         </Grid>
       </Grid>

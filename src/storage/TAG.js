@@ -1,5 +1,3 @@
-import { io } from "socket.io-client";
-
 const TAG = {
   TOKEN: {
     UPDATE: "update_token",

@@ -1,7 +1,6 @@
 import React from "react";
-import useStyle from "./style";
 import { useHistory } from "react-router-dom";
-import { Tooltip, Grid, withStyles } from "@material-ui/core";
+import useStyle from "./style";
 
 const ItemUserOnline = ({ data }) => {
   const classes = useStyle();

@@ -2,22 +2,22 @@ import {
   AppBar,
   Button,
   CssBaseline,
-  Toolbar,
-  Typography,
+  Grid,
   IconButton,
   Menu,
   MenuItem,
-  Grid,
+  Toolbar,
+  Typography,
 } from "@material-ui/core";
+import SettingsIcon from "@material-ui/icons/Settings";
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import Logo from "../../assert/img/caro-logo.png";
-import useStyles from "./styles";
-import SettingsIcon from "@material-ui/icons/Settings";
-import SignIn from "../signIn";
-import { connect } from "react-redux";
-import action from "../../storage/action";
 import realtime from "../../realtime";
+import action from "../../storage/action";
+import SignIn from "../signIn";
+import useStyles from "./styles";
 
 const ITEM_HEIGHT = 48;
 
@@ -73,6 +73,7 @@ const Navbar = ({ token, setToken }) => {
     if (typeof localStorage.getItem("token") !== "undefined") {
       setToken(localStorage.getItem("token"));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const open = Boolean(anchorEl);
