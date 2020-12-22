@@ -20,10 +20,10 @@ import { useHistory } from "react-router-dom";
 import { ReactComponent as FacebookIcon } from "../../assert/svg-icon/facebook-icon.svg";
 import { ReactComponent as GoogleIcon } from "../../assert/svg-icon/google-icon.svg";
 import config from "../../config";
+import realtime from "../../realtime";
 import action from "../../storage/action";
 import apiService from "./apiService";
 import useStyles from "./style";
-import realtime from "../../realtime";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -52,27 +52,25 @@ const SignIn = ({ open, onClose, setToken, turnOnLoading, turnOffLoading }) => {
   };
 
   // handle event submit form
-  const _handleSubmitForm = (e) => {
+  const _handleSubmitForm = async (e) => {
     e.preventDefault();
     turnOnLoading();
 
-    (async () => {
-      const { success, message, data } = await apiService.signIn(
-        username,
-        password
-      );
+    const { success, message, data } = await apiService.signIn(
+      username,
+      password
+    );
 
-      if (success) {
-        localStorage.setItem("token", data.token);
-        setToken(data.token);
-        realtime.updateListUserOnline(data.token);
-        onClose();
-        turnOffLoading();
-        return;
-      }
+    if (success) {
+      localStorage.setItem("token", data.token);
+      setToken(data.token);
+      realtime.updateListUserOnline(data.token);
+      onClose();
       turnOffLoading();
-      alert(message);
-    })();
+      return;
+    }
+    turnOffLoading();
+    alert(message);
   };
 
   // handle click
@@ -112,7 +110,6 @@ const SignIn = ({ open, onClose, setToken, turnOnLoading, turnOffLoading }) => {
     } catch (e) {
       alert("Cannot connect to server");
     }
-
     turnOffLoading();
   };
 
@@ -240,7 +237,10 @@ const SignIn = ({ open, onClose, setToken, turnOnLoading, turnOffLoading }) => {
                   render={(renderProps) => (
                     <IconButton
                       className={classes.socialLoginFB}
-                      onClick={renderProps.onClick}
+                      onClick={() => {
+                        turnOnLoading();
+                        renderProps.onClick();
+                      }}
                     >
                       <div
                         style={{
