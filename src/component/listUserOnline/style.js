@@ -6,11 +6,13 @@ export default makeStyles((theme) => ({
   },
   title: {
     width: "100%",
+    color: "white",
+    fontSize: "1.5rem",
   },
   content: {
     height: "86vh",
-    overflowY: "scroll",
-    background: "rgba(0,0,0,0.05)",
+    overflowY: "auto",
+    // background: "rgba(0,0,0,0.05)",
     marginTop: 10,
   },
 }));

@@ -1,43 +1,10 @@
 import { Grid } from "@material-ui/core";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Message from "../message";
 import apiService from "./api";
-import SOCKET_TAG from "../homePage/dataConst";
 
 const Chat = ({ idGame, socket }) => {
   const [listMess, setListMess] = useState([]);
-
-  const [trigger, setTrigger] = useState("");
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const {
-          success,
-          message,
-          listMessage,
-        } = await apiService.getListMessage(idGame);
-
-        if (success) {
-          setListMess(listMessage);
-          return;
-        }
-
-        alert(message);
-      } catch (e) {
-        alert("Get list chat error");
-      }
-    })();
-  }, [trigger]);
-
-  //set up socket
-  if (socket) {
-    socket.emit(SOCKET_TAG.REQUEST_JOIN_GAME, { idGame });
-
-    socket.on(SOCKET_TAG.RESPONSE_SEND_MESSAGE, ({ message }) => {
-      setTrigger("1");
-    });
-  }
 
   const [content, setContent] = useState("");
 
@@ -64,7 +31,6 @@ const Chat = ({ idGame, socket }) => {
           })
         );
 
-        socket.emit(SOCKET_TAG.REQUEST_SEND_MESSAGE, { idGame, message });
         return;
       }
 
@@ -80,13 +46,28 @@ const Chat = ({ idGame, socket }) => {
       item
       md={12}
       xs={12}
-      style={{ border: "1px solid rgba(0,0,0,0.2)", padding: 2 }}
+      style={{
+        margin: "10px 0",
+        border: "2px solid rgba(0,0,0,0.8)",
+        borderRadius: 5,
+        backgroundColor: "rgba(255,255,255,0.1)",
+      }}
     >
-      <Grid item md={12} xs={12} style={{ background: "green" }}>
-        Chat
+      <Grid
+        item
+        md={12}
+        xs={12}
+        style={{
+          textAlign: "center",
+          fontWeight: 700,
+          fontSize: "1rem",
+          borderBottom: "1px solid rgba(255,255,255,0.2)",
+        }}
+      >
+        CHAT
       </Grid>
 
-      <div style={{ width: "100%", height: "200px", overflowY: "scroll" }}>
+      <div style={{ width: "100%", height: "200px", overflowY: "auto" }}>
         {listMess.map((mess) => {
           return <Message message={mess} />;
         })}

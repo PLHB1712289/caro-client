@@ -47,6 +47,10 @@ const Realtime = class {
     return this.socket;
   }
 
+  setCallback(tag, callback) {
+    this.socket.on(tag, callback);
+  }
+
   updateListUserOnline(token) {
     this.socket.emit(TAG.REQUEST_USER_ONLINE, { token });
   }

@@ -5,7 +5,7 @@ import "../../index.css";
 import Square from "../square/square";
 import APIService from "./apiService";
 
-const size = 30;
+const size = 20;
 const Board = () => {
   const [squares, setSquares] = useState(Array(size * size).fill(null));
   const [xIsNext, setXIsNext] = useState(true);
@@ -17,6 +17,7 @@ const Board = () => {
       // do sth
       // }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const handleClick = (i) => {
@@ -50,7 +51,11 @@ const Board = () => {
     }
     return rows.map((row, i) => {
       return (
-        <div className="board-row" key={i}>
+        <div
+          style={{ display: "flex", justifyContent: "center" }}
+          className="board-row"
+          key={i}
+        >
           {renderRow(row)}
         </div>
       );
@@ -65,12 +70,7 @@ const Board = () => {
     status = "Next player: " + (xIsNext ? "X" : "O");
   }
 
-  return (
-    <div>
-      <div className="status">{status}</div>
-      {boardRender()}
-    </div>
-  );
+  return <div>{boardRender()}</div>;
 };
 
 const calculateWinner = (squares) => {

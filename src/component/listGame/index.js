@@ -23,9 +23,15 @@ const ListGame = ({ children, onFilterByID, token }) => {
           setOpenNewGame(false);
         }}
       />
+
       <div className={classes.title}>
         <div
-          style={{ alignItems: "center", display: "flex", fontSize: "1.5rem" }}
+          style={{
+            alignItems: "center",
+            display: "flex",
+            fontSize: "1.5rem",
+            color: "white",
+          }}
         >
           GAME
         </div>
@@ -36,7 +42,7 @@ const ListGame = ({ children, onFilterByID, token }) => {
                 onClick={() => {
                   setOpenNewGame(true);
                 }}
-                style={{ background: "green", margin: "0px 2px" }}
+                className={classes.button}
               >
                 Quick Play
               </Button>
@@ -46,7 +52,7 @@ const ListGame = ({ children, onFilterByID, token }) => {
                 onClick={() => {
                   setOpenNewGame(true);
                 }}
-                style={{ background: "green", margin: "0px 2px" }}
+                className={classes.button}
               >
                 New Game
               </Button>

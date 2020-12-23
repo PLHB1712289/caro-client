@@ -13,9 +13,10 @@ export default makeStyles((theme) => ({
   filter: {
     display: "flex",
     padding: 10,
-    background: "rgba(0,0,0,0.5)",
+    background: "#01060a",
     marginTop: 10,
     width: "100%",
+    color: "white",
   },
   no: {
     width: "5%",
@@ -30,9 +31,15 @@ export default makeStyles((theme) => ({
   },
   content: {
     height: "79vh",
-    overflowY: "scroll",
+    overflowY: "auto",
     width: "100%",
-    background: "#eeeeee",
+    background: "rgba(0,0,0,0.1)",
   },
   column: { width: "20%", textAlign: "center" },
+  button: {
+    color: "white",
+    marginLeft: 20,
+    border: "1px solid white",
+    height: 30,
+  },
 }));

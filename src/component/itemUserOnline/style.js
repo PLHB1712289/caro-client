@@ -6,11 +6,13 @@ export default makeStyles((theme) => ({
     marginBottom: 10,
     padding: 10,
     display: "flex",
-    background: "rgba(0,0,0,0.1)",
+    // background: "rgba(0,0,0,0.1)",
+    backgroundColor: "#01060a",
     cursor: "pointer",
     "&hover": {
       background: "green",
     },
+    color: "white",
   },
   item: {
     width: "70%",

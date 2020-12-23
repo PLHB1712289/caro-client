@@ -9,6 +9,7 @@ import NotFound from "./component/notFound";
 import SignIn from "./component/signIn";
 import SignUp from "./component/signUp";
 import realtime from "./realtime";
+import Background from "./component/background";
 
 function App() {
   useEffect(() => {
@@ -18,6 +19,7 @@ function App() {
   return (
     <Router>
       <Loading>
+        <Background />
         <Header />
 
         <Switch>
