@@ -12,8 +12,9 @@ import {
   Typography,
 } from "@material-ui/core";
 import React, { useState } from "react";
-// import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import useStyles from "./style";
+import apiService from "./apiService";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -21,7 +22,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const NewGame = ({ open, onClose, onSignInSuccess }) => {
   // React router hook
-  // const history = useHistory();
+  const history = useHistory();
 
   // Style
   const classes = useStyles();
@@ -45,7 +46,25 @@ const NewGame = ({ open, onClose, onSignInSuccess }) => {
   // handle event submit form
   const _handleSubmitForm = async (e) => {
     e.preventDefault();
-    alert(`Name: ${roomName} - Password: ${lock ? password : "No password"}`);
+    // alert(`Name: ${roomName} - Password: ${lock ? password : "No password"}`);
+
+    try {
+      const { success, message, data } = await apiService.createRoom(
+        roomName,
+        password
+      );
+
+      console.log(data);
+
+      if (success) {
+        history.push(`/game/${data.id}`);
+        return;
+      }
+
+      alert(message);
+    } catch (e) {
+      alert("Cannot connect to server");
+    }
   };
 
   return (

@@ -1,5 +1,3 @@
-// import TAG from "../../TAG";
-
 import TAG from "../../TAG";
 
 const INITIAL_STATE = [
@@ -39,7 +37,16 @@ const listRoomReducer = (listRoom = INITIAL_STATE, action) => {
       return action.payload.data;
 
     case TAG.LIST_ROOM.ADD: {
-      return listRoom.concat(action.payload.user);
+      const room = action.payload.room;
+      room.no = listRoom.length + 1;
+      return listRoom.concat(room);
+    }
+
+    case TAG.LIST_ROOM.REMOVE: {
+      return listRoom.filter((item) => {
+        if (item.idRoom !== action.payload.room.idRoom) return item;
+        return null;
+      });
     }
 
     default:

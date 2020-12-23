@@ -17,9 +17,11 @@ const Page = ({
   turnOnLoading,
 }) => {
   const [filterListRoom, setFilterListRoom] = useState(listRoom);
+  const [isFilter, setIsFilter] = useState(false);
 
   const _handleFilterByID = (id) => {
     if (id) {
+      setIsFilter(true);
       setFilterListRoom(
         listRoom.filter((item) => {
           if (item.id.search(id) !== -1) return item;
@@ -27,6 +29,7 @@ const Page = ({
         })
       );
     } else {
+      setIsFilter(false);
       setFilterListRoom(listRoom);
     }
   };
@@ -59,6 +62,12 @@ const Page = ({
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // update
+  useEffect(() => {
+    if (!isFilter) setFilterListRoom(listRoom);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [listRoom]);
 
   return (
     <Grid container style={{ justifyContent: "center", height: "90vh" }}>
