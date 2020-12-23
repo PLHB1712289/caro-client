@@ -9,6 +9,7 @@ export default makeStyles((theme) => ({
     width: "100%",
     display: "flex",
     justifyContent: "space-between",
+    fontWeight: 700,
   },
   filter: {
     display: "flex",
@@ -30,7 +31,7 @@ export default makeStyles((theme) => ({
     alignItems: "center",
   },
   content: {
-    height: "79vh",
+    height: "78vh",
     overflowY: "auto",
     width: "100%",
     background: "rgba(0,0,0,0.1)",
@@ -41,5 +42,6 @@ export default makeStyles((theme) => ({
     marginLeft: 20,
     border: "1px solid white",
     height: 30,
+    fontWeight: 550,
   },
 }));

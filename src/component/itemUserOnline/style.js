@@ -6,12 +6,9 @@ export default makeStyles((theme) => ({
     marginBottom: 10,
     padding: 10,
     display: "flex",
-    // background: "rgba(0,0,0,0.1)",
     backgroundColor: "#01060a",
     cursor: "pointer",
-    "&hover": {
-      background: "green",
-    },
+    fontWeight: 600,
     color: "white",
   },
   item: {
@@ -24,5 +21,14 @@ export default makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    fontSize: "0.8rem",
+    fontWeight: 600,
+  },
+  online: {
+    width: 10,
+    height: 10,
+    backgroundColor: "green",
+    marginLeft: 5,
+    borderRadius: "50%",
   },
 }));

@@ -8,11 +8,12 @@ export default makeStyles((theme) => ({
     width: "100%",
     color: "white",
     fontSize: "1.5rem",
+    fontWeight: 700,
   },
   content: {
-    height: "86vh",
+    height: "83.4vh",
     overflowY: "auto",
-    // background: "rgba(0,0,0,0.05)",
     marginTop: 10,
+    background: "rgba(0,0,0,0.1)",
   },
 }));
