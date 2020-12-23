@@ -1,11 +1,14 @@
-import { Grid } from "@material-ui/core";
+import { Grid, IconButton, TextField } from "@material-ui/core";
 import React, { useState } from "react";
 import Message from "../message";
 import apiService from "./api";
+import useStyles from "./style";
+import SendIcon from "@material-ui/icons/Send";
 
 const Chat = ({ idGame, socket }) => {
-  const [listMess, setListMess] = useState([]);
+  const classes = useStyles();
 
+  const [listMess, setListMess] = useState([]);
   const [content, setContent] = useState("");
 
   const _handleChangeContent = (e) => {
@@ -41,47 +44,27 @@ const Chat = ({ idGame, socket }) => {
   };
 
   return (
-    <Grid
-      container
-      item
-      md={12}
-      xs={12}
-      style={{
-        margin: "10px 0",
-        border: "2px solid rgba(0,0,0,0.8)",
-        borderRadius: 5,
-        backgroundColor: "rgba(255,255,255,0.1)",
-      }}
-    >
-      <Grid
-        item
-        md={12}
-        xs={12}
-        style={{
-          textAlign: "center",
-          fontWeight: 700,
-          fontSize: "1rem",
-          borderBottom: "1px solid rgba(255,255,255,0.2)",
-        }}
-      >
+    <Grid container item md={12} xs={12} className={classes.root}>
+      <Grid item md={12} xs={12} className={classes.title}>
         CHAT
       </Grid>
 
-      <div style={{ width: "100%", height: "200px", overflowY: "auto" }}>
+      <div className={classes.container}>
         {listMess.map((mess) => {
           return <Message message={mess} />;
         })}
       </div>
 
       <Grid item md={12} xs={12}>
-        <form onSubmit={_handleSubmitForm} style={{ width: "100%" }}>
+        <form onSubmit={_handleSubmitForm} className={classes.formSendMess}>
           <input
-            type="text"
-            style={{ width: "75%" }}
+            className={classes.input}
             onChange={_handleChangeContent}
             value={content}
           />
-          <button style={{ width: "20%" }}>send</button>
+          <IconButton className={classes.buttonSend}>
+            <SendIcon style={{ color: "white" }} />
+          </IconButton>
         </form>
       </Grid>
     </Grid>
