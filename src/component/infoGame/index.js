@@ -48,7 +48,7 @@ const InfoGame = () => {
       </div>
 
       <div className={classes.containerButton}>
-        <Button className={classes.button}>Start</Button>
+        <Button className={classes.button}>Exit</Button>
         <Button className={classes.button}>Exit</Button>
         <Button className={classes.button}>Start</Button>
         <Button className={classes.button}>Start</Button>

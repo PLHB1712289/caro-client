@@ -7,6 +7,7 @@ import ListGame from "../listGame";
 import ListUserOnline from "../listUserOnline";
 import apiService from "./api";
 import action from "../../storage/action";
+import realtime from "../../realtime";
 
 const Page = ({
   listRoom,
@@ -33,6 +34,14 @@ const Page = ({
       setFilterListRoom(listRoom);
     }
   };
+
+  useEffect(() => {
+    const room = localStorage.getItem("room");
+    if (room) {
+      realtime.leaveRoom(room);
+      localStorage.removeItem("room");
+    }
+  }, []);
 
   useEffect(() => {
     turnOnLoading();

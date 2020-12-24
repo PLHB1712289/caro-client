@@ -44,7 +44,7 @@ const listRoomReducer = (listRoom = INITIAL_STATE, action) => {
 
     case TAG.LIST_ROOM.REMOVE: {
       return listRoom.filter((item) => {
-        if (item.idRoom !== action.payload.room.idRoom) return item;
+        if (item.id !== action.payload.room.id) return item;
         return null;
       });
     }

@@ -34,7 +34,6 @@ export default makeStyles((theme) => ({
     textAlign: "center",
   },
   in4Player: {
-    width: "50%",
     width: "100%",
     height: 50,
     display: "flex",

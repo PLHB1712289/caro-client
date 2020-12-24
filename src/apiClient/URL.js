@@ -6,6 +6,7 @@ const _URL = {
   SIGN_IN: "/auth/sign-in",
 
   NEW_ROOM: "/game/new-room",
+  GET_ROOM: "/game/room",
 
   NEW_GAME: "/game/newGame",
   LIST_GAME: "/game/listGame",

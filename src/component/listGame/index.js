@@ -71,9 +71,11 @@ const ListGame = ({ children, onFilterByID, token }) => {
           </label>
           <input id="filter-game" value={id} onChange={_handleChangeID} />
         </div>
+        <div className={classes.column}>Name</div>
         <div className={classes.column}>Player1</div>
         <div className={classes.column}>Player2</div>
-        <div className={classes.column}>status</div>
+        <div className={classes.column}>Status</div>
+        <div style={{ width: "5%", textAlign: "center" }}>Lock</div>
       </div>
       <div className={classes.content}>{children}</div>
     </div>

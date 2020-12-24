@@ -10,6 +10,7 @@ let token = localStorage.getItem("token");
 const Realtime = class {
   constructor() {
     this.socket = null;
+    this.connect();
   }
 
   connect() {
@@ -42,6 +43,11 @@ const Realtime = class {
       store.dispatch(action.LIST_ROOM.remove(room));
     });
 
+    // Receive response & update list message in room
+    this.socket.on(TAG.RESPONSE_SEND_MESS, ({ mess }) => {
+      // store.dispatch(action.LIST_ROOM.remove(room));
+    });
+
     //---- </Setup> ----
 
     return this.socket;
@@ -50,6 +56,18 @@ const Realtime = class {
   setCallback(tag, callback) {
     this.socket.on(tag, callback);
   }
+
+  joinRoom(id) {
+    this.socket.emit(TAG.REQUEST_JOIN_ROOM, { id });
+  }
+
+  leaveRoom(id) {
+    this.socket.emit(TAG.REQUEST_LEAVE_ROOM, { id });
+  }
+
+  // sendMess(mess) {
+  //   this.socket.emit(TAG.REQUEST_JOIN_ROOM, { mess });
+  // }
 
   updateListUserOnline(token) {
     this.socket.emit(TAG.REQUEST_USER_ONLINE, { token });

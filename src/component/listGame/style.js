@@ -24,7 +24,7 @@ export default makeStyles((theme) => ({
     textAlign: "center",
   },
   filterID: {
-    width: "30%",
+    width: "25%",
     textAlign: "center",
     display: "flex",
     justifyContent: "center",

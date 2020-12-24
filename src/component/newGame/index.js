@@ -15,6 +15,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import useStyles from "./style";
 import apiService from "./apiService";
+import realtime from "../../realtime";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -54,9 +55,8 @@ const NewGame = ({ open, onClose, onSignInSuccess }) => {
         password
       );
 
-      console.log(data);
-
       if (success) {
+        realtime.joinRoom(data.id);
         history.push(`/game/${data.id}`);
         return;
       }
