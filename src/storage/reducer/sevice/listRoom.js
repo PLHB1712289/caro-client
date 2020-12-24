@@ -49,6 +49,20 @@ const listRoomReducer = (listRoom = INITIAL_STATE, action) => {
       });
     }
 
+    case TAG.LIST_ROOM.UPDATE_INFO_USER: {
+      const res = listRoom.map((item) => {
+        console.log("action payload", action.payload);
+        if (item.id === action.payload.room.idRoom)
+          if (action.payload.room.idPlayer === 1)
+            return { ...item, player1: action.payload.room.username };
+          else return { ...item, player2: action.payload.room.username };
+
+        return item;
+      });
+      console.log("REDUCER:", res);
+      return res;
+    }
+
     default:
       return listRoom;
   }

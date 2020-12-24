@@ -60,10 +60,11 @@ const Page = ({
 
           setListUser(data.listUserOnline);
         } else {
-          alert(message);
+          // alert(message);
+          console.log(message);
         }
       } catch (e) {
-        alert("Cannot connect to server");
+        // alert("Cannot connect to server");
         // console.log("[ERROR]:", e);
       }
 

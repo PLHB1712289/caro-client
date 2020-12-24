@@ -12,9 +12,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function AlertDialogSlide({ isOpen, onClose }) {
-  const handleClickOpen = () => {
-    onClose(true);
-  };
+  // const handleClickOpen = () => {
+  //   onClose(true);
+  // };
 
   const handleClose = () => {
     onClose(false);

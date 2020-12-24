@@ -5,7 +5,7 @@ import PersonIcon from "@material-ui/icons/Person";
 
 const ItemUserOnline = ({ data }) => {
   const classes = useStyle();
-  const { id, username, status } = data;
+  const { id, username } = data;
 
   const history = useHistory();
 

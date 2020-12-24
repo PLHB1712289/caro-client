@@ -140,7 +140,7 @@ const SignIn = ({ open, onClose, setToken, turnOnLoading, turnOffLoading }) => {
   };
 
   const _callbackGGFailed = async (response) => {
-    alert(response.details);
+    // alert(response.details);
   };
 
   return (

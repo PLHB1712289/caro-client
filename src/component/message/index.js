@@ -1,31 +1,32 @@
 import React from "react";
+import useStyles from "./style";
 
 const Message = ({ message }) => {
-  const { type, username, contentMessage } = message;
+  const classes = useStyles();
+  const { type, username, contentMessage, time } = message;
 
   const messageView =
-    type === "1" ? (
-      <div
-        style={{
-          textAlign: "end",
-          display: "flex",
-          justifyContent: "flex-end",
-        }}
-      >
+    type === "sender" ? (
+      <div className={classes.sender}>
         <div>
-          <div style={{ fontSize: "0.7rem" }}>{username}</div>
-          <div>{contentMessage}</div>
+          <div style={{ fontSize: "0.8rem" }}>
+            {time} - {username}
+          </div>
+
+          <div className={classes.content} style={{ borderTopLeftRadius: 15 }}>
+            {contentMessage}
+          </div>
         </div>
       </div>
     ) : (
-      <div
-        style={{
-          display: "flex",
-        }}
-      >
+      <div className={classes.receiver}>
         <div>
-          <div style={{ fontSize: "0.7rem" }}>{username}</div>
-          <div>{contentMessage}</div>
+          <div style={{ fontSize: "0.8rem" }}>
+            {time} - {username}
+          </div>
+          <div className={classes.content} style={{ borderTopRightRadius: 15 }}>
+            {contentMessage}
+          </div>
         </div>
       </div>
     );

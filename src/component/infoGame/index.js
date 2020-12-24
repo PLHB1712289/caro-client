@@ -3,7 +3,7 @@ import React from "react";
 import Chat from "../chat";
 import useStyles from "./style";
 
-const InfoGame = () => {
+const InfoGame = ({ isPlayer, player1, player2, idRoom }) => {
   const classes = useStyles();
 
   return (
@@ -13,8 +13,8 @@ const InfoGame = () => {
         <div className={classes.playerContent}>
           <div className={classes.playerTitle}>Player1 - X</div>
           <div className={classes.in4Player}>
-            <div>baobao</div>
-            <div style={{ fontSize: "0.7rem" }}>id: 12345</div>
+            <div>{player1.username}</div>
+            <div style={{ fontSize: "0.7rem" }}>id: {player1.id}</div>
           </div>
           <div className={classes.timmer}>05:00</div>
         </div>
@@ -26,8 +26,8 @@ const InfoGame = () => {
               backgroundColor: "rgba(255,255,255,0.3)",
             }}
           >
-            <div>phanbao_091jaa</div>
-            <div style={{ fontSize: "0.7rem" }}>id: 38384ns</div>
+            <div>{player2.username}</div>
+            <div style={{ fontSize: "0.7rem" }}>id: {player2.id}</div>
           </div>
           <div className={classes.timmer}>05:00</div>
         </div>
@@ -53,7 +53,7 @@ const InfoGame = () => {
         <Button className={classes.button}>Start</Button>
         <Button className={classes.button}>Start</Button>
       </div>
-      <Chat />
+      <Chat isPlayer={isPlayer} idRoom={idRoom} />
     </div>
   );
 };

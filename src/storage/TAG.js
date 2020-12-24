@@ -7,6 +7,7 @@ const TAG = {
     UPDATE: "update_list_room",
     ADD: "update_add_room",
     REMOVE: "update_remove_room",
+    UPDATE_INFO_USER: "update_info_user",
   },
 
   LIST_USER: {

@@ -62,13 +62,13 @@ const Board = () => {
     });
   };
 
-  const winner = calculateWinner(squares);
-  let status;
-  if (winner) {
-    status = "Winner: " + squares[winner];
-  } else {
-    status = "Next player: " + (xIsNext ? "X" : "O");
-  }
+  // const winner = calculateWinner(squares);
+  // let status = "";
+  // if (winner) {
+  //   status = "Winner: " + squares[winner];
+  // } else {
+  //   status = "Next player: " + (xIsNext ? "X" : "O");
+  // }
 
   return <div>{boardRender()}</div>;
 };

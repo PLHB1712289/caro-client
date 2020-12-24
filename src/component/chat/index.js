@@ -1,15 +1,44 @@
-import { Grid, IconButton, TextField } from "@material-ui/core";
-import React, { useState } from "react";
+import { Grid, IconButton } from "@material-ui/core";
+import SendIcon from "@material-ui/icons/Send";
+import React, { useEffect, useState } from "react";
 import Message from "../message";
 import apiService from "./api";
 import useStyles from "./style";
-import SendIcon from "@material-ui/icons/Send";
+import realtime from "../../realtime";
+import TAG from "../../realtime/data";
 
-const Chat = ({ idGame, socket }) => {
+const Chat = ({ idRoom, isPlayer }) => {
   const classes = useStyles();
 
-  const [listMess, setListMess] = useState([]);
   const [content, setContent] = useState("");
+  const [listMess, setListMess] = useState([]);
+
+  useEffect(() => {
+    // get list message
+    (async () => {
+      try {
+        const { success, message, data } = await apiService.getListMessage(
+          idRoom
+        );
+
+        if (success) {
+          console.log("Get list message");
+          console.log(data.listMessage);
+          setListMess(data.listMessage);
+        } else {
+          console.log(message);
+        }
+      } catch (e) {
+        console.log("[ERROR-IN4GAME]:", e.message);
+      }
+    })();
+  }, [idRoom]);
+
+  useEffect(() => {
+    realtime.setCallback(TAG.RESPONSE_SEND_MESS, ({ message }) => {
+      setListMess((prev) => prev.concat(message));
+    });
+  }, []);
 
   const _handleChangeContent = (e) => {
     setContent(e.target.value);
@@ -17,29 +46,10 @@ const Chat = ({ idGame, socket }) => {
 
   const _handleSubmitForm = async (e) => {
     e.preventDefault();
-
-    try {
-      const { success, message } = await apiService.sendMessage({
-        message: content,
-        idGame: idGame,
-      });
-
-      if (success) {
-        setContent("");
-        setListMess((preState) =>
-          preState.concat({
-            type: "1",
-            username: "You",
-            contentMessage: content,
-          })
-        );
-
-        return;
-      }
-
-      alert(message);
-    } catch (e) {
-      alert(e.message);
+    if (content) {
+      const token = localStorage.getItem("token") || "";
+      realtime.sendMessage(idRoom, content, token);
+      setContent("");
     }
   };
 
@@ -55,18 +65,22 @@ const Chat = ({ idGame, socket }) => {
         })}
       </div>
 
-      <Grid item md={12} xs={12}>
-        <form onSubmit={_handleSubmitForm} className={classes.formSendMess}>
-          <input
-            className={classes.input}
-            onChange={_handleChangeContent}
-            value={content}
-          />
-          <IconButton className={classes.buttonSend}>
-            <SendIcon style={{ color: "white" }} />
-          </IconButton>
-        </form>
-      </Grid>
+      {isPlayer ? (
+        <Grid item md={12} xs={12}>
+          <form onSubmit={_handleSubmitForm} className={classes.formSendMess}>
+            <input
+              className={classes.input}
+              onChange={_handleChangeContent}
+              value={content}
+            />
+            <IconButton className={classes.buttonSend} type="submit">
+              <SendIcon style={{ color: "white" }} />
+            </IconButton>
+          </form>
+        </Grid>
+      ) : (
+        <></>
+      )}
     </Grid>
   );
 };
