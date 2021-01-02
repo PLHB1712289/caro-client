@@ -8,6 +8,8 @@ import Loading from "./component/loading";
 import NotFound from "./component/notFound";
 import SignIn from "./component/signIn";
 import SignUp from "./component/signUp";
+import Profile from "./component/profile";
+import ChangePassword from "./component/changePassword";
 // import realtime from "./realtime";
 import Background from "./component/background";
 
@@ -31,14 +33,16 @@ function App() {
             <SignUp />
           </Route>
 
-          <Route path={"/forgot-password"}>
+          <Route path={"/auth/forgot-password"}>
             <ForgotPassword />
           </Route>
 
-          <Route path={"/profile"}>
-            <div>Profile</div>
+          <Route path={"/auth/profile"}>
+            <Profile/>
           </Route>
-
+          <Route path={"/auth/change-password"}>
+            <ChangePassword/>
+          </Route>
           <Route path={"/game/:id"}>
             <Game />
           </Route>

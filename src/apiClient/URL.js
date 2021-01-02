@@ -4,7 +4,9 @@ const _URL = {
   SIGN_IN_WITH_FB: "/auth/sign-in/facebook",
   SIGN_IN_WITH_GG: "/auth/sign-in/google",
   SIGN_IN: "/auth/sign-in",
-
+  GET_USER:"/auth/profile",
+  CHANGE_PASSWORD:"/auth/change-password",
+  FORGOT_PASSWORD:"/auth/forgot-password",
   NEW_ROOM: "/game/new-room",
   GET_ROOM: "/game/room",
 
@@ -13,6 +15,7 @@ const _URL = {
   ACCESS_GAME: "/game/accessGame",
   SEND_MESSAGE: "/game/message",
   GET_MESSAGE: "/game/message",
+  
 };
 
 const URL = { ..._URL };
