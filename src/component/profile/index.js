@@ -54,7 +54,7 @@ const Profile = ({ turnOnLoading, turnOffLoading }) => {
       getUser();
     }
 
-    if (user !== null) {
+    if (user !== null && series.length===0) {
       //set for chart
       let temp = [];
 
@@ -63,8 +63,8 @@ const Profile = ({ turnOnLoading, turnOffLoading }) => {
       temp.push(user.totalGame - user.totalGameWin - user.totalGameLose);
 
       setSeries(temp);
-      console.log("Check series:", series);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, series]);
 
   return (
@@ -97,13 +97,13 @@ const Profile = ({ turnOnLoading, turnOffLoading }) => {
                   <Typography variant="h6">Username:</Typography>
                 </Grid>
                 <Grid item xs={7}>
-                  <Typography variant="h6">{user.username}</Typography>
+                  <Typography variant="h6" style={{wordWrap: "break-word"}}>{user.username}</Typography>
                 </Grid>
                 <Grid item xs={5}>
                   <Typography variant="h6">Email:</Typography>
                 </Grid>
                 <Grid item xs={7}>
-                  <Typography variant="h6">{user.email}</Typography>
+                  <Typography variant="h6" style={{wordWrap: "break-word"}}>{user.email}</Typography>
                 </Grid>
                 <Grid item xs={5}>
                   <Typography variant="h6">Total game:</Typography>

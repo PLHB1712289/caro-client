@@ -2,8 +2,10 @@ import { Button, Container, CssBaseline, TextField } from "@material-ui/core";
 import React, { useState } from "react";
 import apiService from "../profile/apiService";
 import useStyles from "./style";
+import action from "../../storage/action";
+import { connect } from "react-redux";
 
-const ForgotPassword = () => {
+const ForgotPassword = ({ turnOnLoading, turnOffLoading }) => {
   // Styles
   const classes = useStyles();
 
@@ -19,10 +21,14 @@ const ForgotPassword = () => {
   };
   const _handleSubmitForm = async (e) => {
     e.preventDefault();
+    turnOnLoading();
+
     if (email !== null) {
       const { message } = await apiService.forgotPassword(email);
       alert(message);
     }
+    turnOffLoading();
+
   };
   return (
     <div
@@ -91,5 +97,13 @@ const ForgotPassword = () => {
     </div>
   );
 };
+const mapDispatchToProps = (dispatch) => ({
+  turnOnLoading: () => {
+    dispatch(action.LOADING.turnOn());
+  },
 
-export default ForgotPassword;
+  turnOffLoading: () => {
+    dispatch(action.LOADING.turnOff());
+  },
+});
+export default connect(() => ({}), mapDispatchToProps)(ForgotPassword);
