@@ -65,6 +65,7 @@ const Profile = ({ turnOnLoading, turnOffLoading }) => {
       setSeries(temp);
       console.log("Check series:", series);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, series]);
 
   return (

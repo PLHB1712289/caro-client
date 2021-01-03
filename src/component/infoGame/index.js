@@ -3,6 +3,9 @@ import React from "react";
 import realtime from "../../realtime";
 import Chat from "../chat";
 import useStyles from "./style";
+import "../../index.css";
+
+const size = 20;
 
 const InfoGame = ({
   isPlayer,
@@ -15,10 +18,13 @@ const InfoGame = ({
   idGame,
   time,
   history,
-  isPlayerX,
+  playerX,
   userID,
+  setBoard,
 }) => {
   const classes = useStyles();
+
+  console.log(status);
 
   let controllGame;
   switch (status) {
@@ -42,7 +48,7 @@ const InfoGame = ({
             Start
           </Button>
         ) : (
-          "Ready"
+          <Button className={classes.button}>Quit</Button>
         );
       break;
     case "playing":
@@ -53,21 +59,11 @@ const InfoGame = ({
       break;
   }
 
-  const highlightPlayer1 =
-    player1.id === playerCurr ? `rgba(255,255,255,0.3)` : "";
-
-  const highlightPlayer2 =
-    player2.id === playerCurr ? `rgba(255,255,255,0.3)` : "";
-
   const player1_X =
-    isPlayerX === null
-      ? ""
-      : isPlayerX === true && player1.id === userID
-      ? " - X"
-      : " - O";
+    playerX === null ? "" : playerX === player1.id ? " - X" : " - O";
 
   const player2_X =
-    player1_X === "" ? "" : player1_X === " - X" ? " - O" : " - X";
+    playerX === null ? "" : playerX === player2.id ? " - X" : " - O";
 
   return (
     <div className={classes.root}>
@@ -75,25 +71,32 @@ const InfoGame = ({
       <div className={classes.playerContainer}>
         <div className={classes.playerContent}>
           <div className={classes.playerTitle}>Player1{player1_X}</div>
-          <div
-            className={classes.in4Player}
-            style={{ backgroundColor: `${highlightPlayer1}` }}
-          >
-            <div>{player1.username}</div>
+          <div className={classes.in4Player}>
+            <div>
+              {userID === player1.id
+                ? `${player1.username} (you)`
+                : player1.username}
+            </div>
             <div style={{ fontSize: "0.7rem" }}>id: {player1.id}</div>
           </div>
-          <div className={classes.timmer}>{time}</div>
+          <div className={classes.timmer}>
+            {playerCurr ? (playerCurr === player1.id ? time : "") : ""}
+          </div>
         </div>
         <div className={classes.playerContent}>
           <div className={classes.playerTitle}>Player2{player2_X}</div>
-          <div
-            className={classes.in4Player}
-            style={{ backgroundColor: `${highlightPlayer2}` }}
-          >
-            <div>{player2.username}</div>
+
+          <div className={classes.in4Player}>
+            <div>
+              {userID === player2.id
+                ? `${player2.username} (you)`
+                : player2.username}
+            </div>
             <div style={{ fontSize: "0.7rem" }}>id: {player2.id}</div>
           </div>
-          <div className={classes.timmer}>{time}</div>
+          <div className={classes.timmer}>
+            {playerCurr ? (playerCurr === player2.id ? time : "") : ""}
+          </div>
         </div>
       </div>
 
@@ -106,10 +109,16 @@ const InfoGame = ({
                 style={{
                   backgroundColor: "rgba(255,255,255,0.1)",
                   margin: "5px 0",
+                  textAlign: "center",
+                  cursor: "pointer",
                 }}
                 key={index}
+                onClick={() => {
+                  setBoard(item.board);
+                }}
               >
-                1
+                {index + 1} - (row,col): ({~~(item.index / size)},
+                {item.index % size})
               </div>
             );
           })}

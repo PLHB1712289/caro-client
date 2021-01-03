@@ -13,9 +13,23 @@ import apiService from "./apiService";
 import useStyles from "./style";
 import jwtDecode from "jwt-decode";
 
+import { useWindowSize } from "react-use";
+import Confetti from "react-confetti";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import AlertDialog from "../alertDialog";
+
+import { ReactComponent as Star } from "../../assert/svg-icon/star.svg";
+import { ReactComponent as Medal } from "../../assert/svg-icon/medal.svg";
+
 const size = 20;
 
+console.log(React.version);
+
 const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
+  const { width, height } = useWindowSize();
+
   // style
   const classes = useStyles();
 
@@ -25,15 +39,26 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
   // params
   const { id: idRoom } = match.params;
 
+  const notifyNewPlayerJoinRoom = (username) =>
+    toast.info(`${username} join room. Ready to go!!`, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+
+  const notifyStartGame = () =>
+    toast(`Start game!!`, {
+      position: toast.POSITION.BOTTOM_RIGHT,
+    });
+
   // states
-  const [open, setOpen] = useState(false);
+  const [openDialogPassword, setOpenDialogPassword] = useState(false);
+  const [openDialogConfirm, setOpenDialogConfirm] = useState(false);
 
   const [player1, setPlayer1] = useState({ username: "...", id: "..." });
   const [player2, setPlayer2] = useState({ username: "...", id: "..." });
   const [isPlayer, setIsPlayer] = useState(false);
   const [statusRoom, setStatusRoom] = useState("");
   const [role, setRole] = useState("player");
-  const [isPlayerX, setIsPlayerX] = useState(null);
+  const [playerX, setPlayerX] = useState(null);
   const [idPlayerCurr, setIdPlayerCurr] = useState(null);
   const [time, setTime] = useState(0);
   const [idGame, setIdGame] = useState(null);
@@ -55,6 +80,7 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
         console.log({ player1, player2 });
         setPlayer1(player1);
         setPlayer2(player2);
+        notifyNewPlayerJoinRoom(player2.username);
       }
     );
 
@@ -70,14 +96,12 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
       ({ playerX, playerO, gameID }) => {
         setIdPlayerCurr(playerX);
         setIdGame(gameID);
+        setStatusRoom("playing");
+        setOpenDialogConfirm(false);
 
         setBoard(Array(size * size).fill(null));
-
-        if (userID === playerX) {
-          setIsPlayerX(true);
-        } else if (userID === playerO) {
-          setIsPlayerX(false);
-        }
+        setPlayerX(playerX);
+        notifyStartGame();
       }
     );
 
@@ -93,37 +117,49 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
     realtime.setCallback(TAG.RESPONSE_TIME_UP, ({ winner }) => {
       console.log("TIMMER UP");
       setWinner(winner);
+      setTime(0);
+      setOpenDialogConfirm(true);
+      setStatusRoom("ready");
     });
 
     realtime.setCallback(
       TAG.RESPONSE_RECONNECT,
       ({ board, playerX, playerO, currentPlayer }) => {
         setBoard(board);
-        setIsPlayerX(playerX === userID ? true : false);
+        setPlayerX(playerX);
         setIdPlayerCurr(currentPlayer);
       }
     );
 
-    realtime.setCallback(TAG.RESPONSE_MOVE, ({ index, board, isPlayerX }) => {
+    realtime.setCallback(TAG.RESPONSE_MOVE, ({ board, index, order }) => {
       setBoard(board);
+      setHistory((prev) => prev.concat({ board, index, order }));
     });
 
     realtime.setCallback(TAG.RESPONSE_WINNER, ({ winner }) => {
       setWinner(winner);
+      setOpenDialogConfirm(true);
+      setStatusRoom("ready");
     });
 
     return () => {
       realtime.removeCallback(TAG.RESPONSE_UPDATE_USER_IN_ROOM);
       realtime.removeCallback(TAG.RESPONSE_UPDATE_STATUS_ROOM_FOR_PLAYER);
       realtime.removeCallback(TAG.RESPONSE_INFO_PLAYER_XO);
+      realtime.removeCallback(TAG.RESPONSE_PLAYER_NEXT_TURN);
       realtime.removeCallback(TAG.RESPONSE_TIMMER);
       realtime.removeCallback(TAG.RESPONSE_TIME_UP);
+      realtime.removeCallback(TAG.RESPONSE_RECONNECT);
+      realtime.removeCallback(TAG.RESPONSE_MOVE);
+      realtime.removeCallback(TAG.RESPONSE_WINNER);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const _handleClickCell = (index) => {
-    if (isPlayer && idPlayerCurr === userID) {
+    if (isPlayer && idPlayerCurr === userID && board[index] === null) {
+      console.log("Move");
+
       realtime.makeMove(index);
       return true;
     }
@@ -154,6 +190,7 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
             room.player2 || { username: "...", id: "..." }
           );
 
+          setHistory(room.history);
           setPlayer1(room.player1);
           setPlayer2(room.player2 || { username: "...", id: "..." });
           setStatusRoom(room.status);
@@ -170,25 +207,58 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const winnerStatus = isPlayer
-    ? winner === userID
-      ? "You is winner"
-      : "You is loser"
-    : winner === player1.id
-    ? "Player1 is winner"
-    : "Player2 is winner";
+  const usernameWinner =
+    winner === player1.id
+      ? winner === userID
+        ? "You"
+        : player1.username
+      : winner === userID
+      ? "You"
+      : player2.username;
 
   return (
     <>
-      {/* {statusRoom} */}
-      {winnerStatus}
-      <PasswordRoom isOpen={open} onClose={setOpen} />
+      <AlertDialog
+        open={openDialogConfirm}
+        setOpen={setOpenDialogConfirm}
+        title={
+          <>
+            <Star style={{ width: 30, height: 30 }} />
+            <Star style={{ width: 40, height: 40 }} />
+            <Star style={{ width: 30, height: 30 }} />
+          </>
+        }
+        description={
+          <div
+            style={{
+              display: "flex",
+              alignContent: "center",
+              justifyContent: "center",
+            }}
+          >
+            <span>{usernameWinner} is the winner</span>
+            <Medal style={{ width: 30, height: 30 }} />
+          </div>
+        }
+      />
+      {openDialogConfirm && <Confetti width={width} height={height} />}
+      <PasswordRoom
+        isOpen={openDialogPassword}
+        onClose={setOpenDialogPassword}
+      />
       <Grid container className={classes.root}>
         <Grid container item xs={12} md={10}>
           <Grid item md={8} className={classes.board}>
-            <Board board={board} onClickCell={_handleClickCell} />
+            <div>
+              <div style={{ background: "white", height: 30, marginBottom: 2 }}>
+                Room id: {idRoom}
+              </div>
+              <Board board={board} onClickCell={_handleClickCell} />
+            </div>
           </Grid>
           <Grid container item md={4} style={{ justifyContent: "center" }}>
+            <ToastContainer />
+
             <InfoGame
               isPlayer={isPlayer}
               idRoom={idRoom}
@@ -200,8 +270,9 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
               idGame={idGame}
               time={time}
               history={history}
-              isPlayerX={isPlayerX}
+              playerX={playerX}
               userID={userID}
+              setBoard={setBoard}
             />
           </Grid>
         </Grid>

@@ -15,7 +15,7 @@ export default makeStyles((theme) => ({
   },
   container: {
     width: "100%",
-    height: "200px",
+    height: "185px",
     overflowY: "auto",
     padding: "20px 10px",
   },

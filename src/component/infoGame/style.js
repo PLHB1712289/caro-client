@@ -1,8 +1,9 @@
 import { makeStyles } from "@material-ui/core";
-export default makeStyles((theme) => ({
+export default makeStyles({
   root: {
     width: "100%",
-    background: "#01060a",
+    // background: "#01060a",
+    background: "rgba(0,0,0,0.4)",
     padding: 10,
     borderRadius: 5,
     color: "white",
@@ -35,7 +36,7 @@ export default makeStyles((theme) => ({
   },
   in4Player: {
     width: "100%",
-    height: 50,
+    height: 30,
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -66,11 +67,16 @@ export default makeStyles((theme) => ({
   containerButton: {
     display: "flex",
     justifyContent: "space-around",
+    // background: "rgba(255,255,255)",
   },
   button: {
-    background: "rgba(255,255,255,0.7)",
+    background: "#01060a",
     fontWeight: 700,
     margin: 3,
-    width: "20%",
+    width: 100,
+    height: 35,
+    cursor: "pointer",
+    color: "white",
+    border: "1px solid white",
   },
-}));
+});
