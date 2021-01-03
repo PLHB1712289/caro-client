@@ -43,17 +43,21 @@ const Realtime = class {
       store.dispatch(action.LIST_ROOM.remove(room));
     });
 
+    // Receive response & update status room online
+    this.socket.on(TAG.RESPONSE_UPDATE_STATUS_ROOM, ({ room }) => {
+      // console.log("UPDATE STATUS ROOM:", room);
+      store.dispatch(action.LIST_ROOM.updateStatusRoom(room));
+    });
+
     // Receive response & update list room online when another user become a player
     this.socket.on(
       TAG.RESPONSE_UPDATE_USER_IN_LISTROOM,
-      ({ idRoom, idUser, idPlayer, username }) => {
-        console.log("DATA:", { idRoom, idUser, idPlayer, username });
+      ({ idRoom, player1, player2 }) => {
         store.dispatch(
           action.LIST_ROOM.updateInfoUser({
             idRoom,
-            idUser,
-            idPlayer,
-            username,
+            player1,
+            player2,
           })
         );
       }
@@ -73,6 +77,10 @@ const Realtime = class {
     this.socket.on(tag, callback);
   }
 
+  removeCallback(tag) {
+    this.socket.removeListener(tag);
+  }
+
   joinRoom(id) {
     this.socket.emit(TAG.REQUEST_JOIN_ROOM, { id });
   }
@@ -81,12 +89,18 @@ const Realtime = class {
     this.socket.emit(TAG.REQUEST_LEAVE_ROOM, { id });
   }
 
-  updateInfoUserInRoom(idRoom, idPlayer, idUser, username) {
+  newGame(idRoom, idPlayer1, idPlayer2) {
+    this.socket.emit(TAG.REQUEST_NEW_GAME, { idRoom, idPlayer1, idPlayer2 });
+  }
+
+  updateInfoUserInRoom(idRoom, player1, player2) {
+    console.log("UPDATE INFO USER IN ROOM");
+    console.log({ player1, player2 });
+
     this.socket.emit(TAG.REQUEST_UPDATE_USER_IN_ROOM, {
       idRoom,
-      idPlayer,
-      idUser,
-      username,
+      player1,
+      player2,
     });
   }
 
@@ -104,6 +118,10 @@ const Realtime = class {
 
   sendMessage(idRoom, message, token) {
     this.socket.emit(TAG.REQUEST_SEND_MESS, { idRoom, message, token });
+  }
+
+  makeMove(index) {
+    this.socket.emit(TAG.REQUEST_MOVE, { index });
   }
 };
 

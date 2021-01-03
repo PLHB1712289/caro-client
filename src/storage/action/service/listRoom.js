@@ -8,6 +8,10 @@ const action = {
   }),
   add: (room) => ({ type: TAG.LIST_ROOM.ADD, payload: { room } }),
   remove: (room) => ({ type: TAG.LIST_ROOM.REMOVE, payload: { room } }),
+  updateStatusRoom: (room) => ({
+    type: TAG.LIST_ROOM.UPDATE_STATUS,
+    payload: { room },
+  }),
 };
 
 export default action;

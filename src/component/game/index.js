@@ -11,8 +11,11 @@ import InfoGame from "../infoGame";
 import PasswordRoom from "../passwordRoom";
 import apiService from "./apiService";
 import useStyles from "./style";
+import jwtDecode from "jwt-decode";
 
-const Game = ({ turnOnLoading, turnOffLoading }) => {
+const size = 20;
+
+const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
   // style
   const classes = useStyles();
 
@@ -23,10 +26,21 @@ const Game = ({ turnOnLoading, turnOffLoading }) => {
   const { id: idRoom } = match.params;
 
   // states
+  const [open, setOpen] = useState(false);
+
   const [player1, setPlayer1] = useState({ username: "...", id: "..." });
   const [player2, setPlayer2] = useState({ username: "...", id: "..." });
-  const [open, setOpen] = useState(false);
   const [isPlayer, setIsPlayer] = useState(false);
+  const [statusRoom, setStatusRoom] = useState("");
+  const [role, setRole] = useState("player");
+  const [isPlayerX, setIsPlayerX] = useState(null);
+  const [idPlayerCurr, setIdPlayerCurr] = useState(null);
+  const [time, setTime] = useState(0);
+  const [idGame, setIdGame] = useState(null);
+  const [winner, setWinner] = useState(null);
+
+  const [board, setBoard] = useState(Array(size * size).fill(null));
+  const [history, setHistory] = useState([]);
 
   useEffect(() => {
     const room = localStorage.getItem("room");
@@ -37,12 +51,85 @@ const Game = ({ turnOnLoading, turnOffLoading }) => {
 
     realtime.setCallback(
       TAG.RESPONSE_UPDATE_USER_IN_ROOM,
-      ({ idUser, idPlayer, username }) => {
-        if (idPlayer === 1) setPlayer1({ username, id: idUser });
-        else setPlayer2({ username, id: idUser });
+      ({ player1, player2 }) => {
+        console.log({ player1, player2 });
+        setPlayer1(player1);
+        setPlayer2(player2);
       }
     );
+
+    realtime.setCallback(
+      TAG.RESPONSE_UPDATE_STATUS_ROOM_FOR_PLAYER,
+      ({ room }) => {
+        setStatusRoom(room.status);
+      }
+    );
+
+    realtime.setCallback(
+      TAG.RESPONSE_INFO_PLAYER_XO,
+      ({ playerX, playerO, gameID }) => {
+        setIdPlayerCurr(playerX);
+        setIdGame(gameID);
+
+        setBoard(Array(size * size).fill(null));
+
+        if (userID === playerX) {
+          setIsPlayerX(true);
+        } else if (userID === playerO) {
+          setIsPlayerX(false);
+        }
+      }
+    );
+
+    realtime.setCallback(TAG.RESPONSE_PLAYER_NEXT_TURN, ({ player }) => {
+      setIdPlayerCurr(player);
+    });
+
+    realtime.setCallback(TAG.RESPONSE_TIMMER, ({ time }) => {
+      console.log("TIMMER: ", time);
+      setTime(time);
+    });
+
+    realtime.setCallback(TAG.RESPONSE_TIME_UP, ({ winner }) => {
+      console.log("TIMMER UP");
+      setWinner(winner);
+    });
+
+    realtime.setCallback(
+      TAG.RESPONSE_RECONNECT,
+      ({ board, playerX, playerO, currentPlayer }) => {
+        setBoard(board);
+        setIsPlayerX(playerX === userID ? true : false);
+        setIdPlayerCurr(currentPlayer);
+      }
+    );
+
+    realtime.setCallback(TAG.RESPONSE_MOVE, ({ index, board, isPlayerX }) => {
+      setBoard(board);
+    });
+
+    realtime.setCallback(TAG.RESPONSE_WINNER, ({ winner }) => {
+      setWinner(winner);
+    });
+
+    return () => {
+      realtime.removeCallback(TAG.RESPONSE_UPDATE_USER_IN_ROOM);
+      realtime.removeCallback(TAG.RESPONSE_UPDATE_STATUS_ROOM_FOR_PLAYER);
+      realtime.removeCallback(TAG.RESPONSE_INFO_PLAYER_XO);
+      realtime.removeCallback(TAG.RESPONSE_TIMMER);
+      realtime.removeCallback(TAG.RESPONSE_TIME_UP);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const _handleClickCell = (index) => {
+    if (isPlayer && idPlayerCurr === userID) {
+      realtime.makeMove(index);
+      return true;
+    }
+
+    return false;
+  };
 
   useEffect(() => {
     turnOnLoading();
@@ -50,6 +137,7 @@ const Game = ({ turnOnLoading, turnOffLoading }) => {
       try {
         const { success, message, data } = await apiService.getRoom(idRoom);
 
+        console.log("DATA GET ROOM:", data);
         // if (data.room.password) {
         //   setOpen(true);
         // }
@@ -60,28 +148,17 @@ const Game = ({ turnOnLoading, turnOffLoading }) => {
           realtime.joinRoom(room.id);
           localStorage.setItem("room", room.id);
 
-          if (room.isPlayer > 0) {
-            if (room.isPlayer === 1) {
-              realtime.updateInfoUserInRoom(
-                room.id,
-                room.isPlayer,
-                room.player1.id,
-                room.player1.username
-              );
-            } else {
-              realtime.updateInfoUserInRoom(
-                room.id,
-                room.isPlayer,
-                room.player2.id,
-                room.player2.username
-              );
-            }
-          }
+          realtime.updateInfoUserInRoom(
+            room.id,
+            room.player1,
+            room.player2 || { username: "...", id: "..." }
+          );
 
           setPlayer1(room.player1);
-          setPlayer2(
-            room.player2 ? room.player2 : { username: "...", id: "..." }
-          );
+          setPlayer2(room.player2 || { username: "...", id: "..." });
+          setStatusRoom(room.status);
+          setRole(room.role);
+          console.log(room);
         } else {
           console.log(message);
         }
@@ -93,13 +170,23 @@ const Game = ({ turnOnLoading, turnOffLoading }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const winnerStatus = isPlayer
+    ? winner === userID
+      ? "You is winner"
+      : "You is loser"
+    : winner === player1.id
+    ? "Player1 is winner"
+    : "Player2 is winner";
+
   return (
     <>
+      {/* {statusRoom} */}
+      {winnerStatus}
       <PasswordRoom isOpen={open} onClose={setOpen} />
       <Grid container className={classes.root}>
         <Grid container item xs={12} md={10}>
           <Grid item md={8} className={classes.board}>
-            <Board />
+            <Board board={board} onClickCell={_handleClickCell} />
           </Grid>
           <Grid container item md={4} style={{ justifyContent: "center" }}>
             <InfoGame
@@ -107,6 +194,14 @@ const Game = ({ turnOnLoading, turnOffLoading }) => {
               idRoom={idRoom}
               player1={player1}
               player2={player2}
+              status={statusRoom}
+              playerCurr={idPlayerCurr}
+              role={role}
+              idGame={idGame}
+              time={time}
+              history={history}
+              isPlayerX={isPlayerX}
+              userID={userID}
             />
           </Grid>
         </Grid>
@@ -114,6 +209,18 @@ const Game = ({ turnOnLoading, turnOffLoading }) => {
     </>
   );
 };
+
+const parseToken = (token) => {
+  try {
+    return jwtDecode(token).id;
+  } catch (e) {
+    return null;
+  }
+};
+
+const mapStateToProps = (state) => ({
+  userID: parseToken(state.token),
+});
 
 const mapDispatchToProps = (dispatch) => ({
   turnOnLoading: () => {
@@ -124,4 +231,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(() => ({}), mapDispatchToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Game);

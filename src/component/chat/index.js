@@ -22,8 +22,6 @@ const Chat = ({ idRoom, isPlayer }) => {
         );
 
         if (success) {
-          console.log("Get list message");
-          console.log(data.listMessage);
           setListMess(data.listMessage);
         } else {
           console.log(message);
@@ -38,6 +36,8 @@ const Chat = ({ idRoom, isPlayer }) => {
     realtime.setCallback(TAG.RESPONSE_SEND_MESS, ({ message }) => {
       setListMess((prev) => prev.concat(message));
     });
+
+    return () => realtime.removeCallback(TAG.RESPONSE_SEND_MESS);
   }, []);
 
   const _handleChangeContent = (e) => {
