@@ -56,16 +56,19 @@ const Navbar = ({ token, setToken }) => {
     localStorage.removeItem("token");
     setToken(null);
     _handleClickCloseMenu();
+    history.push(`/`);
+
   };
 
   const _handleClickProfile = () => {
     _handleClickCloseMenu();
-    history.push(`/profile`);
+    history.push(`/auth/profile`);
   };
 
   const _handleClickChangePassword = () => {
     _handleClickCloseMenu();
-    history.push(`/change-password`);
+    console.log("Click change password");
+    history.push(`/auth/change-password`);
   };
 
   // Component didmount

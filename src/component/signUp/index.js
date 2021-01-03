@@ -23,7 +23,9 @@ const SignUpForm = ({ token, turnOnLoading, turnOffLoading }) => {
   const [email, setEmail] = useState(null);
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
-
+  const [errorUsername,setErrorUsername]=useState(null);
+  const [errorPassword,setErrorPassword]=useState(null);
+  const [errorEmail,setErrorEmail]=useState(null);
   // Setup
   const _handleSubmitForm = (e) => {
     e.preventDefault();
@@ -79,11 +81,68 @@ const SignUpForm = ({ token, turnOnLoading, turnOffLoading }) => {
     setPassword(value);
   };
 
+  
   useEffect(() => {
     if (localStorage.getItem("token")) {
       history.push("/");
     }
-  }, [history]);
+
+    //validate
+    if(username!==null && username.includes(" ")===true)
+    {
+      console.log("Have space");
+      setErrorUsername("Username must not have space");
+    }
+    if(username!==null && username.includes(" ")===false)
+    {
+      setErrorUsername(null);
+    }
+
+    if(username!==null && username.length===0)
+    {
+      setErrorUsername("Please fill username");
+    }
+    if(username ===null)
+    {
+      setErrorUsername(null);
+    }
+
+    if(email!==null && email.includes("@")===false )
+    {
+      setErrorEmail("Email must have @");
+    }
+    if(email!==null && email.includes("@")===true)
+    {
+      setErrorEmail(null);
+    }
+
+    if(email!==null && email.length===0)
+    {
+      setErrorEmail("Please fill email");
+    }
+    if(email===null)
+    {
+      setErrorEmail(null);
+    }
+
+    if(password!==null && password.length>0 && password.length<7)
+    {
+      setErrorPassword("Password must have atleast 7 characters");
+    }
+    if(password!==null && password.length>=7)
+    {
+      setErrorPassword(null);
+    }
+
+    if(password!==null && password.length===0)
+    {
+      setErrorPassword("Please fill password");
+    }
+    if(password===null)
+    {
+      setErrorPassword(null);
+    }
+  }, [history,username,email,password]);
 
   (() => {
     if (token) history.push("/");
@@ -119,7 +178,8 @@ const SignUpForm = ({ token, turnOnLoading, turnOffLoading }) => {
             noValidate
             onSubmit={_handleSubmitForm}
           >
-            {username === null || username.length > 0 ? (
+           
+            {errorUsername ===null ? 
               <TextField
                 autoFocus
                 fullWidth
@@ -127,8 +187,7 @@ const SignUpForm = ({ token, turnOnLoading, turnOffLoading }) => {
                 margin="normal"
                 label="Username"
                 onChange={_handleChangeUsername}
-              />
-            ) : (
+              />:
               <TextField
                 error
                 autoFocus
@@ -137,11 +196,33 @@ const SignUpForm = ({ token, turnOnLoading, turnOffLoading }) => {
                 margin="normal"
                 label="Username"
                 onChange={_handleChangeUsername}
-                helperText="Please fill username"
+                helperText={errorUsername}
               />
-            )}
-
-            {email === null || email.length > 0 ? (
+            }
+            
+       
+            {errorEmail === null ?
+              <TextField
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                label="Email Address"
+                type="email"
+                onChange={_handleChangeEmail}
+              /> :
+              <TextField
+                error
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                label="Email Address"
+                type="email"
+                onChange={_handleChangeEmail}
+                helperText={errorEmail}
+              />
+          
+            }
+            {/* {email === null || email.length > 0 ? (
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -161,9 +242,28 @@ const SignUpForm = ({ token, turnOnLoading, turnOffLoading }) => {
                 onChange={_handleChangeEmail}
                 helperText="Please fill email"
               />
-            )}
-
-            {password === null || password.length > 0 ? (
+            )} */}
+            {errorPassword===null ?
+              <TextField
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                label="Password"
+                type="password"
+                onChange={_handleChangePassword}
+              />:
+              <TextField
+                error
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                label="Password"
+                type="password"
+                onChange={_handleChangePassword}
+                helperText={errorPassword}
+              />
+            }
+            {/* {password === null || password.length > 0 ? (
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -183,7 +283,7 @@ const SignUpForm = ({ token, turnOnLoading, turnOffLoading }) => {
                 onChange={_handleChangePassword}
                 helperText="Please fill password"
               />
-            )}
+            )} */}
 
             <Button
               type="submit"

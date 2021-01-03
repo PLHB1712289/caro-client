@@ -67,6 +67,7 @@ const SignIn = ({ open, onClose, setToken, turnOnLoading, turnOffLoading }) => {
       realtime.updateListUserOnline(data.token);
       onClose();
       turnOffLoading();
+      history.push('/');
       return;
     }
     turnOffLoading();
@@ -80,7 +81,7 @@ const SignIn = ({ open, onClose, setToken, turnOnLoading, turnOffLoading }) => {
   };
   const _handleOnClickForgotPassword = () => {
     onClose();
-    history.push("/forgot-password");
+    history.push("/auth/forgot-password");
   };
 
   // callback FB
