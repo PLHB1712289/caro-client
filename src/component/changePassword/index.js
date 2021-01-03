@@ -2,8 +2,10 @@ import { Button, Container, CssBaseline, TextField } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import apiService from "../profile/apiService";
 import useStyles from "./style";
+import action from "../../storage/action";
+import { connect } from "react-redux";
 
-const ChangePassword = () => {
+const ChangePassword = ({ turnOnLoading, turnOffLoading }) => {
   // Styles
   const classes = useStyles();
 
@@ -26,12 +28,16 @@ const ChangePassword = () => {
       }
     }
     if (user === null) {
+      turnOnLoading();
+
       const getUser = async () => {
         const res = await apiService.getUser();
-        console.log("User:", res.data);
         setUser(res.data);
+        turnOffLoading();
+
       };
       getUser();
+
     }
     if (newPassword !== null && newPassword.length < 7) {
       setMessageErrorNewPass("New password must have atleast 7 characters");
@@ -54,10 +60,13 @@ const ChangePassword = () => {
     ) {
       setMessageErrorReNew(null);
     }
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reNewPassword, newPassword, user, canChange]);
 
   const _handleSubmitForm = async (e) => {
     e.preventDefault();
+    turnOnLoading();
 
     if (
       reNewPassword !== null &&
@@ -71,6 +80,8 @@ const ChangePassword = () => {
 
       alert(message);
     }
+    turnOffLoading();
+
   };
   const _handleChangeOldPassword = (e) => {
     const { value } = e.target;
@@ -224,4 +235,14 @@ const ChangePassword = () => {
     </div>
   );
 };
-export default ChangePassword;
+	
+const mapDispatchToProps = (dispatch) => ({
+  turnOnLoading: () => {
+    dispatch(action.LOADING.turnOn());
+  },
+
+  turnOffLoading: () => {
+    dispatch(action.LOADING.turnOff());
+  },
+});
+export default connect(() => ({}), mapDispatchToProps)(ChangePassword);

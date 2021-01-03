@@ -8,9 +8,7 @@ const APIService = {
     return response;
   },
   changePassword:async(oldPassword,newPassword)=>{
-    console.log("Den duoc day de chuan bi dung axios");
     const payload={oldPassword,newPassword};
-    console.log("Check payload:",payload);
     const response= await axiosClient.post(URL.CHANGE_PASSWORD,payload);
     return response;
   },
