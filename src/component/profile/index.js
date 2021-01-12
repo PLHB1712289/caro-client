@@ -12,6 +12,7 @@ const Profile = ({ turnOnLoading, turnOffLoading }) => {
 
   // States
   const [user, setUser] = useState(null);
+  const [avatarUrl,setAvatarUrl]=useState("https://res.cloudinary.com/dofdj0lqd/image/upload/v1610186880/aqutfu6ccnjdqo9vd3zb.png");
   const [draw, setDraw] = useState(0);
   const [win, setWin] = useState(0);
   const [lose, setLose] = useState(0);
@@ -44,10 +45,15 @@ const Profile = ({ turnOnLoading, turnOffLoading }) => {
         const { success, data } = await apiService.getUser();
         if (success === true && data !== user) {
           setUser(data);
+
           setWin(data.totalGameWin);
           setLose(data.totalGameLose);
           setTotalGame(data.totalGame);
           setDraw(data.totalGame - data.totalGameLose - data.totalGameWin);
+          if(data.avatarUrl!==null)
+          {
+            setAvatarUrl(data.avatarUrl);
+          }
         }
         turnOffLoading();
       };
@@ -89,6 +95,7 @@ const Profile = ({ turnOnLoading, turnOffLoading }) => {
         <CssBaseline />
         <div className={classes.paper}>
           <h1>Profile</h1>
+          <img src={avatarUrl} style={{width:200,height:200,borderRadius:100}}></img>
 
           <form className={classes.form} noValidate>
             {user !== null ? (

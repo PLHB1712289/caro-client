@@ -51,3 +51,6 @@ ul {
 .game-info {
   margin-left: 20px;
 }
+.image-upload>input {
+  display: none;
+}

@@ -5,6 +5,7 @@ const _URL = {
   SIGN_IN_WITH_GG: "/auth/sign-in/google",
   SIGN_IN: "/auth/sign-in",
   GET_USER:"/auth/profile",
+  UPDATE_USER:"/auth/update",
   CHANGE_PASSWORD:"/auth/change-password",
   FORGOT_PASSWORD:"/auth/forgot-password",
   NEW_ROOM: "/game/new-room",

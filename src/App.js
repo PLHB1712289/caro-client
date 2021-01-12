@@ -9,6 +9,7 @@ import NotFound from "./component/notFound";
 import SignIn from "./component/signIn";
 import SignUp from "./component/signUp";
 import Profile from "./component/profile";
+import UpdateProfile from "./component/updateProfile";
 import ChangePassword from "./component/changePassword";
 // import realtime from "./realtime";
 import Background from "./component/background";
@@ -39,6 +40,9 @@ function App() {
 
           <Route path={"/auth/profile"}>
             <Profile/>
+          </Route>
+          <Route path={"/auth/update"}>
+            <UpdateProfile/>
           </Route>
           <Route path={"/auth/change-password"}>
             <ChangePassword/>
