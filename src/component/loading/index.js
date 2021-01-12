@@ -1,7 +1,7 @@
-import { CircularProgress } from "@material-ui/core";
+// import { Box, CircularProgress } from "@material-ui/core";
 import React from "react";
 import useStyles from "./styles";
-
+import { SemipolarLoading } from "react-loadingg";
 import { connect } from "react-redux";
 
 const Loading = (props) => {
@@ -14,27 +14,21 @@ const Loading = (props) => {
       {isdisplay ? (
         <>
           <div className={classes.root}>
-            <span className={classes.case}>
-              <CircularProgress
-                variant="determinate"
-                className={classes.bottom}
-                size={40}
-                thickness={4}
-                {...props}
-                value={100}
-              />
-              <CircularProgress
-                variant="indeterminate"
-                disableShrink
-                className={classes.top}
-                classes={{
-                  circle: classes.circle,
-                }}
-                size={40}
-                thickness={4}
-                {...props}
-              />
-            </span>
+            <div className={classes.case}>
+              <div>
+                <SemipolarLoading />
+              </div>
+            </div>
+            <div
+              style={{
+                color: "white",
+                marginTop: 100,
+                textAlign: "center",
+                fontWeight: 600,
+              }}
+            >
+              loading
+            </div>
           </div>
         </>
       ) : (

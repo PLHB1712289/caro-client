@@ -2,6 +2,7 @@ import { Button, Tooltip, Zoom } from "@material-ui/core";
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import NewGame from "../newGame";
+import QuickPlay from "../quickPlay";
 import useStyle from "./style";
 
 const ListGame = ({ children, onFilterByID, token }) => {
@@ -9,6 +10,7 @@ const ListGame = ({ children, onFilterByID, token }) => {
 
   const [id, setID] = useState("");
   const [openNewGame, setOpenNewGame] = useState(false);
+  const [openQuickPlay, setOpenQuickPlay] = useState(false);
 
   const _handleChangeID = (e) => {
     setID(e.target.value);
@@ -23,6 +25,8 @@ const ListGame = ({ children, onFilterByID, token }) => {
           setOpenNewGame(false);
         }}
       />
+
+      <QuickPlay open={openQuickPlay} setOpen={setOpenQuickPlay} />
 
       <div className={classes.title}>
         <div
@@ -40,7 +44,7 @@ const ListGame = ({ children, onFilterByID, token }) => {
             <Tooltip title="New game" TransitionComponent={Zoom} arrow>
               <Button
                 onClick={() => {
-                  setOpenNewGame(true);
+                  setOpenQuickPlay(true);
                 }}
                 className={classes.button}
               >

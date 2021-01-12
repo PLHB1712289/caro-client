@@ -1,27 +1,54 @@
-import {
-  Button,
-  CssBaseline,
-  Dialog,
-  DialogContent,
-  FormControlLabel,
-  FormGroup,
-  Grid,
-  Slide,
-  Switch,
-  TextField,
-  Typography,
-} from "@material-ui/core";
-import React, { useState } from "react";
+import { Button, Dialog, Slide, Switch, withStyles } from "@material-ui/core";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import React, { useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
-import useStyles from "./style";
-import apiService from "./apiService";
 import realtime from "../../realtime";
+import apiService from "./apiService";
+import useStyles from "./style";
+
+const AntSwitch = withStyles((theme) => ({
+  root: {
+    width: 28,
+    height: 16,
+    padding: 0,
+    display: "flex",
+  },
+  switchBase: {
+    padding: 2,
+    color: theme.palette.grey[500],
+    "&$checked": {
+      transform: "translateX(12px)",
+      color: theme.palette.common.white,
+      "& + $track": {
+        opacity: 1,
+        // backgroundColor: theme.palette.primary.main,
+        backgroundColor: "#00c853",
+        borderColor: theme.palette.primary.main,
+      },
+    },
+  },
+  thumb: {
+    width: 12,
+    height: 12,
+    boxShadow: "none",
+  },
+  track: {
+    border: `1px solid ${theme.palette.grey[500]}`,
+    borderRadius: 16 / 2,
+    opacity: 1,
+    backgroundColor: theme.palette.common.white,
+  },
+  checked: {},
+}))(Switch);
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const NewGame = ({ open, onClose, onSignInSuccess }) => {
+export default function AlertDialog({ open, onClose }) {
+  const passwordInputRef = useRef(null);
+
   // React router hook
   const history = useHistory();
 
@@ -68,92 +95,124 @@ const NewGame = ({ open, onClose, onSignInSuccess }) => {
   };
 
   return (
-    <div>
-      <Dialog
-        open={open}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={onClose}
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
-        style={{ transition: "width 1", transitionTimingFunction: "ease-out" }}
-      >
-        <DialogContent>
-          <Grid container component="main" className={classes.root}>
-            <CssBaseline />
-            <div className={classes.paper}>
-              <Typography component="h1" variant="h5">
-                NEW ROOM
-              </Typography>
-              <form
-                className={classes.form}
-                noValidate
-                onSubmit={_handleSubmitForm}
-              >
-                <TextField
-                  // variant="outlined"
-                  id="standard-basic"
-                  margin="normal"
-                  required
-                  fullWidth
-                  label="Room Name"
-                  type="text"
-                  value={roomName}
-                  onChange={_handleChangeRoomName}
-                />
-                <FormGroup row>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={lock}
-                        onChange={(e) => {
-                          setLock(e.target.checked);
-                        }}
-                      />
-                    }
-                    label={"Set Password"}
-                  />
-                </FormGroup>
-                {lock ? (
-                  <TextField
-                    id="standard-basic"
-                    margin="normal"
-                    required
-                    fullWidth
-                    label="Password"
-                    type="password"
-                    value={password}
-                    onChange={_handleChangePassword}
-                  />
-                ) : (
-                  <TextField
-                    id="standard-basic"
-                    margin="normal"
-                    fullWidth
-                    label="Password"
-                    type="password"
-                    value={password}
-                    onChange={_handleChangePassword}
-                    disabled
-                  />
-                )}
+    <Dialog
+      open={open}
+      TransitionComponent={Transition}
+      keepMounted
+      onClose={onClose}
+      aria-labelledby="alert-dialog-slide-title"
+      aria-describedby="alert-dialog-slide-description"
+    >
+      <div style={{ background: "rgba(2,13,24,0.85)", color: "white" }}>
+        <DialogTitle
+          style={{
+            width: 350,
+            height: 50,
+            textAlign: "center",
+            background: "rgba(2,13,24,0.2)",
+            alignItems: "center",
+            padding: 0,
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <div style={{ fontWeight: 1000 }}>New Room</div>
+        </DialogTitle>
 
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                >
-                  Create Room
-                </Button>
-              </form>
+        <div className={classes.paper} style={{ color: "white" }}>
+          <form
+            className={classes.form}
+            noValidate
+            onSubmit={_handleSubmitForm}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                height: 30,
+                alignContent: "center",
+                alignItems: "center",
+                margin: "5px 0",
+              }}
+            >
+              <label>Room Name</label>
+              <input
+                style={{
+                  width: "70%",
+                  height: 30,
+                  borderRadius: 4,
+                  padding: 5,
+                }}
+                type="text"
+                value={roomName}
+                onChange={_handleChangeRoomName}
+              />
             </div>
-          </Grid>
-        </DialogContent>
-      </Dialog>
-    </div>
-  );
-};
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                height: 30,
+                alignContent: "center",
+                alignItems: "center",
+                margin: "10px 0",
+              }}
+            >
+              <label>Password</label>
 
-export default NewGame;
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  width: "70%",
+                  // background: "white",
+                  justifyContent: "space-between",
+                }}
+              >
+                <AntSwitch
+                  checked={lock}
+                  onChange={(e) => {
+                    setLock(e.target.checked);
+                    setTimeout(() => {
+                      passwordInputRef.current.focus();
+                    }, 10);
+                  }}
+                />
+                <input
+                  ref={passwordInputRef}
+                  style={{
+                    width: "80%",
+                    height: 30,
+                    borderRadius: 4,
+                    padding: 5,
+                  }}
+                  disabled={!lock}
+                  type="password"
+                  value={password}
+                  onChange={_handleChangePassword}
+                />
+              </div>
+            </div>
+
+            <DialogActions
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              <Button
+                style={{
+                  background: "#00adff",
+                  color: "white",
+                  fontWeight: 600,
+                  width: 100,
+                  height: 30,
+                }}
+                type="submit"
+              >
+                Create
+              </Button>
+            </DialogActions>
+          </form>
+        </div>
+      </div>
+    </Dialog>
+  );
+}

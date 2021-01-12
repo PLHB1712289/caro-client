@@ -204,6 +204,10 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
       }
       turnOffLoading();
     })();
+
+    return () => {
+      // const confirm = window.confirm("Do you want to quit this room?");
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

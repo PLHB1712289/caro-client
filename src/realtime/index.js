@@ -123,6 +123,14 @@ const Realtime = class {
   makeMove(index) {
     this.socket.emit(TAG.REQUEST_MOVE, { index });
   }
+
+  quickPlay() {
+    this.socket.emit(TAG.REQUEST_QUICK_PLAY);
+  }
+
+  cancelQuickPlay() {
+    this.socket.emit(TAG.REQUEST_CANCEL_QUICK_PLAY);
+  }
 };
 
 const realtime = new Realtime();

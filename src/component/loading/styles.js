@@ -18,16 +18,16 @@ export default makeStyles((theme) => ({
     color: theme.palette.grey[theme.palette.type === "light" ? 200 : 700],
   },
   top: {
-    position: "absolute",
+    // position: "absolute",
     color: "#1a90ff",
     animationDuration: "550ms",
     left: 0,
   },
   circle: {
     strokeLinecap: "round",
-    position: "relative",
+    // position: "relative",
   },
   case: {
-    position: "relative",
+    // position: "relative",
   },
 }));

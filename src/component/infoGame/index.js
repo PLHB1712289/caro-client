@@ -4,6 +4,8 @@ import realtime from "../../realtime";
 import Chat from "../chat";
 import useStyles from "./style";
 import "../../index.css";
+import { ReactComponent as Gamer1 } from "../../assert/svg-icon/gamer1.svg";
+import { ReactComponent as Gamer2 } from "../../assert/svg-icon/gamer2.svg";
 
 const size = 20;
 
@@ -70,7 +72,10 @@ const InfoGame = ({
       <div className={classes.status}>STATUS</div>
       <div className={classes.playerContainer}>
         <div className={classes.playerContent}>
-          <div className={classes.playerTitle}>Player1{player1_X}</div>
+          <div className={classes.playerTitle}>
+            <Gamer1 style={{ width: 50, height: 50 }} />
+            Player1{player1_X}
+          </div>
           <div className={classes.in4Player}>
             <div>
               {userID === player1.id
@@ -84,7 +89,10 @@ const InfoGame = ({
           </div>
         </div>
         <div className={classes.playerContent}>
-          <div className={classes.playerTitle}>Player2{player2_X}</div>
+          <div className={classes.playerTitle}>
+            <Gamer2 style={{ width: 50, height: 50 }} />
+            Player2{player2_X}
+          </div>
 
           <div className={classes.in4Player}>
             <div>
