@@ -41,7 +41,11 @@ const ListGame = ({ children, onFilterByID, token }) => {
         </div>
         {token ? (
           <div>
-            <Tooltip title="New game" TransitionComponent={Zoom} arrow>
+            <Tooltip
+              title="Quick play with another player"
+              TransitionComponent={Zoom}
+              arrow
+            >
               <Button
                 onClick={() => {
                   setOpenQuickPlay(true);
@@ -51,7 +55,7 @@ const ListGame = ({ children, onFilterByID, token }) => {
                 Quick Play
               </Button>
             </Tooltip>
-            <Tooltip title="New game" TransitionComponent={Zoom} arrow>
+            <Tooltip title="Create a new room" TransitionComponent={Zoom} arrow>
               <Button
                 onClick={() => {
                   setOpenNewGame(true);
