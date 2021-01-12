@@ -64,7 +64,10 @@ const Navbar = ({ token, setToken }) => {
     _handleClickCloseMenu();
     history.push(`/auth/profile`);
   };
-
+  const _handleClickUpdateProfile = () => {
+    _handleClickCloseMenu();
+    history.push(`/auth/update`);
+  };
   const _handleClickChangePassword = () => {
     _handleClickCloseMenu();
     console.log("Click change password");
@@ -114,6 +117,8 @@ const Navbar = ({ token, setToken }) => {
           }}
         >
           <MenuItem onClick={_handleClickProfile}>Profile</MenuItem>
+          <MenuItem onClick={_handleClickUpdateProfile}>Update Profile</MenuItem>
+
           <MenuItem onClick={_handleClickChangePassword}>
             Change password
           </MenuItem>
