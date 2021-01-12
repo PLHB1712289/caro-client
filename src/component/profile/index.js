@@ -107,6 +107,12 @@ const Profile = ({ turnOnLoading, turnOffLoading }) => {
                   <Typography variant="h6" style={{wordWrap: "break-word"}}>{user.username}</Typography>
                 </Grid>
                 <Grid item xs={5}>
+                  <Typography variant="h6">Fullname:</Typography>
+                </Grid>
+                <Grid item xs={7}>
+                  <Typography variant="h6" style={{wordWrap: "break-word"}}>{user.fullname}</Typography>
+                </Grid>
+                <Grid item xs={5}>
                   <Typography variant="h6">Email:</Typography>
                 </Grid>
                 <Grid item xs={7}>

@@ -17,8 +17,8 @@ const APIService = {
     const response=await axiosClient.post(URL.FORGOT_PASSWORD,payload);
     return response; 
   },
-  updateUser:async(avatarUrl,username)=>{
-    const payload={avatarUrl,username};
+  updateUser:async(avatarUrl,fullname)=>{
+    const payload={avatarUrl,fullname};
     const response=await axiosClient.post(URL.UPDATE_USER,payload);
     return response;
   },
