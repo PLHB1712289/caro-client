@@ -48,4 +48,30 @@ export default makeStyles((theme) => ({
     margin: "0 10px",
     fontWeight: 500,
   },
+  // backgroundContainer: {
+  //   position: 'absolute',
+  //   top: 0,
+  //   bottom: 0,
+  //   left: 0,
+  //   right: 0,
+  // },
+  // overlay: {
+  //   opacity: 0.5,
+  //   backgroundColor: '#000000'
+  // },
+  // logo: {
+  //   backgroundColor: 'rgba(0,0,0,0)',
+  //   width: 160,
+  //   height: 52
+  // },
+  // backdrop: {
+  //   flex:1,
+  //   flexDirection: 'column'
+  // },
+  // headline: {
+  //   fontSize: 18,
+  //   textAlign: 'center',
+  //   backgroundColor: 'black',
+  //   color: 'white'
+  // }
 }));
