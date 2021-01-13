@@ -8,7 +8,7 @@ const ItemUserOnline = ({ data }) => {
   const { id, username } = data;
   const history = useHistory();
 
-  const [openDiaLog,setOpenDialog]=useState(false);
+  const [openDialog,setOpenDialog]=useState(false);
 
   const _handleClickCloseDialog = () => {
     setOpenDialog(false);
@@ -20,8 +20,8 @@ const ItemUserOnline = ({ data }) => {
 
   return (
     <div className={classes.container} onClick={_handleOnClick}>
-      {openDiaLog===true?
-        <UserDetail open={openDiaLog} onClose={_handleClickCloseDialog} userId={id}/>:
+      {openDialog===true?
+        <UserDetail open={openDialog} onClose={_handleClickCloseDialog} userId={id}/>:
         <div></div>
       }
       <div style={{ width: "15%", display: "flex", alignItems: "center" }}>

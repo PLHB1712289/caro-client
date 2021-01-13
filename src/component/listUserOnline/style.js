@@ -16,4 +16,11 @@ export default makeStyles((theme) => ({
     marginTop: 10,
     background: "rgba(0,0,0,0.1)",
   },
+  button: {
+    color: "white",
+    marginLeft: 20,
+    border: "1px solid white",
+    height: 30,
+    fontWeight: 550,
+  },
 }));

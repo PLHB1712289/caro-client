@@ -30,7 +30,10 @@ const APIService = {
     const response=await axiosClient.post(URL.UPDATE_USER,payload);
     return response;
   },
-
+  getListUserRank:async()=>{
+    const response=await axiosClient.get(URL.GET_USER_LIST_RANK);
+    return response;
+  },
   
 };
 

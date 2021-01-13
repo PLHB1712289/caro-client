@@ -1,26 +1,16 @@
 import {
-    Avatar,
-    Button,
+    
     CssBaseline,
     Grid,
-    IconButton,
-    Link,
-    TextField,
+    
     Typography,
   } from "@material-ui/core";
   import Dialog from "@material-ui/core/Dialog";
   import DialogContent from "@material-ui/core/DialogContent";
   import Slide from "@material-ui/core/Slide";
-  import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
   import React, { useState,useEffect } from "react";
-  import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
-  import GoogleLogin from "react-google-login";
   import { connect } from "react-redux";
   import { useHistory } from "react-router-dom";
-  import { ReactComponent as FacebookIcon } from "../../assert/svg-icon/facebook-icon.svg";
-  import { ReactComponent as GoogleIcon } from "../../assert/svg-icon/google-icon.svg";
-  import config from "../../config";
-  import realtime from "../../realtime";
   import action from "../../storage/action";
   import apiService from "../profile/apiService";
   import useStyles from "./style";

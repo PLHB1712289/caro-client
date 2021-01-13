@@ -14,7 +14,7 @@ import ChangePassword from "./component/changePassword";
 import UserDetail from "./component/userDetail";
 // import realtime from "./realtime";
 import Background from "./component/background";
-
+import Rank from "./component/rank";
 function App() {
   // useEffect(() => {
   //   realtime.connect();
@@ -30,7 +30,9 @@ function App() {
           <Route path={"/sign-in"}>
             <SignIn />
           </Route>
-
+          <Route path={"/rank"}>
+            <Rank />
+          </Route>
           <Route path={"/sign-up"}>
             <SignUp />
           </Route>
