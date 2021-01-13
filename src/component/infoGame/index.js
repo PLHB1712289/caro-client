@@ -24,14 +24,26 @@ const InfoGame = ({
 }) => {
   const classes = useStyles();
 
+  const _handleQuit = () => {};
+
+  const _handleInvite = () => {};
+
+  const _handleExit = () => {};
+
+  const _handleRequestDraw = () => {};
+
   let controllGame;
   switch (status) {
     case "waiting":
       controllGame =
         role === "admin" ? (
-          <Button className={classes.button}>Invite</Button>
+          player2.id === "..." ? (
+            <Button className={classes.button}>Invite</Button>
+          ) : (
+            <Button className={classes.button}>Quit</Button>
+          )
         ) : (
-          <Button className={classes.button}>Exit</Button>
+          <Button className={classes.button}>Quit</Button>
         );
       break;
     case "ready":
@@ -50,7 +62,16 @@ const InfoGame = ({
         );
       break;
     case "playing":
-      controllGame = <Button className={classes.button}>Exit</Button>;
+      controllGame =
+        role !== "viewer" ? (
+          <>
+            <Button className={classes.button}>Exit</Button>
+            <Button className={classes.button}>Draw</Button>
+          </>
+        ) : (
+          <Button className={classes.button}>Quit</Button>
+        );
+
       break;
 
     default:

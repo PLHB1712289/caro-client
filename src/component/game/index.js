@@ -91,8 +91,32 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
 
     realtime.setCallback(
       TAG.RESPONSE_UPDATE_STATUS_ROOM_FOR_PLAYER,
-      ({ room }) => {
+      (status) => {
+        const room = status.room;
+        const userRemove = status.userRemove;
+
         setStatusRoom(room.status);
+
+        if (typeof userRemove !== "undefined") {
+          console.log("USER DISCONNECT", userRemove);
+          setPlayer1((prev) => {
+            if (prev.id === userRemove.id)
+              return {
+                ...prev,
+                username: `${prev.username} (disconnect)`,
+              };
+            else return prev;
+          });
+
+          setPlayer2((prev) => {
+            if (prev.id === userRemove.id)
+              return {
+                ...prev,
+                id: `${prev.id} (disconnect)`,
+              };
+            else return prev;
+          });
+        }
       }
     );
 
@@ -105,6 +129,7 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
         setOpenDialogConfirm(false);
 
         setBoard(Array(size * size).fill(null));
+        setHistory([]);
         setPlayerX(playerX);
         notifyStartGame();
       }
