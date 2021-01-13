@@ -11,7 +11,8 @@ import SignUp from "./component/signUp";
 import Profile from "./component/profile";
 import UpdateProfile from "./component/updateProfile";
 import ChangePassword from "./component/changePassword";
-
+import UserDetail from "./component/userDetail";
+// import realtime from "./realtime";
 import Background from "./component/background";
 
 import { connect } from "react-redux";

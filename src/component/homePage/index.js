@@ -8,7 +8,6 @@ import ListUserOnline from "../listUserOnline";
 import apiService from "./api";
 import action from "../../storage/action";
 import realtime from "../../realtime";
-
 const Page = ({
   listRoom,
   listUser,
@@ -19,7 +18,6 @@ const Page = ({
 }) => {
   const [filterListRoom, setFilterListRoom] = useState(listRoom);
   const [isFilter, setIsFilter] = useState(false);
-
   const _handleFilterByID = (id) => {
     if (id) {
       setIsFilter(true);
@@ -34,7 +32,7 @@ const Page = ({
       setFilterListRoom(listRoom);
     }
   };
-
+  
   useEffect(() => {
     const room = localStorage.getItem("room");
     if (room) {

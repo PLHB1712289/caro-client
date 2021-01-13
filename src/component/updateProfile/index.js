@@ -4,25 +4,21 @@ import {
   Grid,
   Typography,
   Button,
-  Avatar,
   TextField,
-  IconButton,
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import apiService from "../profile/apiService";
 import useStyles from "./style";
 import action from "../../storage/action";
 import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
 import axios from "axios";
 import "../../index.css";
 import Camera from "../../assert/img/camera.png";
+import AlertDialog from "../alertDialog";
+
 const UpdateProfile = ({ turnOnLoading, turnOffLoading }) => {
   // Styles
   const classes = useStyles();
-
-  // React router hook
-  const history = useHistory();
 
   // States
   const [user, setUser] = useState(null);
@@ -33,6 +29,12 @@ const UpdateProfile = ({ turnOnLoading, turnOffLoading }) => {
 
   const [fullname, setFullname] = useState(null);
   const [fullnameError, setFullnameError] = useState(null);
+
+  const [message, setMessage] = useState(null);
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const [messageAlert, setMessageAlert] = useState(null);
+  const [titleAlert, setTitleAlert] = useState(null);
   useEffect(() => {
     if (user === null) {
       turnOnLoading();
@@ -59,8 +61,9 @@ const UpdateProfile = ({ turnOnLoading, turnOffLoading }) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  });
+  }, [user, fullname]);
   const _handleSubmitForm = async (e) => {
+    turnOnLoading();
     e.preventDefault();
     console.log("SelectedFile:", selectedFile);
     if (selectedFile !== null) {
@@ -81,9 +84,18 @@ const UpdateProfile = ({ turnOnLoading, turnOffLoading }) => {
       avatarUrl,
       fullname
     );
-    alert(message);
-
     console.log("Update profile");
+    setMessage(message);
+    setOpenDialog(true);
+    if (success === true) {
+      setTitleAlert("Success");
+    } else {
+      setTitleAlert("Failed");
+    }
+    setMessageAlert(message);
+    //alert(message);
+
+    turnOffLoading();
   };
 
   const _handleChangeFullname = (e) => {
@@ -109,6 +121,16 @@ const UpdateProfile = ({ turnOnLoading, turnOffLoading }) => {
         flexDirection: "column",
       }}
     >
+      {openDialog === true ? (
+        <AlertDialog
+          open={openDialog}
+          setOpen={setOpenDialog}
+          description={messageAlert}
+          title={titleAlert}
+        ></AlertDialog>
+      ) : (
+        <div></div>
+      )}
       <Container
         component="main"
         maxWidth="xs"
@@ -128,29 +150,41 @@ const UpdateProfile = ({ turnOnLoading, turnOffLoading }) => {
               flexDirection: "column",
               alighItems: "center",
               justifyContent: "center",
+              cursor: "pointer",
             }}
           >
             <label for="file-input">
               <img
                 src={avatarUrl}
-                style={{ width: 200, height: 200, borderRadius: 100 }}
+                style={{
+                  width: 200,
+                  height: 200,
+                  borderRadius: 100,
+                  cursor: "pointer",
+                }}
+                alt=""
               />
 
               <div style={{ position: "absolute" }}>
-                <div
-                  style={{
-                    position: "absolute",
-                    bottom: 10,
-                    left: 150,
-                    cursor: "pointer",
-                  }}
-                >
+                <div style={{ position: "absolute", bottom: 25, left: 170 }}>
                   <img
                     src={Camera}
-                    style={{ width: 30, height: 30, borderRadius: 15 }}
+                    style={{
+                      width: 30,
+                      height: 30,
+                      borderRadius: 15,
+                      cursor: "pointer",
+                    }}
+                    alt=""
                   ></img>
                 </div>
               </div>
+
+              {/* <img src={avatarUrl} style={{width:200,height:200,borderRadius:100}}>
+                <div style={{flex: 1,justifyContent: 'flex-end',alignItems: 'flex-start'}}>
+                  <img src={Camera} style={{width:50,height:50,borderRadius:25,alignItems: 'center',justifyContent: 'center'}}></img>
+                </div>
+              </img> */}
             </label>
 
             <input id="file-input" type="file" onChange={onFileChange} />
@@ -200,6 +234,11 @@ const UpdateProfile = ({ turnOnLoading, turnOffLoading }) => {
                 >
                   Update
                 </Button>
+                {message !== null ? (
+                  <AlertDialog description={message} />
+                ) : (
+                  <div></div>
+                )}
               </Grid>
             ) : (
               <div></div>
