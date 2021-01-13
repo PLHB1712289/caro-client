@@ -2,7 +2,7 @@ import { CssBaseline, Grid, Typography } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import Slide from "@material-ui/core/Slide";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import action from "../../storage/action";

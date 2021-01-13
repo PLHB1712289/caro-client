@@ -12,6 +12,11 @@ import NotFound from "./component/notFound";
 import Profile from "./component/profile";
 import SignIn from "./component/signIn";
 import SignUp from "./component/signUp";
+import Profile from "./component/profile";
+import Background from "./component/background";
+import Rank from "./component/rank";
+
+import { connect } from "react-redux";
 import action from "./storage/action";
 
 function App({ updateToken }) {
@@ -32,7 +37,9 @@ function App({ updateToken }) {
           <Route path={"/sign-in"}>
             <SignIn />
           </Route>
-
+          <Route path={"/rank"}>
+            <Rank />
+          </Route>
           <Route path={"/sign-up"}>
             <SignUp />
           </Route>
