@@ -131,6 +131,10 @@ const Realtime = class {
   cancelQuickPlay() {
     this.socket.emit(TAG.REQUEST_CANCEL_QUICK_PLAY);
   }
+
+  reconnectGame(idRoom, idGame) {
+    this.socket.emit(TAG.REQUEST_RECONNECT, { idRoom, idGame });
+  }
 };
 
 const realtime = new Realtime();

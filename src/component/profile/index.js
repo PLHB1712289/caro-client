@@ -16,8 +16,16 @@ import ProfilePlayer from "./profilePlayer";
 import HistoryGame from "./historyGame";
 import UpdateProfile from "../updateProfile";
 import ChangePassword from "../changePassword";
+import { useHistory } from "react-router-dom";
 
 const Profile = ({ turnOnLoading, turnOffLoading, currentTab }) => {
+  const history = useHistory();
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      history.push("/");
+    }
+  }, []);
+
   // Styles
   const classes = useStyles();
 

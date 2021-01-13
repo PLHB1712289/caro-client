@@ -114,7 +114,7 @@ const InfoGame = ({
                   background: "pink",
                   borderRadius: 10,
                 }}
-                src={`https://instagram.fhan3-2.fna.fbcdn.net/v/t51.2885-19/s320x320/136791049_1030270517482250_5647993121982104893_n.jpg?_nc_ht=instagram.fhan3-2.fna.fbcdn.net&_nc_ohc=1V_U-D9VDeQAX8pncmr&tp=1&oh=319cb6f420084ed583fcb59f2a706aa5&oe=6024FE2E`}
+                src={`${player1.avatarUrl}`}
               />
               <div style={{ marginLeft: 5 }}>
                 <div style={{ textAlign: "center", fontSize: "1.1rem" }}>
@@ -164,7 +164,7 @@ const InfoGame = ({
                   background: "pink",
                   borderRadius: 10,
                 }}
-                src={`https://instagram.fhan3-2.fna.fbcdn.net/v/t51.2885-19/s320x320/136791049_1030270517482250_5647993121982104893_n.jpg?_nc_ht=instagram.fhan3-2.fna.fbcdn.net&_nc_ohc=1V_U-D9VDeQAX8pncmr&tp=1&oh=319cb6f420084ed583fcb59f2a706aa5&oe=6024FE2E`}
+                src={`${player2.avatarUrl}`}
               />
               <div style={{ marginLeft: 5 }}>
                 <div style={{ textAlign: "center", fontSize: "1.1rem" }}>

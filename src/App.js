@@ -40,19 +40,14 @@ function App({ updateToken }) {
             <SignUp />
           </Route>
 
-          <Route path={"/auth/forgot-password"}>
+          <Route path={"/forgot-password"}>
             <ForgotPassword />
           </Route>
 
-          <Route path={"/auth/profile"}>
+          <Route path={"/profile"}>
             <Profile />
           </Route>
-          <Route path={"/auth/update"}>
-            <UpdateProfile />
-          </Route>
-          <Route path={"/auth/change-password"}>
-            <ChangePassword />
-          </Route>
+
           <Route path={"/game/:id"}>
             <Game />
           </Route>

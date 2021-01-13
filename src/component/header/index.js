@@ -57,22 +57,21 @@ const Navbar = ({ token, setToken }) => {
     setToken(null);
     _handleClickCloseMenu();
     history.push(`/`);
-
   };
 
   const _handleClickProfile = () => {
     _handleClickCloseMenu();
-    history.push(`/auth/profile`);
+    history.push(`/profile`);
   };
-  const _handleClickUpdateProfile = () => {
-    _handleClickCloseMenu();
-    history.push(`/auth/update`);
-  };
-  const _handleClickChangePassword = () => {
-    _handleClickCloseMenu();
-    console.log("Click change password");
-    history.push(`/auth/change-password`);
-  };
+  // const _handleClickUpdateProfile = () => {
+  //   _handleClickCloseMenu();
+  //   history.push(`/auth/update`);
+  // };
+  // const _handleClickChangePassword = () => {
+  //   _handleClickCloseMenu();
+  //   console.log("Click change password");
+  //   history.push(`/auth/change-password`);
+  // };
 
   // Component didmount
   useEffect(() => {
@@ -117,11 +116,11 @@ const Navbar = ({ token, setToken }) => {
           }}
         >
           <MenuItem onClick={_handleClickProfile}>Profile</MenuItem>
-          <MenuItem onClick={_handleClickUpdateProfile}>Update Profile</MenuItem>
+          {/* <MenuItem onClick={_handleClickUpdateProfile}>Update Profile</MenuItem>
 
           <MenuItem onClick={_handleClickChangePassword}>
             Change password
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem onClick={_handleClickSignOut}>Sign out</MenuItem>
         </Menu>
       </>
