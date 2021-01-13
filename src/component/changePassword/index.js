@@ -4,7 +4,7 @@ import apiService from "../profile/apiService";
 import useStyles from "./style";
 import action from "../../storage/action";
 import { connect } from "react-redux";
-
+import AlertDialog from "../alertDialog";
 const ChangePassword = ({ turnOnLoading, turnOffLoading }) => {
   // Styles
   const classes = useStyles();
@@ -19,6 +19,10 @@ const ChangePassword = ({ turnOnLoading, turnOffLoading }) => {
   const [messageErrorReNew, setMessageErrorReNew] = useState(null);
   const [user, setUser] = useState(null);
   const [canChange, setCanChange] = useState(null);
+
+  const [openDialog,setOpenDialog]=useState(false);
+  const [messageAlert,setMessageAlert]=useState(null);
+  const [titleAlert,setTitleAlert]=useState(null);
   useEffect(() => {
     if (user !== null && canChange === null) {
       if (user.password !== null) {
@@ -71,14 +75,25 @@ const ChangePassword = ({ turnOnLoading, turnOffLoading }) => {
     if (
       reNewPassword !== null &&
       newPassword !== null &&
-      oldPassword !== null
+      oldPassword !== null &&
+      messageErrorNewPass===null &&
+      messageErrorReNew===null
     ) {
-      const { message } = await apiService.changePassword(
+      const { success,message } = await apiService.changePassword(
         oldPassword,
         newPassword
       );
-
-      alert(message);
+      setOpenDialog(true);
+      if(success===true)
+      {
+        setTitleAlert("Success");
+      }
+      else
+      {
+        setTitleAlert("Failed");
+      }
+      setMessageAlert(message);
+      //alert(message);
     }
     turnOffLoading();
 
@@ -135,6 +150,10 @@ const ChangePassword = ({ turnOnLoading, turnOffLoading }) => {
         flexDirection: "column",
       }}
     >
+      {openDialog===true?
+        <AlertDialog open={openDialog} setOpen={setOpenDialog} description={messageAlert} title={titleAlert}></AlertDialog>:
+        <div></div>
+      }
       <Container
         component="main"
         maxWidth="xs"

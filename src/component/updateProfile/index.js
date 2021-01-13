@@ -1,20 +1,19 @@
-import { Container, CssBaseline, Grid, Typography,Button,Avatar,TextField } from "@material-ui/core";
+import { Container, CssBaseline, Grid, Typography,Button,TextField } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import apiService from "../profile/apiService";
 import useStyles from "./style";
 import action from "../../storage/action";
 import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
 import axios from 'axios';
 import '../../index.css';
 import Camera from "../../assert/img/camera.png";
+import AlertDialog from "../alertDialog";
+
 const UpdateProfile = ({ turnOnLoading, turnOffLoading }) => {
   // Styles
   const classes = useStyles();
 
-  // React router hook
-  const history = useHistory();
-
+  
   // States
   const [user, setUser] = useState(null);
   const [avatarUrl,setAvatarUrl]=useState("https://res.cloudinary.com/dofdj0lqd/image/upload/v1610186880/aqutfu6ccnjdqo9vd3zb.png");
@@ -22,6 +21,12 @@ const UpdateProfile = ({ turnOnLoading, turnOffLoading }) => {
   
   const [fullname,setFullname]=useState(null);
   const [fullnameError,setFullnameError]=useState(null);
+
+  const [message,setMessage]=useState(null);
+
+  const [openDialog,setOpenDialog]=useState(false);
+  const [messageAlert,setMessageAlert]=useState(null);
+  const [titleAlert,setTitleAlert]=useState(null);
   useEffect(() => {
     
     if (user === null) {
@@ -52,8 +57,9 @@ const UpdateProfile = ({ turnOnLoading, turnOffLoading }) => {
     }
     
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  });
+  },[user,fullname]);
   const _handleSubmitForm=async(e)=>{
+    turnOnLoading();
     e.preventDefault();
     console.log("SelectedFile:",selectedFile);
     if(selectedFile!==null)
@@ -70,9 +76,21 @@ const UpdateProfile = ({ turnOnLoading, turnOffLoading }) => {
 
     //update user
     const {success,message,data}=await apiService.updateUser(avatarUrl,fullname);
-    alert(message);
-
     console.log("Update profile");
+    setMessage(message);
+    setOpenDialog(true);
+    if(success===true)
+    {
+      setTitleAlert("Success");
+    }
+    else
+    {
+    setTitleAlert("Failed");
+    }
+    setMessageAlert(message);
+    //alert(message);
+    
+    turnOffLoading();
 
   }
 
@@ -100,8 +118,13 @@ const UpdateProfile = ({ turnOnLoading, turnOffLoading }) => {
         alignItems: "center",
         display: "flex",
         flexDirection: "column",
+        
       }}
     >
+      {openDialog===true?
+        <AlertDialog open={openDialog} setOpen={setOpenDialog} description={messageAlert} title={titleAlert}></AlertDialog>:
+        <div></div>
+      }
       <Container
         component="main"
         maxWidth="xs"
@@ -115,13 +138,13 @@ const UpdateProfile = ({ turnOnLoading, turnOffLoading }) => {
         <CssBaseline />
         <div className={classes.paper}>
           <h1>Profile</h1>
-          <div  className="image-upload" style={{flexDirection:'column',alighItems:'center',justifyContent:'center'}}>
+          <div  className="image-upload" style={{flexDirection:'column',alighItems:'center',justifyContent:'center',cursor:'pointer'}}>
             <label for="file-input">
-              <img src={avatarUrl} style={{width:200,height:200,borderRadius:100}}/>
+              <img src={avatarUrl} style={{width:200,height:200,borderRadius:100,cursor:'pointer'}} alt=""/>
 
               <div style={{position:'absolute'}}>
                 <div style={{position:'absolute',bottom:25,left:170}}>
-                <img src={Camera} style={{width:30,height:30,borderRadius:15}}></img>
+                <img src={Camera} style={{width:30,height:30,borderRadius:15,cursor:'pointer'}} alt=""></img>
 
                 </div>
               </div>
@@ -181,7 +204,10 @@ const UpdateProfile = ({ turnOnLoading, turnOffLoading }) => {
                         >
                         Update
                     </Button>
-                    
+                    {message!==null?
+                      <AlertDialog description={message}/>:
+                      <div></div>
+                    }
                 </Grid>
             ) : (
               <div></div>

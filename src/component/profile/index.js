@@ -95,7 +95,7 @@ const Profile = ({ turnOnLoading, turnOffLoading }) => {
         <CssBaseline />
         <div className={classes.paper}>
           <h1>Profile</h1>
-          <img src={avatarUrl} style={{width:200,height:200,borderRadius:100}}></img>
+          <img src={avatarUrl} style={{width:200,height:200,borderRadius:100}} alt=""></img>
 
           <form className={classes.form} noValidate>
             {user !== null ? (

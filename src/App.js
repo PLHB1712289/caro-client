@@ -11,6 +11,7 @@ import SignUp from "./component/signUp";
 import Profile from "./component/profile";
 import UpdateProfile from "./component/updateProfile";
 import ChangePassword from "./component/changePassword";
+import UserDetail from "./component/userDetail";
 // import realtime from "./realtime";
 import Background from "./component/background";
 
@@ -37,7 +38,9 @@ function App() {
           <Route path={"/auth/forgot-password"}>
             <ForgotPassword />
           </Route>
-
+          <Route path={"/auth/get-user-by-id"}>
+            <UserDetail />
+          </Route>
           <Route path={"/auth/profile"}>
             <Profile/>
           </Route>
