@@ -10,6 +10,7 @@ import SurrenderDialog from "../surrenderDialog";
 
 import DrawConfirmDialog from "../drawConfirmDialog";
 import SurrenderConfirmDialog from "../surrenderConfirmDialog";
+import InvitePlayer from "../invitePlayer";
 import TAG from "../../realtime/data";
 
 const size = 20;
@@ -46,6 +47,7 @@ const InfoGame = ({
   const [openDialogDraw, setOpenDialogDraw] = useState(false);
   const [openDialogSurrender, setOpenDialogSurrender] = useState(false);
   const [openDialogConfirm, setOpenDialogConfirm] = useState(false);
+  const [openDialogInvite, setOpenDialogInvite] = useState(false);
 
   const [openDialogDrawConfirm, setOpenDialogDrawConfirm] = useState(false);
   const [openDialogSurrenderConfirm, setOpenDialogSurrenderConfirm] = useState(
@@ -89,7 +91,14 @@ const InfoGame = ({
       controllGame =
         role === "admin" ? (
           player2.id === "..." ? (
-            <Button className={classes.button}>Invite</Button>
+            <Button
+              className={classes.button}
+              onClick={() => {
+                setOpenDialogInvite(true);
+              }}
+            >
+              Invite
+            </Button>
           ) : (
             <Button
               className={classes.button}
@@ -205,6 +214,12 @@ const InfoGame = ({
         username={usernamePlayerDrawSurrender}
         open={openDialogSurrenderConfirm}
         setOpen={setOpenDialogSurrenderConfirm}
+      />
+
+      <InvitePlayer
+        open={openDialogInvite}
+        onClose={() => setOpenDialogInvite(false)}
+        idRoom={idRoom}
       />
 
       <div

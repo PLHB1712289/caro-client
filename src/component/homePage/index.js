@@ -8,6 +8,9 @@ import ListUserOnline from "../listUserOnline";
 import apiService from "./api";
 import action from "../../storage/action";
 import realtime from "../../realtime";
+import TAG from "../../realtime/data";
+import InviteConfirmDialog from "../inviteConfirmDialog";
+
 const Page = ({
   listRoom,
   listUser,
@@ -32,13 +35,29 @@ const Page = ({
       setFilterListRoom(listRoom);
     }
   };
-  
+
+  const [usernameUserInvite, setUsernameUserInvite] = useState("");
+  const [idUserInvite, setIdUserInvite] = useState("");
+  const [idRoom, setIdRoom] = useState("");
+
+  const [openInviteDialog, setOpenInviteDialog] = useState(false);
+
   useEffect(() => {
     const room = localStorage.getItem("room");
     if (room) {
       realtime.leaveRoom(room);
       localStorage.removeItem("room");
     }
+
+    realtime.setCallback(
+      TAG.RESPONSE_INVITE_CONFIRM,
+      ({ usernameInvite, idUserInvite, idRoom }) => {
+        setUsernameUserInvite(usernameInvite);
+        setIdUserInvite(idUserInvite);
+        setIdRoom(idRoom);
+        setOpenInviteDialog(true);
+      }
+    );
   }, []);
 
   useEffect(() => {
@@ -79,6 +98,13 @@ const Page = ({
 
   return (
     <Grid container style={{ justifyContent: "center", height: "90vh" }}>
+      <InviteConfirmDialog
+        open={openInviteDialog}
+        setOpen={setOpenInviteDialog}
+        username={usernameUserInvite}
+        idUserInvite={idUserInvite}
+        idRoom={idRoom}
+      />
       <Grid container item md={10} xs={12}>
         <Grid item xs={9}>
           <ListGame onFilterByID={_handleFilterByID}>

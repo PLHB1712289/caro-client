@@ -143,6 +143,14 @@ const Realtime = class {
   requestSurrender(confirm) {
     this.socket.emit(TAG.REQUEST_SURRENDER, confirm);
   }
+
+  invitePlayer(idPlayer, idRoom) {
+    this.socket.emit(TAG.REQUEST_INVITE, { idPlayer, idRoom });
+  }
+
+  confirmInvite(confirm, idUserInvite) {
+    this.socket.emit(TAG.REQUEST_INVITE_CONFIRM, { confirm, idUserInvite });
+  }
 };
 
 const realtime = new Realtime();
