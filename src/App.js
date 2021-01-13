@@ -1,21 +1,17 @@
 import React, { useEffect } from "react";
+import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
+import Background from "./component/background";
 import ForgotPassword from "./component/forgotPassword";
 import Game from "./component/game";
 import Header from "./component/header";
 import HomePage from "./component/homePage";
 import Loading from "./component/loading";
 import NotFound from "./component/notFound";
+import Profile from "./component/profile";
 import SignIn from "./component/signIn";
 import SignUp from "./component/signUp";
-import Profile from "./component/profile";
-import UpdateProfile from "./component/updateProfile";
-import ChangePassword from "./component/changePassword";
-import UserDetail from "./component/userDetail";
-// import realtime from "./realtime";
-import Background from "./component/background";
-
-import { connect } from "react-redux";
 import action from "./storage/action";
 
 function App({ updateToken }) {

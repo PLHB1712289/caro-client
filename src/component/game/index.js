@@ -1,27 +1,24 @@
 import { Grid, Tooltip, Zoom } from "@material-ui/core";
+import jwtDecode from "jwt-decode";
 import React, { useEffect, useState } from "react";
+import Confetti from "react-confetti";
 import { connect } from "react-redux";
-import { useRouteMatch, useHistory } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useWindowSize } from "react-use";
+import { ReactComponent as Medal } from "../../assert/svg-icon/medal.svg";
+import { ReactComponent as Star } from "../../assert/svg-icon/star.svg";
 import "../../index.css";
 import realtime from "../../realtime";
 import TAG from "../../realtime/data";
 import action from "../../storage/action";
+import AlertDialog from "../alertDialog";
 import Board from "../board";
 import InfoGame from "../infoGame";
 import PasswordRoom from "../passwordRoom";
 import apiService from "./apiService";
 import useStyles from "./style";
-import jwtDecode from "jwt-decode";
-
-import { useWindowSize } from "react-use";
-import Confetti from "react-confetti";
-
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import AlertDialog from "../alertDialog";
-
-import { ReactComponent as Star } from "../../assert/svg-icon/star.svg";
-import { ReactComponent as Medal } from "../../assert/svg-icon/medal.svg";
 
 const size = 20;
 
@@ -103,7 +100,7 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
             if (prev.id === userRemove.id)
               return {
                 ...prev,
-                username: `${prev.username} (disconnect)`,
+                id: `${prev.id} (disconnect)`,
               };
             else return prev;
           });
@@ -193,10 +190,11 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
   }, []);
 
   const _handleClickCell = (index) => {
-    console.log("userID:", userID);
-    console.log("Player Current:", idPlayerCurr);
-    console.log("isPlayer", isPlayer);
-    if (isPlayer && idPlayerCurr === userID && board[index] === null) {
+    const boardCurr = history[history.length - 1]
+      ? history[history.length - 1].board
+      : board;
+
+    if (isPlayer && idPlayerCurr === userID && boardCurr[index] === null) {
       console.log("Move");
 
       realtime.makeMove(index);
