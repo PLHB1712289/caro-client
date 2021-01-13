@@ -9,7 +9,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AlertDialog({ open, onClose, checkPassword, error }) {
+export default function AlertDialog({ open, onClose }) {
   const passwordInputRef = useRef(null);
 
   // React router hook
@@ -19,17 +19,19 @@ export default function AlertDialog({ open, onClose, checkPassword, error }) {
   const classes = useStyles();
 
   // State
-  const [password, setPassword] = useState("");
+  const [idRoom, setIdRoom] = useState("");
 
-  const _handleChangePassword = (e) => {
+  const _handleChangeIdRoom = (e) => {
     const { value } = e.target;
-    setPassword(value);
+    setIdRoom(value);
   };
 
   // handle event submit form
   const _handleSubmitForm = async (e) => {
     e.preventDefault();
-    checkPassword(password);
+    if (idRoom) {
+      history.push(`/game/${idRoom}`);
+    }
   };
 
   return (
@@ -54,7 +56,7 @@ export default function AlertDialog({ open, onClose, checkPassword, error }) {
             justifyContent: "center",
           }}
         >
-          <div style={{ fontWeight: 1000 }}>Password</div>
+          <div style={{ fontWeight: 1000 }}>Join Room</div>
         </DialogTitle>
 
         <div className={classes.paper} style={{ color: "white" }}>
@@ -65,16 +67,6 @@ export default function AlertDialog({ open, onClose, checkPassword, error }) {
           >
             <div
               style={{
-                textAlign: "center",
-                fontSize: "1.2rem",
-                color: "red",
-                fontWeight: 600,
-              }}
-            >
-              {error}
-            </div>
-            <div
-              style={{
                 display: "flex",
                 justifyContent: "space-between",
                 height: 30,
@@ -83,7 +75,7 @@ export default function AlertDialog({ open, onClose, checkPassword, error }) {
                 margin: "10px 0",
               }}
             >
-              <label>Password</label>
+              <label>Room ID</label>
 
               <div
                 style={{
@@ -102,9 +94,9 @@ export default function AlertDialog({ open, onClose, checkPassword, error }) {
                     borderRadius: 4,
                     padding: 5,
                   }}
-                  type="password"
-                  value={password}
-                  onChange={_handleChangePassword}
+                  type="text"
+                  value={idRoom}
+                  onChange={_handleChangeIdRoom}
                 />
               </div>
             </div>

@@ -12,6 +12,7 @@ export default makeStyles((theme) => ({
     fontWeight: 700,
     fontSize: "1rem",
     borderBottom: "1px solid rgba(255,255,255,0.2)",
+    height: 25,
   },
   container: {
     width: "100%",
