@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core";
+import { Grid, Tooltip, Zoom } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useRouteMatch } from "react-router-dom";
@@ -246,16 +246,61 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
         }
       />
       {openDialogConfirm && <Confetti width={width} height={height} />}
+
       <PasswordRoom
         isOpen={openDialogPassword}
         onClose={setOpenDialogPassword}
       />
+
       <Grid container className={classes.root}>
         <Grid container item xs={12} md={10}>
           <Grid item md={8} className={classes.board}>
             <div>
-              <div style={{ background: "white", height: 30, marginBottom: 2 }}>
-                Room id: {idRoom}
+              <div
+                style={{
+                  height: 30,
+                  marginBottom: 2,
+                  // background: "rgba(0,0,0,0)",
+                  color: "white",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: 5,
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  Room ID: {idRoom}
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <div>Room Owner </div>
+                  <Tooltip
+                    title={`${player1.username} - ${player1.id}`}
+                    TransitionComponent={Zoom}
+                    arrow
+                  >
+                    <img
+                      style={{
+                        width: 30,
+                        height: 30,
+                        background: "pink",
+                        borderRadius: "50%",
+                        marginLeft: 10,
+                      }}
+                      src={`https://instagram.fhan3-2.fna.fbcdn.net/v/t51.2885-19/s320x320/136791049_1030270517482250_5647993121982104893_n.jpg?_nc_ht=instagram.fhan3-2.fna.fbcdn.net&_nc_ohc=1V_U-D9VDeQAX8pncmr&tp=1&oh=319cb6f420084ed583fcb59f2a706aa5&oe=6024FE2E`}
+                    />
+                  </Tooltip>
+                </div>
               </div>
               <Board board={board} onClickCell={_handleClickCell} />
             </div>

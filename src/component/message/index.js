@@ -13,8 +13,18 @@ const Message = ({ message }) => {
             {time} - {username}
           </div>
 
-          <div className={classes.content} style={{ borderTopLeftRadius: 15 }}>
-            {contentMessage}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <div
+              className={classes.content}
+              style={{ borderTopLeftRadius: 10, borderTopRightRadius: 4 }}
+            >
+              {contentMessage}
+            </div>
           </div>
         </div>
       </div>
@@ -24,7 +34,10 @@ const Message = ({ message }) => {
           <div style={{ fontSize: "0.8rem" }}>
             {time} - {username}
           </div>
-          <div className={classes.content} style={{ borderTopRightRadius: 15 }}>
+          <div
+            className={classes.content}
+            style={{ borderTopRightRadius: 10, borderTopLeftRadius: 4 }}
+          >
             {contentMessage}
           </div>
         </div>

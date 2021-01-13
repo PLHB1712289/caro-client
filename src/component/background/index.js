@@ -53,10 +53,11 @@ const Background = () => {
           backgroundColor: "rgba(2,13,24,0.9)",
         }}
       ></div>
-      {arrayBgDynamic[Math.floor(Math.random() * 10, 0) % 3]}
+      <ParticlesBg type="custom" config={config} bg={true} />
     </>
   );
 };
+/* {arrayBgDynamic[Math.floor(Math.random() * 10, 0) % 3]} */
 
 //cobweb
 //polygon
