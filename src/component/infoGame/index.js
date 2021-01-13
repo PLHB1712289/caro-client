@@ -1,9 +1,16 @@
 import { Button } from "@material-ui/core";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import realtime from "../../realtime";
 import Chat from "../chat";
 import useStyles from "./style";
 import "../../index.css";
+import ConfirmDialog from "../quitDialog";
+import DrawDialog from "../drawDialog";
+import SurrenderDialog from "../surrenderDialog";
+
+import DrawConfirmDialog from "../drawConfirmDialog";
+import SurrenderConfirmDialog from "../surrenderConfirmDialog";
+import TAG from "../../realtime/data";
 
 const size = 20;
 
@@ -24,13 +31,57 @@ const InfoGame = ({
 }) => {
   const classes = useStyles();
 
-  const _handleQuit = () => {};
+  const _handleQuit = () => {
+    setOpenDialogConfirm(true);
+  };
 
   const _handleInvite = () => {};
 
-  const _handleExit = () => {};
-
   const _handleRequestDraw = () => {};
+
+  const [confirm, setConfirm] = useState(() => {});
+  const [titleConfirm, setTitleConfirm] = useState("");
+  const [descriptionConfirm, setDescriptionConfirm] = useState("");
+
+  const [openDialogDraw, setOpenDialogDraw] = useState(false);
+  const [openDialogSurrender, setOpenDialogSurrender] = useState(false);
+  const [openDialogConfirm, setOpenDialogConfirm] = useState(false);
+
+  const [openDialogDrawConfirm, setOpenDialogDrawConfirm] = useState(false);
+  const [openDialogSurrenderConfirm, setOpenDialogSurrenderConfirm] = useState(
+    false
+  );
+  const [
+    usernamePlayerDrawSurrender,
+    setUsernamePlayerDrawSurrender,
+  ] = useState("");
+
+  useEffect(() => {
+    if (status !== "playing") {
+      setOpenDialogDraw(false);
+      setOpenDialogSurrender(false);
+      setOpenDialogConfirm(false);
+      setOpenDialogDrawConfirm(false);
+      setOpenDialogSurrenderConfirm(false);
+    }
+  }, [status]);
+
+  useEffect(() => {
+    realtime.setCallback(TAG.RESPONSE_DRAW, ({ username }) => {
+      setUsernamePlayerDrawSurrender(username);
+      setOpenDialogDrawConfirm(true);
+    });
+
+    realtime.setCallback(TAG.RESPONSE_SURRENDER, ({ username }) => {
+      setUsernamePlayerDrawSurrender(username);
+      setOpenDialogSurrenderConfirm(true);
+    });
+
+    return () => {
+      realtime.removeCallback(TAG.RESPONSE_DRAW);
+      realtime.removeCallback(TAG.RESPONSE_SURRENDER);
+    };
+  }, []);
 
   let controllGame;
   switch (status) {
@@ -40,10 +91,22 @@ const InfoGame = ({
           player2.id === "..." ? (
             <Button className={classes.button}>Invite</Button>
           ) : (
-            <Button className={classes.button}>Quit</Button>
+            <Button
+              className={classes.button}
+              style={{ background: "orange" }}
+              onClick={_handleQuit}
+            >
+              Quit
+            </Button>
           )
         ) : (
-          <Button className={classes.button}>Quit</Button>
+          <Button
+            className={classes.button}
+            style={{ background: "orange" }}
+            onClick={_handleQuit}
+          >
+            Quit
+          </Button>
         );
       break;
     case "ready":
@@ -54,22 +117,47 @@ const InfoGame = ({
             onClick={() => {
               realtime.newGame(idRoom, player1.id, player2.id);
             }}
+            style={{ background: "green" }}
           >
             Start
           </Button>
         ) : (
-          <Button className={classes.button}>Quit</Button>
+          <Button
+            className={classes.button}
+            style={{ background: "orange" }}
+            onClick={_handleQuit}
+          >
+            Quit
+          </Button>
         );
       break;
     case "playing":
       controllGame =
         role !== "viewer" ? (
           <>
-            <Button className={classes.button}>Exit</Button>
-            <Button className={classes.button}>Draw</Button>
+            <Button
+              className={classes.button}
+              style={{ background: "red" }}
+              onClick={() => {
+                setOpenDialogSurrender(true);
+              }}
+            >
+              Surrender
+            </Button>
+            <Button
+              className={classes.button}
+              style={{ background: "blue" }}
+              onClick={() => {
+                setOpenDialogDraw(true);
+              }}
+            >
+              Draw
+            </Button>
           </>
         ) : (
-          <Button className={classes.button}>Quit</Button>
+          <Button className={classes.button} onClick={_handleQuit}>
+            Quit
+          </Button>
         );
 
       break;
@@ -89,6 +177,36 @@ const InfoGame = ({
 
   return (
     <div className={classes.root}>
+      <ConfirmDialog
+        open={openDialogConfirm}
+        setOpen={setOpenDialogConfirm}
+        onConfirm={() => confirm()}
+        title={titleConfirm}
+        description={descriptionConfirm}
+      />
+      <DrawDialog
+        open={openDialogDraw}
+        setOpen={setOpenDialogDraw}
+        idRoom={idRoom}
+        idGame={idGame}
+      />
+      <SurrenderDialog
+        open={openDialogSurrender}
+        setOpen={setOpenDialogSurrender}
+        idRoom={idRoom}
+        idGame={idGame}
+      />
+      <DrawConfirmDialog
+        username={usernamePlayerDrawSurrender}
+        open={openDialogDrawConfirm}
+        setOpen={setOpenDialogDrawConfirm}
+      />
+      <SurrenderConfirmDialog
+        username={usernamePlayerDrawSurrender}
+        open={openDialogSurrenderConfirm}
+        setOpen={setOpenDialogSurrenderConfirm}
+      />
+
       <div
         style={{
           backgroundColor: "rgba(255,255,255,0.1)",

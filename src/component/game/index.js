@@ -80,8 +80,8 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
       TAG.RESPONSE_UPDATE_USER_IN_ROOM,
       ({ player1, player2 }) => {
         console.log({ player1, player2 });
-        setPlayer1(player1);
-        setPlayer2(player2);
+        setPlayer1({ ...player1, online: true });
+        setPlayer2({ ...player2, online: true });
         notifyNewPlayerJoinRoom(player2.username);
       }
     );
@@ -100,7 +100,7 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
             if (prev.id === userRemove.id)
               return {
                 ...prev,
-                id: `${prev.id} (disconnect)`,
+                online: false,
               };
             else return prev;
           });
@@ -109,7 +109,7 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
             if (prev.id === userRemove.id)
               return {
                 ...prev,
-                id: `${prev.id} (disconnect)`,
+                online: false,
               };
             else return prev;
           });
@@ -137,12 +137,10 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
     });
 
     realtime.setCallback(TAG.RESPONSE_TIMMER, ({ time }) => {
-      console.log("TIMMER: ", time);
       setTime(time);
     });
 
     realtime.setCallback(TAG.RESPONSE_TIME_UP, ({ winner }) => {
-      console.log("TIMMER UP");
       setWinner(winner);
       setTime(0);
       setOpenDialogConfirm(true);
@@ -155,12 +153,6 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
         setBoard(board);
         setPlayerX(playerX);
         setIdPlayerCurr(currentPlayer);
-
-        console.log("RESPONSE RECONNECT DATA:", {
-          board,
-          playerX,
-          currentPlayer,
-        });
       }
     );
 
@@ -237,14 +229,17 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
           );
 
           setHistory(room.history);
-          setPlayer1(room.player1);
+          setPlayer1({ ...room.player1, online: true });
           setPlayer2(
-            room.player2 || {
-              username: "...",
-              id: "...",
-              avatarUrl:
-                "https://res.cloudinary.com/dofdj0lqd/image/upload/v1610186880/aqutfu6ccnjdqo9vd3zb.png",
-            }
+            room.player2 === null
+              ? {
+                  username: "...",
+                  id: "...",
+                  avatarUrl:
+                    "https://res.cloudinary.com/dofdj0lqd/image/upload/v1610186880/aqutfu6ccnjdqo9vd3zb.png",
+                  online: true,
+                }
+              : { ...room.player2, online: true }
           );
           setStatusRoom(room.status);
           setRole(room.role);
@@ -303,7 +298,9 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
               justifyContent: "center",
             }}
           >
-            <span>{usernameWinner} is the winner</span>
+            <span>
+              {winner === null ? "Draw" : `${usernameWinner} is the winner`}
+            </span>
             <Medal style={{ width: 30, height: 30 }} />
           </div>
         }

@@ -135,6 +135,14 @@ const Realtime = class {
   reconnectGame(idRoom, idGame) {
     this.socket.emit(TAG.REQUEST_RECONNECT, { idRoom, idGame });
   }
+
+  requestDraw(confirm) {
+    this.socket.emit(TAG.REQUEST_DRAW, confirm);
+  }
+
+  requestSurrender(confirm) {
+    this.socket.emit(TAG.REQUEST_SURRENDER, confirm);
+  }
 };
 
 const realtime = new Realtime();
