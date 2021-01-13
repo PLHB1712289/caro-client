@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ForgotPassword from "./component/forgotPassword";
 import Game from "./component/game";
@@ -15,10 +15,17 @@ import UserDetail from "./component/userDetail";
 // import realtime from "./realtime";
 import Background from "./component/background";
 import Rank from "./component/rank";
-function App() {
-  // useEffect(() => {
-  //   realtime.connect();
-  // }, []);
+
+import { connect } from "react-redux";
+import action from "./storage/action";
+
+function App({ updateToken }) {
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      updateToken(localStorage.getItem("token"));
+    }
+    //
+  }, []);
 
   return (
     <Router>
@@ -37,21 +44,14 @@ function App() {
             <SignUp />
           </Route>
 
-          <Route path={"/auth/forgot-password"}>
+          <Route path={"/forgot-password"}>
             <ForgotPassword />
           </Route>
-          <Route path={"/auth/get-user-by-id"}>
-            <UserDetail />
+
+          <Route path={"/profile"}>
+            <Profile />
           </Route>
-          <Route path={"/auth/profile"}>
-            <Profile/>
-          </Route>
-          <Route path={"/auth/update"}>
-            <UpdateProfile/>
-          </Route>
-          <Route path={"/auth/change-password"}>
-            <ChangePassword/>
-          </Route>
+
           <Route path={"/game/:id"}>
             <Game />
           </Route>
@@ -73,4 +73,9 @@ function App() {
   );
 }
 
-export default App;
+export default connect(
+  (state) => ({ token: state.token }),
+  (dispatch) => ({
+    updateToken: (token) => dispatch(action.TOKEN.update(token)),
+  })
+)(App);

@@ -1,7 +1,7 @@
 import { Grid, Tooltip, Zoom } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { useRouteMatch } from "react-router-dom";
+import { useRouteMatch, useHistory } from "react-router-dom";
 import "../../index.css";
 import realtime from "../../realtime";
 import TAG from "../../realtime/data";
@@ -25,8 +25,6 @@ import { ReactComponent as Medal } from "../../assert/svg-icon/medal.svg";
 
 const size = 20;
 
-console.log(React.version);
-
 const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
   const { width, height } = useWindowSize();
 
@@ -35,6 +33,7 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
 
   // react-router hook
   const match = useRouteMatch();
+  const historyRouter = useHistory();
 
   // params
   const { id: idRoom } = match.params;
@@ -52,6 +51,7 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
   // states
   const [openDialogPassword, setOpenDialogPassword] = useState(false);
   const [openDialogConfirm, setOpenDialogConfirm] = useState(false);
+  const [password, setPassword] = useState(null);
 
   const [player1, setPlayer1] = useState({ username: "...", id: "..." });
   const [player2, setPlayer2] = useState({ username: "...", id: "..." });
@@ -66,6 +66,11 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
 
   const [board, setBoard] = useState(Array(size * size).fill(null));
   const [history, setHistory] = useState([]);
+
+  const [errorCheckPassword, setErrorCheckPassword] = useState(null);
+  const [avatarRoomOwner, setAvatarRoomOwner] = useState(
+    "https://res.cloudinary.com/dofdj0lqd/image/upload/v1610186880/aqutfu6ccnjdqo9vd3zb.png"
+  );
 
   useEffect(() => {
     const room = localStorage.getItem("room");
@@ -86,8 +91,32 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
 
     realtime.setCallback(
       TAG.RESPONSE_UPDATE_STATUS_ROOM_FOR_PLAYER,
-      ({ room }) => {
+      (status) => {
+        const room = status.room;
+        const userRemove = status.userRemove;
+
         setStatusRoom(room.status);
+
+        if (typeof userRemove !== "undefined") {
+          console.log("USER DISCONNECT", userRemove);
+          setPlayer1((prev) => {
+            if (prev.id === userRemove.id)
+              return {
+                ...prev,
+                username: `${prev.username} (disconnect)`,
+              };
+            else return prev;
+          });
+
+          setPlayer2((prev) => {
+            if (prev.id === userRemove.id)
+              return {
+                ...prev,
+                id: `${prev.id} (disconnect)`,
+              };
+            else return prev;
+          });
+        }
       }
     );
 
@@ -100,6 +129,7 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
         setOpenDialogConfirm(false);
 
         setBoard(Array(size * size).fill(null));
+        setHistory([]);
         setPlayerX(playerX);
         notifyStartGame();
       }
@@ -124,10 +154,16 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
 
     realtime.setCallback(
       TAG.RESPONSE_RECONNECT,
-      ({ board, playerX, playerO, currentPlayer }) => {
+      ({ board, playerX, currentPlayer }) => {
         setBoard(board);
         setPlayerX(playerX);
         setIdPlayerCurr(currentPlayer);
+
+        console.log("RESPONSE RECONNECT DATA:", {
+          board,
+          playerX,
+          currentPlayer,
+        });
       }
     );
 
@@ -157,6 +193,9 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
   }, []);
 
   const _handleClickCell = (index) => {
+    console.log("userID:", userID);
+    console.log("Player Current:", idPlayerCurr);
+    console.log("isPlayer", isPlayer);
     if (isPlayer && idPlayerCurr === userID && board[index] === null) {
       console.log("Move");
 
@@ -167,16 +206,20 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
     return false;
   };
 
+  const _checkPassword = (passwordInput) => {
+    if (passwordInput !== password) {
+      setErrorCheckPassword("Invalid Password");
+    }
+    setOpenDialogPassword(passwordInput !== password);
+  };
+
   useEffect(() => {
     turnOnLoading();
     (async () => {
       try {
         const { success, message, data } = await apiService.getRoom(idRoom);
 
-        console.log("DATA GET ROOM:", data);
-        // if (data.room.password) {
-        //   setOpen(true);
-        // }
+        console.log("DATA GET ROOM HEHE:", data);
 
         if (success) {
           const { room } = data;
@@ -187,17 +230,39 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
           realtime.updateInfoUserInRoom(
             room.id,
             room.player1,
-            room.player2 || { username: "...", id: "..." }
+            room.player2 || {
+              username: "...",
+              id: "...",
+              avatarUrl:
+                "https://res.cloudinary.com/dofdj0lqd/image/upload/v1610186880/aqutfu6ccnjdqo9vd3zb.png",
+            }
           );
 
           setHistory(room.history);
           setPlayer1(room.player1);
-          setPlayer2(room.player2 || { username: "...", id: "..." });
+          setPlayer2(
+            room.player2 || {
+              username: "...",
+              id: "...",
+              avatarUrl:
+                "https://res.cloudinary.com/dofdj0lqd/image/upload/v1610186880/aqutfu6ccnjdqo9vd3zb.png",
+            }
+          );
           setStatusRoom(room.status);
           setRole(room.role);
-          console.log(room);
+          setOpenDialogPassword(
+            room.role !== "admin" && room.password !== null
+          );
+          setPassword(room.password);
+          setAvatarRoomOwner(room.player1.avatarUrl);
+
+          if (room.idGame !== null) {
+            console.log("RECONNECT");
+            realtime.reconnectGame(idRoom, room.idGame);
+          }
         } else {
-          console.log(message);
+          // console.log(message);
+          historyRouter.push("/");
         }
       } catch (e) {
         console.log("[ERROR]:", e.message);
@@ -248,84 +313,88 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
       {openDialogConfirm && <Confetti width={width} height={height} />}
 
       <PasswordRoom
-        isOpen={openDialogPassword}
+        open={openDialogPassword}
         onClose={setOpenDialogPassword}
+        checkPassword={_checkPassword}
+        error={errorCheckPassword}
       />
 
-      <Grid container className={classes.root}>
-        <Grid container item xs={12} md={10}>
-          <Grid item md={8} className={classes.board}>
-            <div>
-              <div
-                style={{
-                  height: 30,
-                  marginBottom: 2,
-                  // background: "rgba(0,0,0,0)",
-                  color: "white",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginBottom: 5,
-                }}
-              >
+      {!openDialogPassword && (
+        <Grid container className={classes.root}>
+          <Grid container item xs={12} md={10}>
+            <Grid item md={8} className={classes.board}>
+              <div>
                 <div
                   style={{
+                    height: 30,
+                    marginBottom: 2,
+                    // background: "rgba(0,0,0,0)",
+                    color: "white",
                     display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginBottom: 5,
                   }}
                 >
-                  Room ID: {idRoom}
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <div>Room Owner </div>
-                  <Tooltip
-                    title={`${player1.username} - ${player1.id}`}
-                    TransitionComponent={Zoom}
-                    arrow
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
                   >
-                    <img
-                      style={{
-                        width: 30,
-                        height: 30,
-                        background: "pink",
-                        borderRadius: "50%",
-                        marginLeft: 10,
-                      }}
-                      src={`https://instagram.fhan3-2.fna.fbcdn.net/v/t51.2885-19/s320x320/136791049_1030270517482250_5647993121982104893_n.jpg?_nc_ht=instagram.fhan3-2.fna.fbcdn.net&_nc_ohc=1V_U-D9VDeQAX8pncmr&tp=1&oh=319cb6f420084ed583fcb59f2a706aa5&oe=6024FE2E`}
-                    />
-                  </Tooltip>
+                    Room ID: {idRoom}
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div>Room Owner </div>
+                    <Tooltip
+                      title={`${player1.username} - ${player1.id}`}
+                      TransitionComponent={Zoom}
+                      arrow
+                    >
+                      <img
+                        style={{
+                          width: 30,
+                          height: 30,
+                          background: "pink",
+                          borderRadius: "50%",
+                          marginLeft: 10,
+                        }}
+                        src={`${avatarRoomOwner}`}
+                      />
+                    </Tooltip>
+                  </div>
                 </div>
+                <Board board={board} onClickCell={_handleClickCell} />
               </div>
-              <Board board={board} onClickCell={_handleClickCell} />
-            </div>
-          </Grid>
-          <Grid container item md={4} style={{ justifyContent: "center" }}>
-            <ToastContainer />
+            </Grid>
+            <Grid container item md={4} style={{ justifyContent: "center" }}>
+              <ToastContainer />
 
-            <InfoGame
-              isPlayer={isPlayer}
-              idRoom={idRoom}
-              player1={player1}
-              player2={player2}
-              status={statusRoom}
-              playerCurr={idPlayerCurr}
-              role={role}
-              idGame={idGame}
-              time={time}
-              history={history}
-              playerX={playerX}
-              userID={userID}
-              setBoard={setBoard}
-            />
+              <InfoGame
+                isPlayer={isPlayer}
+                idRoom={idRoom}
+                player1={player1}
+                player2={player2}
+                status={statusRoom}
+                playerCurr={idPlayerCurr}
+                role={role}
+                idGame={idGame}
+                time={time}
+                history={history}
+                playerX={playerX}
+                userID={userID}
+                setBoard={setBoard}
+              />
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      )}
     </>
   );
 };

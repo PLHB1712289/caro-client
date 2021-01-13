@@ -58,6 +58,7 @@ export default function AlertDialog({ open, onClose }) {
   // State
   const [password, setPassword] = useState("");
   const [roomName, setRoomName] = useState("Room Caro");
+  const [limitTime, setLimitTime] = useState(15);
 
   const [lock, setLock] = React.useState(false);
 
@@ -71,6 +72,13 @@ export default function AlertDialog({ open, onClose }) {
     setRoomName(value);
   };
 
+  const _handleChangeLimitTime = (e) => {
+    const { value } = e.target;
+    if (!isNaN(value) && parseInt(value) >= 5) {
+      setLimitTime(value);
+    }
+  };
+
   // handle event submit form
   const _handleSubmitForm = async (e) => {
     e.preventDefault();
@@ -79,7 +87,8 @@ export default function AlertDialog({ open, onClose }) {
     try {
       const { success, message, data } = await apiService.createRoom(
         roomName,
-        password
+        password,
+        limitTime
       );
 
       if (success) {
@@ -146,6 +155,29 @@ export default function AlertDialog({ open, onClose }) {
                 type="text"
                 value={roomName}
                 onChange={_handleChangeRoomName}
+              />
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                height: 30,
+                alignContent: "center",
+                alignItems: "center",
+                margin: "5px 0",
+              }}
+            >
+              <label>Time</label>
+              <input
+                style={{
+                  width: "70%",
+                  height: 30,
+                  borderRadius: 4,
+                  padding: 5,
+                }}
+                type="number"
+                value={limitTime}
+                onChange={_handleChangeLimitTime}
               />
             </div>
             <div

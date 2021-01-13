@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import NewGame from "../newGame";
 import QuickPlay from "../quickPlay";
+import JoinRoomByID from "../joinRoomByID";
 import useStyle from "./style";
 
 const ListGame = ({ children, onFilterByID, token }) => {
@@ -11,6 +12,7 @@ const ListGame = ({ children, onFilterByID, token }) => {
   const [id, setID] = useState("");
   const [openNewGame, setOpenNewGame] = useState(false);
   const [openQuickPlay, setOpenQuickPlay] = useState(false);
+  const [openJoinGameByID, setOpenJoinGameByID] = useState(false);
 
   const _handleChangeID = (e) => {
     setID(e.target.value);
@@ -28,6 +30,11 @@ const ListGame = ({ children, onFilterByID, token }) => {
 
       <QuickPlay open={openQuickPlay} setOpen={setOpenQuickPlay} />
 
+      <JoinRoomByID
+        open={openJoinGameByID}
+        onClose={() => setOpenJoinGameByID(false)}
+      />
+
       <div className={classes.title}>
         <div
           style={{
@@ -41,6 +48,17 @@ const ListGame = ({ children, onFilterByID, token }) => {
         </div>
         {token ? (
           <div>
+            <Tooltip title="Join Room By ID" TransitionComponent={Zoom} arrow>
+              <Button
+                onClick={() => {
+                  setOpenJoinGameByID(true);
+                }}
+                className={classes.button}
+              >
+                Join Room
+              </Button>
+            </Tooltip>
+
             <Tooltip
               title="Quick play with another player"
               TransitionComponent={Zoom}

@@ -12,7 +12,7 @@ export default makeStyles((theme) => ({
     top: 0,
     left: 0,
     backgroundColor: "rgba(0,0,0,0.5)",
-    zIndex: 10000,
+    zIndex: 10000000,
   },
   bottom: {
     color: theme.palette.grey[theme.palette.type === "light" ? 200 : 700],

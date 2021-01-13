@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import ParticlesBg from "particles-bg";
 
-const Background = () => {
+const Background = ({ zIndex }) => {
+  const [zIndexx] = useState(zIndex || -50);
+
   let config = {
     num: [4, 7],
     rps: 0.1,
@@ -34,11 +36,11 @@ const Background = () => {
     });
   }
 
-  const arrayBgDynamic = [
-    <ParticlesBg type="cobweb" bg={true} />,
-    <ParticlesBg type="polygon" bg={true} />,
-    <ParticlesBg type="custom" config={config} bg={true} />,
-  ];
+  // const arrayBgDynamic = [
+  //   <ParticlesBg type="cobweb" bg={true} />,
+  //   <ParticlesBg type="polygon" bg={true} />,
+  //   <ParticlesBg type="custom" config={config} bg={true} />,
+  // ];
 
   return (
     <>
@@ -49,7 +51,7 @@ const Background = () => {
           position: "absolute",
           top: 0,
           left: 0,
-          zIndex: -50,
+          zIndex: zIndexx,
           backgroundColor: "rgba(2,13,24,0.9)",
         }}
       ></div>

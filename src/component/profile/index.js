@@ -1,23 +1,43 @@
-import { Container, CssBaseline, Grid, Typography } from "@material-ui/core";
+import {
+  Container,
+  CssBaseline,
+  Grid,
+  Typography,
+  Paper,
+  Tabs,
+  Tab,
+} from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import Chart from "react-apexcharts";
 import apiService from "./apiService";
 import useStyles from "./style";
 import action from "../../storage/action";
 import { connect } from "react-redux";
+import ProfilePlayer from "./profilePlayer";
+import HistoryGame from "./historyGame";
+import UpdateProfile from "../updateProfile";
+import ChangePassword from "../changePassword";
+import { useHistory } from "react-router-dom";
 
-const Profile = ({ turnOnLoading, turnOffLoading }) => {
+const Profile = ({ turnOnLoading, turnOffLoading, currentTab }) => {
+  const history = useHistory();
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      history.push("/");
+    }
+  }, []);
+
   // Styles
   const classes = useStyles();
 
   // States
   const [user, setUser] = useState(null);
-  const [avatarUrl,setAvatarUrl]=useState("https://res.cloudinary.com/dofdj0lqd/image/upload/v1610186880/aqutfu6ccnjdqo9vd3zb.png");
+  const [avatarUrl, setAvatarUrl] = useState(
+    "https://res.cloudinary.com/dofdj0lqd/image/upload/v1610186880/aqutfu6ccnjdqo9vd3zb.png"
+  );
   const [draw, setDraw] = useState(0);
   const [win, setWin] = useState(0);
   const [lose, setLose] = useState(0);
   const [totalGame, setTotalGame] = useState(0);
-
   const [series, setSeries] = useState([]);
   const [options] = useState({
     labels: ["Win", "Lose", "Draw"],
@@ -38,6 +58,9 @@ const Profile = ({ turnOnLoading, turnOffLoading }) => {
       },
     },
   });
+
+  const [tab, setTab] = useState(0);
+
   useEffect(() => {
     if (user === null) {
       turnOnLoading();
@@ -50,8 +73,7 @@ const Profile = ({ turnOnLoading, turnOffLoading }) => {
           setLose(data.totalGameLose);
           setTotalGame(data.totalGame);
           setDraw(data.totalGame - data.totalGameLose - data.totalGameWin);
-          if(data.avatarUrl!==null)
-          {
+          if (data.avatarUrl !== null) {
             setAvatarUrl(data.avatarUrl);
           }
         }
@@ -60,7 +82,7 @@ const Profile = ({ turnOnLoading, turnOffLoading }) => {
       getUser();
     }
 
-    if (user !== null && series.length===0) {
+    if (user !== null && series.length === 0) {
       //set for chart
       let temp = [];
 
@@ -73,16 +95,74 @@ const Profile = ({ turnOnLoading, turnOffLoading }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, series]);
 
+  let containerProfile = <ProfilePlayer />;
+
+  switch (tab) {
+    case 0:
+      containerProfile = <ProfilePlayer />;
+      break;
+
+    case 1:
+      containerProfile = <HistoryGame />;
+      break;
+
+    case 2:
+      containerProfile = <UpdateProfile />;
+      break;
+
+    case 3:
+      containerProfile = <ChangePassword />;
+      break;
+
+    default:
+      containerProfile = <ProfilePlayer />;
+      break;
+  }
+
   return (
     <div
       style={{
-        justifyContent: "center",
-        alignItems: "center",
         display: "flex",
-        flexDirection: "column",
+        justifyContent: "center",
+        Width: "100vw",
+        alignItems: "center",
       }}
     >
-      <Container
+      <div style={{ width: "70%" }}>
+        <Paper square style={{ background: "rgba(0,0,0,0)" }}>
+          <Tabs
+            value={tab}
+            indicatorColor="primary"
+            textColor="primary"
+            onChange={(e, newValue) => setTab(newValue)}
+            aria-label="tab"
+            centered
+          >
+            <Tab
+              label="Profile Player"
+              fullWidth
+              style={{ color: "white", fontWeight: 600 }}
+            />
+            <Tab
+              label="History game"
+              fullWidth
+              style={{ color: "white", fontWeight: 600 }}
+            />
+            <Tab
+              label="Edit Infomation"
+              fullWidth
+              style={{ color: "white", fontWeight: 600 }}
+            />
+            <Tab
+              label="Change Password"
+              fullWidth
+              style={{ color: "white", fontWeight: 600 }}
+            />
+          </Tabs>
+        </Paper>
+        {/* {tab === 0 ? <ProfilePlayer /> : <HistoryGame />} */}
+        {containerProfile}
+        {/* <Container
         component="main"
         maxWidth="xs"
         style={{
@@ -162,7 +242,8 @@ const Profile = ({ turnOnLoading, turnOffLoading }) => {
             )}
           </form>
         </div>
-      </Container>
+      </Container> */}
+      </div>
     </div>
   );
 };
