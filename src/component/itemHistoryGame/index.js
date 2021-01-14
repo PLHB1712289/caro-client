@@ -18,7 +18,11 @@ const ItemHistoryGame = ({ data, onClick }) => {
       </div>
       <div className={classes.column} style={{ width: "15%" }}>
         {win && (
-          <img src={WinnerIcon} style={{ maxWidth: 15, maxHeight: 15 }} />
+          <img
+            alt="win"
+            src={WinnerIcon}
+            style={{ maxWidth: 15, maxHeight: 15 }}
+          />
         )}
       </div>
       <div className={classes.column} style={{ width: "17.5%" }}>
