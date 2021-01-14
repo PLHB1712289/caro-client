@@ -1,5 +1,5 @@
 import { Button, Container, CssBaseline, TextField } from "@material-ui/core";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import apiService from "../profile/apiService";
 import useStyles from "./style";
 import action from "../../storage/action";
@@ -12,10 +12,10 @@ const ForgotPassword = ({ turnOnLoading, turnOffLoading }) => {
   // States
 
   const [email, setEmail] = useState(null);
-  const [errorEmail,setErrorEmail] = useState(null);
-  const [openDialog,setOpenDialog]=useState(false);
-  const [messageAlert,setMessageAlert]=useState(null);
-  const [titleAlert,setTitleAlert]=useState(null);
+  const [errorEmail, setErrorEmail] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [messageAlert, setMessageAlert] = useState(null);
+  const [titleAlert, setTitleAlert] = useState(null);
   //handle
   const _handleChangeEmail = (e) => {
     const { value } = e.target;
@@ -26,34 +26,30 @@ const ForgotPassword = ({ turnOnLoading, turnOffLoading }) => {
     turnOnLoading();
 
     if (email !== null) {
-      const {success, message } = await apiService.forgotPassword(email);
+      const { success, message } = await apiService.forgotPassword(email);
       setOpenDialog(true);
-      if(success===true)
-      {
+      if (success === true) {
         setTitleAlert("Success");
-      }
-      else
-      {
+      } else {
         setTitleAlert("Failed");
       }
       setMessageAlert(message);
       //alert(message);
     }
     turnOffLoading();
-
   };
-  useEffect(()=>{
-    if(email!=null && !email.includes("@"))
-    {
+
+  useEffect(() => {
+    if (email != null && !email.includes("@")) {
       setErrorEmail("Email must have @");
-
     }
-    if(email!=null && email.includes("@"))
-    {
+    if (email != null && email.includes("@")) {
       setErrorEmail(null);
-
     }
-  })
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div
       style={{
@@ -63,10 +59,16 @@ const ForgotPassword = ({ turnOnLoading, turnOffLoading }) => {
         flexDirection: "column",
       }}
     >
-      {openDialog===true?
-        <AlertDialog open={openDialog} setOpen={setOpenDialog} description={messageAlert} title={titleAlert}></AlertDialog>:
+      {openDialog === true ? (
+        <AlertDialog
+          open={openDialog}
+          setOpen={setOpenDialog}
+          description={messageAlert}
+          title={titleAlert}
+        ></AlertDialog>
+      ) : (
         <div></div>
-      }
+      )}
       <Container
         component="main"
         maxWidth="xs"
