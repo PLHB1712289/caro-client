@@ -24,11 +24,13 @@ const APIService = {
     const response = await axiosClient.post(URL.FORGOT_PASSWORD, payload);
     return response;
   },
+
   updateUser: async (avatarUrl, fullname) => {
     const payload = { avatarUrl, fullname };
     const response = await axiosClient.post(URL.UPDATE_USER, payload);
     return response;
   },
+
   getListUserRank: async () => {
     const response = await axiosClient.get(URL.GET_USER_LIST_RANK);
     return response;

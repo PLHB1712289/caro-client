@@ -8,6 +8,8 @@ const PRODUCTION_ENVIRONEMT = {
 const DEVELOPMENT_ENVIRONEMT = {
   title: "Development",
   URL_SERVER: "http://localhost:3000",
+  // URL_SERVER: "http://10.126.6.245:3000",
+
   FB_APP_ID: "420604992406615",
   GG_APP_ID:
     "416888207455-fma1rt8jeo76bsdcdo3ebgic6hl464ae.apps.googleusercontent.com",

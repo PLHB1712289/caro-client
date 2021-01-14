@@ -117,15 +117,25 @@ const InfoGame = ({
     case "ready":
       controllGame =
         role === "admin" ? (
-          <Button
-            className={classes.button}
-            onClick={() => {
-              realtime.newGame(idRoom, player1.id, player2.id);
-            }}
-            style={{ background: "green" }}
-          >
-            Start
-          </Button>
+          player1.online && player2.online ? (
+            <Button
+              className={classes.button}
+              onClick={() => {
+                realtime.newGame(idRoom, player1.id, player2.id);
+              }}
+              style={{ background: "green" }}
+            >
+              Start
+            </Button>
+          ) : (
+            <Button
+              className={classes.button}
+              style={{ background: "orange" }}
+              onClick={_handleQuit}
+            >
+              Quit
+            </Button>
+          )
         ) : (
           <Button
             className={classes.button}
@@ -243,7 +253,7 @@ const InfoGame = ({
                 color: `${player1_X === "X" ? "red" : "green"}`,
               }}
             >
-              Player {player1_X}
+              Player {player1_X} {player1.online ? "" : " (disconnect)"}
             </div>
             <div
               style={{
@@ -294,7 +304,7 @@ const InfoGame = ({
                 color: `${player2_X === "X" ? "red" : "green"}`,
               }}
             >
-              Player {player2_X}
+              Player {player2_X} {player2.online ? "" : " (disconnect)"}
             </div>
             <div
               style={{

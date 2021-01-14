@@ -65,8 +65,9 @@ const UpdateProfile = ({ turnOnLoading, turnOffLoading }) => {
   }, [user, fullname]);
   const _handleSubmitForm = async (e) => {
     turnOnLoading();
+
     e.preventDefault();
-    console.log("SelectedFile:", selectedFile);
+
     if (selectedFile !== null) {
       //upload avatar to cloudinary
       const formData = new FormData();
@@ -76,27 +77,31 @@ const UpdateProfile = ({ turnOnLoading, turnOffLoading }) => {
         "https://api.cloudinary.com/v1_1/dofdj0lqd/image/upload",
         formData
       );
-      console.log("After upload:", upload);
       setAvatarUrl(upload.data.secure_url);
     }
 
-    //update user
-    const { success, message } = await apiService.updateUser(
-      avatarUrl,
-      fullname
-    );
-    console.log("Update profile");
-    setMessage(message);
-    setOpenDialog(true);
-    if (success === true) {
-      setTitleAlert("Success");
-    } else {
-      setTitleAlert("Failed");
-    }
-    setMessageAlert(message);
-    //alert(message);
+    try {
+      const { success, message } = await apiService.updateUser(
+        avatarUrl,
+        fullname
+      );
 
+      setMessage(message);
+      setOpenDialog(true);
+
+      if (success === true) {
+        setTitleAlert("Success");
+      } else {
+        setTitleAlert("Failed");
+      }
+      setMessageAlert(message);
+      turnOffLoading();
+      //alert(message);
+    } catch (e) {
+      console.log("ERROR:", e.message);
+    }
     turnOffLoading();
+    //update user
   };
 
   const _handleChangeFullname = (e) => {

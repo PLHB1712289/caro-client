@@ -13,7 +13,7 @@ import Rank from "./component/rank";
 import SignIn from "./component/signIn";
 import SignUp from "./component/signUp";
 import action from "./storage/action";
-
+import UpdateProfile from "./component/updateProfile";
 function App({ updateToken }) {
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -45,6 +45,9 @@ function App({ updateToken }) {
 
           <Route path={"/profile"}>
             <Profile />
+          </Route>
+          <Route path={"/update"}>
+            <UpdateProfile />
           </Route>
 
           <Route path={"/game/:id"}>

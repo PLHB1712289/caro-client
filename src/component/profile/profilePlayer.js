@@ -86,7 +86,7 @@ const ProfilePlayer = ({ turnOnLoading, turnOffLoading }) => {
                   {Math.ceil(
                     (parseFloat(win) / parseFloat(totalGame)) * 100,
                     2
-                  )}
+                  ) || "0"}
                   %
                 </div>
               </div>

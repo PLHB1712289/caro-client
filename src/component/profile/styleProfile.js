@@ -4,6 +4,9 @@ export default makeStyles((theme) => ({
   avatar: {
     minWidth: 140,
     minHeight: 140,
+    maxWidth: 140,
+    maxHeight: 140,
+
     borderRadius: "50%",
     marginRight: 20,
     // objectFit: "cover",

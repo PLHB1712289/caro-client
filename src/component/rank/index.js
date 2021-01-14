@@ -46,7 +46,7 @@ const Rank = ({ turnOnLoading, turnOffLoading }) => {
           alignItems: "center",
           display: "flex",
           flexDirection: "column",
-          width: "650px",
+          width: "100vw",
         }}
       >
         <div
@@ -68,6 +68,12 @@ const Rank = ({ turnOnLoading, turnOffLoading }) => {
         <div
           style={{
             borderTop: "1px solid #F0FFFF",
+            overflowY: "auto",
+            height: "80vh",
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
           {renderListUserRank()}

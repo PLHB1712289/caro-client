@@ -92,10 +92,9 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
         const room = status.room;
         const userRemove = status.userRemove;
 
-        setStatusRoom(room.status);
+        setStatusRoom((prev) => (prev === "playing" ? "playing" : room.status));
 
         if (typeof userRemove !== "undefined") {
-          console.log("USER DISCONNECT", userRemove);
           setPlayer1((prev) => {
             if (prev.id === userRemove.id)
               return {
