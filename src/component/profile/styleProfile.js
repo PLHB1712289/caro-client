@@ -1,7 +1,14 @@
 import { makeStyles } from "@material-ui/core";
 
 export default makeStyles((theme) => ({
-  avatar: { width: 140, height: 140, borderRadius: "50%", marginRight: 20 },
+  avatar: {
+    minWidth: 140,
+    minHeight: 140,
+    borderRadius: "50%",
+    marginRight: 20,
+    // objectFit: "cover",
+    display: "block",
+  },
   username: { fontSize: "1.2rem", fontWeight: 700, marginBottom: 10 },
   infoBasic: { display: "flex" },
   titleInfoBasic: {
