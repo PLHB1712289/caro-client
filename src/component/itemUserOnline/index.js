@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import useStyle from "./style";
-import PersonIcon from "@material-ui/icons/Person";
+// import PersonIcon from "@material-ui/icons/Person";
 import UserDetail from "../userDetail";
 
 const ItemUserOnline = ({ data }) => {
@@ -30,6 +30,7 @@ const ItemUserOnline = ({ data }) => {
       <div style={{ width: "15%", display: "flex", alignItems: "center" }}>
         {/* <PersonIcon /> */}
         <img
+          alt="avatar"
           src={avatarUrl}
           style={{ width: 30, height: 30, borderRadius: "50%" }}
         />
