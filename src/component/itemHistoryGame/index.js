@@ -1,10 +1,11 @@
 import React from "react";
 import useStyle from "./style";
+import WinnerIcon from "../../assert/img/winner.png";
 
 const ItemHistoryGame = ({ data, onClick }) => {
   const classes = useStyle();
 
-  const { no, _id, name, player1, player2, created_at } = data;
+  const { no, _id, win, player1, player2, created_at } = data;
   const date = new Date(created_at);
 
   return (
@@ -16,7 +17,9 @@ const ItemHistoryGame = ({ data, onClick }) => {
         {_id}
       </div>
       <div className={classes.column} style={{ width: "15%" }}>
-        {name}
+        {win && (
+          <img src={WinnerIcon} style={{ maxWidth: 15, maxHeight: 15 }} />
+        )}
       </div>
       <div className={classes.column} style={{ width: "17.5%" }}>
         {player1}

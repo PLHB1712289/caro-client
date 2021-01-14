@@ -33,6 +33,7 @@ const UserDetail = ({
         const { success, data } = await apiService.getUserById(userId);
         if (success === true && data !== user && data !== null) {
           setUser(data);
+          console.log("data", data);
           if (data.totalGame !== 0) {
             const win = (data.totalGameWin / data.totalGame) * 100;
             const winString = win + "";

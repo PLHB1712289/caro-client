@@ -11,6 +11,7 @@ const RankItem = ({ data, key, rank }) => {
   // States
   const [openDialog, setOpenDialog] = useState(false);
   const [from] = useState("from " + data.createdDate);
+
   const onClickUser = () => {
     setOpenDialog(true);
   };

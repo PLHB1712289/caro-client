@@ -9,7 +9,6 @@ const APIService = {
   },
   getUserById: async (userId) => {
     const payload = { userId };
-    console.log("Check payload in get user by id:", payload);
     const response = await axiosClient.post(URL.USER_BY_ID, payload);
 
     return response;

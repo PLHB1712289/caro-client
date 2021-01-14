@@ -122,6 +122,7 @@ const HistoryGame = ({ turnOnLoading, turnOffLoading }) => {
       const { success, data } = await apiService.getHistoryGame(page);
       if (success) {
         setListHistory(data.listGame);
+        prevListHistory = data.listGame;
 
         let maxPage = ~~(data.totalItem / 10);
 
@@ -162,7 +163,7 @@ const HistoryGame = ({ turnOnLoading, turnOffLoading }) => {
           <input value={filterByID} onChange={_handleChangeFilter} />
         </div>
         <div className={classes.column} style={{ width: "15%" }}>
-          Room Name
+          Win
         </div>
         <div className={classes.column} style={{ width: "17.5%" }}>
           Player1
