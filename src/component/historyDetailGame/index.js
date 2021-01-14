@@ -1,5 +1,4 @@
 import AppBar from "@material-ui/core/AppBar";
-import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import IconButton from "@material-ui/core/IconButton";
 import Slide from "@material-ui/core/Slide";
@@ -11,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import action from "../../storage/action";
 import DetailGame from "./detailGame";
+import apiService from "./apiService";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -42,17 +42,27 @@ const HistoryDetailGame = ({
   useEffect(() => {
     turnOnLoading();
     (async () => {
-      await new Promise((res) => setTimeout(res, 300));
-      open &&
-        setDataGame({
-          player1: { username: "...", id: "..." },
-          player2: { username: "...", id: "..." },
-          idGame: "123",
-          winner: "123",
-          playerX: "123",
-          board: Array(size * size).fill(null),
-          history: [{ index: 0, board: Array(size * size).fill(null) }],
-        });
+      if (idGame) {
+        const { success, data } = await apiService.getGame(idGame);
+        await new Promise((res) => setTimeout(res, 200));
+
+        if (success) {
+          console.log("DATA:", data);
+          const { player1, player2, game, history } = data;
+          setDataGame({
+            player1,
+            player2,
+            idGame: game._id,
+            winner: game.winner,
+            playerX: game.playerX,
+            board:
+              history.length === 0
+                ? Array(size * size).fill(null)
+                : history[history.length - 1].board,
+            history,
+          });
+        }
+      }
       turnOffLoading();
     })();
 
@@ -89,7 +99,6 @@ const HistoryDetailGame = ({
             </Typography>
           </Toolbar>
         </AppBar>
-
         {/* Game container */}
         <div
           style={{
@@ -101,8 +110,7 @@ const HistoryDetailGame = ({
             backgroundColor: "rgba(2,13,24,0.9)",
           }}
         ></div>
-
-        {dataGame !== null && <DetailGame data={dataGame} />}
+        {dataGame !== null && <DetailGame dataGame={dataGame} />}
       </Dialog>
     </div>
   );

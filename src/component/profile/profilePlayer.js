@@ -1,11 +1,52 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Cup from "../../assert/img/cup.png";
 import Rank from "../../assert/img/ranking.png";
 import useStyle from "./styleProfile";
 import { Radar } from "react-chartjs-2";
+import action from "../../storage/action";
+import { connect } from "react-redux";
+import apiService from "./apiService";
 
-const ProfilePlayer = () => {
+const ProfilePlayer = ({ turnOnLoading, turnOffLoading }) => {
   const classes = useStyle();
+
+  // States
+  const [avatarUrl, setAvatarUrl] = useState(
+    "https://res.cloudinary.com/dofdj0lqd/image/upload/v1610186880/aqutfu6ccnjdqo9vd3zb.png"
+  );
+  const [draw, setDraw] = useState(0);
+  const [win, setWin] = useState(0);
+  const [lose, setLose] = useState(0);
+  const [totalGame, setTotalGame] = useState(0);
+  const [email, setEmail] = useState("");
+  const [id, setID] = useState("");
+  const [fullname, setFullname] = useState("");
+  const [cup, setCup] = useState("0");
+  const [totalUser, setTotalUser] = useState("0");
+  const [rank, setRank] = useState("0");
+
+  useEffect(() => {
+    turnOnLoading();
+    (async () => {
+      const { success, data } = await apiService.getUser();
+      if (success === true) {
+        setTotalGame(data.totalGame);
+        setWin(data.totalGameWin);
+        setLose(data.totalGameLose);
+        setDraw(data.totalGame - data.totalGameWin - data.totalGameLose);
+        setEmail(data.email);
+        setID(data.id);
+        setFullname(data.fullname);
+        setCup(data.cup);
+        setTotalUser(data.totalUser);
+        setRank(data.rank);
+      }
+      turnOffLoading();
+    })();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div style={{ padding: "20px 0px", display: "flex" }}>
       <div style={{ width: "50%" }}>
@@ -39,11 +80,17 @@ const ProfilePlayer = () => {
             <div className={classes.containerIndexGameAndRateWin}>
               <div className={classes.indexTitle}>
                 <div>Game:</div>
-                <div className={classes.indexContentValue}>1234</div>
+                <div className={classes.indexContentValue}>{totalGame}</div>
               </div>
               <div className={classes.indexTitle}>
                 <div>Rate Win:</div>
-                <div className={classes.indexContentValue}>89%</div>
+                <div className={classes.indexContentValue}>
+                  {Math.ceil(
+                    (parseFloat(win) / parseFloat(totalGame)) * 100,
+                    2
+                  )}
+                  %
+                </div>
               </div>
             </div>
 
@@ -53,21 +100,21 @@ const ProfilePlayer = () => {
                 <div className={classes.itemDetail}>
                   <div className={classes.itemDetailTitle}>Win</div>
                   <div className={classes.itemDetailValue}>
-                    <div style={{ fontSize: "1.4rem" }}>10</div>
+                    <div style={{ fontSize: "1.4rem" }}>{win}</div>
                     <div style={{ fontSize: "0.5rem" }}>game</div>
                   </div>
                 </div>
                 <div className={classes.itemDetail}>
                   <div className={classes.itemDetailTitle}>Draw</div>
                   <div className={classes.itemDetailValue}>
-                    <div style={{ fontSize: "1.4rem" }}>10</div>
+                    <div style={{ fontSize: "1.4rem" }}>{draw}</div>
                     <div style={{ fontSize: "0.5rem" }}>game</div>
                   </div>
                 </div>
                 <div className={classes.itemDetail}>
                   <div className={classes.itemDetailTitle}>Lose</div>
                   <div className={classes.itemDetailValue}>
-                    <div style={{ fontSize: "1.4rem" }}>10</div>
+                    <div style={{ fontSize: "1.4rem" }}>{lose}</div>
                     <div style={{ fontSize: "0.5rem" }}>game</div>
                   </div>
                 </div>
@@ -85,9 +132,9 @@ const ProfilePlayer = () => {
                   </div>
                   <div className={classes.itemDetailValue}>
                     <div style={{ fontSize: "1.4rem", color: "yellow" }}>
-                      10
+                      {rank}
                     </div>
-                    <div style={{ fontSize: "0.5rem" }}>/10</div>
+                    <div style={{ fontSize: "0.5rem" }}>/{totalUser}</div>
                   </div>
                 </div>
                 <div className={classes.itemDetail}>
@@ -96,9 +143,9 @@ const ProfilePlayer = () => {
                   </div>
                   <div className={classes.itemDetailValue}>
                     <div style={{ fontSize: "1.4rem", color: "yellow" }}>
-                      10
+                      {cup} cup
                     </div>
-                    <div style={{ fontSize: "0.5rem" }}>cup</div>
+                    <div style={{ fontSize: "0.5rem" }}>/{totalGame} game</div>
                   </div>
                 </div>
                 <div className={classes.itemDetail}>
@@ -154,7 +201,11 @@ const ProfilePlayer = () => {
             labels: ["Win", "Lose", "Draw"],
             datasets: [
               {
-                data: [50, 50, 50],
+                data: [
+                  Math.floor((win / totalGame) * 100),
+                  Math.floor((lose / totalGame) * 100),
+                  Math.floor((draw / totalGame) * 100),
+                ],
                 backgroundColor: "rgba(255,99,132,0.2)",
                 label: "You",
                 borderColor: "rgba(255,99,132,1)",
@@ -168,4 +219,14 @@ const ProfilePlayer = () => {
   );
 };
 
-export default ProfilePlayer;
+const mapDispatchToProps = (dispatch) => ({
+  turnOnLoading: () => {
+    dispatch(action.LOADING.turnOn());
+  },
+
+  turnOffLoading: () => {
+    dispatch(action.LOADING.turnOff());
+  },
+});
+
+export default connect(() => ({}), mapDispatchToProps)(ProfilePlayer);

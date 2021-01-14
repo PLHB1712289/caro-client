@@ -7,7 +7,7 @@ import useStyles from "./style";
 import realtime from "../../realtime";
 import TAG from "../../realtime/data";
 
-const Chat = ({ idRoom, isPlayer }) => {
+const Chat = ({ idRoom, isPlayer, idGame }) => {
   const classes = useStyles();
 
   const [content, setContent] = useState("");
@@ -17,14 +17,27 @@ const Chat = ({ idRoom, isPlayer }) => {
     // get list message
     (async () => {
       try {
-        const { success, message, data } = await apiService.getListMessage(
-          idRoom
-        );
+        if (idGame) {
+          const { success, message, data } = await apiService.getListMessage(
+            idRoom,
+            idGame
+          );
 
-        if (success) {
-          setListMess(data.listMessage);
+          if (success) {
+            setListMess(data.listMessage);
+          } else {
+            console.log(message);
+          }
         } else {
-          console.log(message);
+          const { success, message, data } = await apiService.getListMessage(
+            idRoom
+          );
+
+          if (success) {
+            setListMess(data.listMessage);
+          } else {
+            console.log(message);
+          }
         }
       } catch (e) {
         console.log("[ERROR-IN4GAME]:", e.message);
@@ -59,7 +72,10 @@ const Chat = ({ idRoom, isPlayer }) => {
         CHAT
       </Grid>
 
-      <div className={classes.container}>
+      <div
+        className={classes.container}
+        style={{ height: `${!isPlayer ? "170px" : "132px"}` }}
+      >
         {listMess.map((mess) => {
           return <Message message={mess} />;
         })}

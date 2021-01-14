@@ -7,7 +7,8 @@ const ItemHistoryGame = ({ data, onClick }) => {
 
   // const history = useHistory();
 
-  const { no, id, name, player1, player2 } = data;
+  const { no, _id, name, player1, player2, created_at } = data;
+  const date = new Date(created_at);
 
   return (
     <div className={classes.container} onClick={onClick}>
@@ -15,16 +16,21 @@ const ItemHistoryGame = ({ data, onClick }) => {
         {no}
       </div>
       <div className={classes.column} style={{ width: "25%" }}>
-        {id}
+        {_id}
       </div>
-      <div className={classes.column} style={{ width: "20%" }}>
+      <div className={classes.column} style={{ width: "15%" }}>
         {name}
       </div>
-      <div className={classes.column} style={{ width: "25%" }}>
+      <div className={classes.column} style={{ width: "17.5%" }}>
         {player1}
       </div>
-      <div className={classes.column} style={{ width: "25%" }}>
+      <div className={classes.column} style={{ width: "17.5%" }}>
         {player2}
+      </div>
+      <div className={classes.column} style={{ width: "20%" }}>
+        {`${date.getHours()}:${date.getMinutes()} - ${date.getDate()}/${
+          date.getMonth() + 1
+        }/${date.getFullYear()}`}
       </div>
     </div>
   );
