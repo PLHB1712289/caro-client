@@ -36,12 +36,15 @@ const UserDetail = ({
       turnOnLoading();
       const getUser = async () => {
         const { success, message, data } = await apiService.getUserById(userId);
-        if (success === true && data !== user) {
+        if (success === true && data !== user && data!==null) {
           setUser(data);
           if (data.totalGame !== 0) {
-            const win = (data.totalGameWin / data.totalGame) * 100 + "";
+            const win = (data.totalGameWin / data.totalGame) * 100;
+            const winString=win+"";
+            console.log("Win rate real:",win);
+            const winIntString=parseInt(winString);
 
-            setWinRate(win + "%");
+            setWinRate(winIntString + "%");
           } else {
             setWinRate(0);
           }
