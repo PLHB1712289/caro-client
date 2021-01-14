@@ -30,6 +30,8 @@ export default function AlertDialog({ open, onClose, idRoom }) {
 
       setWaiting(false);
     });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const _handleChangeIdUser = (e) => {

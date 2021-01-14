@@ -207,9 +207,7 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
     turnOnLoading();
     (async () => {
       try {
-        const { success, message, data } = await apiService.getRoom(idRoom);
-
-        console.log("DATA GET ROOM HEHE:", data);
+        const { success, data } = await apiService.getRoom(idRoom);
 
         if (success) {
           const { room } = data;
@@ -322,8 +320,6 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
                 <div
                   style={{
                     height: 30,
-                    marginBottom: 2,
-                    // background: "rgba(0,0,0,0)",
                     color: "white",
                     display: "flex",
                     justifyContent: "space-between",
@@ -353,6 +349,7 @@ const Game = ({ userID, turnOnLoading, turnOffLoading }) => {
                       arrow
                     >
                       <img
+                        alt="img"
                         style={{
                           width: 30,
                           height: 30,

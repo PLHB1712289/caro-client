@@ -29,7 +29,7 @@ export default function AlertDialog({ open, setOpen }) {
   const [player, setPlayer] = useState(null);
   const [timmer, setTimmer] = useState(5);
   const [idRoom, setIdRoom] = useState(null);
-  const [playerAdmin, setPlayerAdmin] = useState(null);
+  const [, setPlayerAdmin] = useState(null);
 
   const [radarData, setRadarData] = useState({
     player: [0, 0, 0],
@@ -41,12 +41,6 @@ export default function AlertDialog({ open, setOpen }) {
   };
 
   if (timmer === 0) {
-    // if (player === playerAdmin) {
-    //   setTimeout(() => {
-    //     history.push(`/game/${idRoom}`);
-    //   }, 100);
-    // } else history.push(`/game/${idRoom}`);
-
     history.push(`/game/${idRoom}`);
   }
 

@@ -4,7 +4,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import Slide from "@material-ui/core/Slide";
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
 import action from "../../storage/action";
 import apiService from "../profile/apiService";
 import useStyles from "./style";
@@ -21,10 +20,6 @@ const UserDetail = ({
   turnOffLoading,
   userId,
 }) => {
-  console.log("Check user id:", userId);
-  // React router hook
-  const history = useHistory();
-
   // Style
   const classes = useStyles();
 
@@ -35,14 +30,14 @@ const UserDetail = ({
     if (user === null) {
       turnOnLoading();
       const getUser = async () => {
-        const { success, message, data } = await apiService.getUserById(userId);
-        if (success === true && data !== user && data!==null) {
+        const { success, data } = await apiService.getUserById(userId);
+        if (success === true && data !== user && data !== null) {
           setUser(data);
           if (data.totalGame !== 0) {
             const win = (data.totalGameWin / data.totalGame) * 100;
-            const winString=win+"";
-            console.log("Win rate real:",win);
-            const winIntString=parseInt(winString);
+            const winString = win + "";
+            console.log("Win rate real:", win);
+            const winIntString = parseInt(winString);
 
             setWinRate(winIntString + "%");
           } else {

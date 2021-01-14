@@ -35,6 +35,7 @@ const UpdateProfile = ({ turnOnLoading, turnOffLoading }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [messageAlert, setMessageAlert] = useState(null);
   const [titleAlert, setTitleAlert] = useState(null);
+
   useEffect(() => {
     if (user === null) {
       turnOnLoading();
@@ -80,7 +81,7 @@ const UpdateProfile = ({ turnOnLoading, turnOffLoading }) => {
     }
 
     //update user
-    const { success, message, data } = await apiService.updateUser(
+    const { success, message } = await apiService.updateUser(
       avatarUrl,
       fullname
     );

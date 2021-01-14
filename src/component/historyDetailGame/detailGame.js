@@ -21,7 +21,7 @@ const DetailGame = ({ userID, dataGame }) => {
     player2,
     playerX,
     idGame,
-    winner,
+    // winner,
     board: boardData,
     history,
   } = dataGame || {
@@ -62,7 +62,6 @@ const DetailGame = ({ userID, dataGame }) => {
               <div
                 style={{
                   height: 30,
-                  marginBottom: 2,
                   color: "white",
                   display: "flex",
                   justifyContent: "space-between",
@@ -92,6 +91,7 @@ const DetailGame = ({ userID, dataGame }) => {
                     arrow
                   >
                     <img
+                      alt="img"
                       style={{
                         width: 30,
                         height: 30,
@@ -150,6 +150,7 @@ const DetailGame = ({ userID, dataGame }) => {
                       }}
                     >
                       <img
+                        alt="img"
                         style={{
                           width: 100,
                           height: 100,
@@ -204,6 +205,7 @@ const DetailGame = ({ userID, dataGame }) => {
                       }}
                     >
                       <img
+                        alt="img"
                         style={{
                           width: 100,
                           height: 100,

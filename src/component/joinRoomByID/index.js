@@ -1,4 +1,4 @@
-import { Button, Dialog, Slide, Switch, withStyles } from "@material-ui/core";
+import { Button, Dialog, Slide } from "@material-ui/core";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import React, { useRef, useState } from "react";

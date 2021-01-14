@@ -1,8 +1,7 @@
-import { Button, Dialog, Slide, Switch, withStyles } from "@material-ui/core";
+import { Button, Dialog, Slide } from "@material-ui/core";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import React, { useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
 import useStyles from "./style";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -11,9 +10,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function AlertDialog({ open, onClose, checkPassword, error }) {
   const passwordInputRef = useRef(null);
-
-  // React router hook
-  const history = useHistory();
 
   // Style
   const classes = useStyles();

@@ -11,11 +11,7 @@ const _URL = {
   USER_BY_ID: "/auth/get-user-by-id",
   CHANGE_PASSWORD: "/auth/change-password",
   FORGOT_PASSWORD: "/auth/forgot-password",
-  GET_USER: "/auth/profile",
-  UPDATE_USER: "/auth/update",
-  USER_BY_ID: "/auth/get-user-by-id",
-  CHANGE_PASSWORD: "/auth/change-password",
-  FORGOT_PASSWORD: "/auth/forgot-password",
+
   NEW_ROOM: "/game/new-room",
   GET_ROOM: "/game/room",
   GET_GAME: "/game/get-game",

@@ -43,6 +43,8 @@ const Chat = ({ idRoom, isPlayer, idGame }) => {
         console.log("[ERROR-IN4GAME]:", e.message);
       }
     })();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idRoom]);
 
   useEffect(() => {

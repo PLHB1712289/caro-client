@@ -137,6 +137,8 @@ const HistoryGame = ({ turnOnLoading, turnOffLoading }) => {
       turnOffLoading();
     })();
     console.log("UPDATE PAGE", page);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   // useEffect(()=>{},[filter])

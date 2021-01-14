@@ -36,13 +36,9 @@ const InfoGame = ({
     setOpenDialogConfirm(true);
   };
 
-  const _handleInvite = () => {};
-
-  const _handleRequestDraw = () => {};
-
-  const [confirm, setConfirm] = useState(() => {});
-  const [titleConfirm, setTitleConfirm] = useState("");
-  const [descriptionConfirm, setDescriptionConfirm] = useState("");
+  const [confirm] = useState(() => {});
+  const [titleConfirm] = useState("");
+  const [descriptionConfirm] = useState("");
 
   const [openDialogDraw, setOpenDialogDraw] = useState(false);
   const [openDialogSurrender, setOpenDialogSurrender] = useState(false);
@@ -262,6 +258,7 @@ const InfoGame = ({
               }}
             >
               <img
+                alt="img"
                 style={{
                   width: 100,
                   height: 100,
@@ -312,6 +309,7 @@ const InfoGame = ({
               }}
             >
               <img
+                alt="img"
                 style={{
                   width: 100,
                   height: 100,

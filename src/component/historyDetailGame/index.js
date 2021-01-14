@@ -69,6 +69,8 @@ const HistoryDetailGame = ({
     return () => {
       setDataGame(null);
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idGame]);
 
   const handleClose = () => {

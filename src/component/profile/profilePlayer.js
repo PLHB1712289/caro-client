@@ -21,6 +21,7 @@ const ProfilePlayer = ({ turnOnLoading, turnOffLoading }) => {
   const [email, setEmail] = useState("");
   const [id, setID] = useState("");
   const [fullname, setFullname] = useState("");
+  const [username, setUsername] = useState("");
   const [cup, setCup] = useState("0");
   const [totalUser, setTotalUser] = useState("0");
   const [rank, setRank] = useState("0");
@@ -40,6 +41,8 @@ const ProfilePlayer = ({ turnOnLoading, turnOffLoading }) => {
         setCup(data.cup);
         setTotalUser(data.totalUser);
         setRank(data.rank);
+        setAvatarUrl(data.avatarUrl);
+        setUsername(data.username);
       }
       turnOffLoading();
     })();
@@ -51,25 +54,20 @@ const ProfilePlayer = ({ turnOnLoading, turnOffLoading }) => {
     <div style={{ padding: "20px 0px", display: "flex" }}>
       <div style={{ width: "50%" }}>
         <div style={{ display: "flex", alignItems: "center", color: "white" }}>
-          <img
-            className={classes.avatar}
-            src="https://instagram.fvca1-1.fna.fbcdn.net/v/t51.2885-19/s320x320/136791049_1030270517482250_5647993121982104893_n.jpg?_nc_ht=instagram.fvca1-1.fna.fbcdn.net&_nc_ohc=1V_U-D9VDeQAX9Vv7Nr&tp=1&oh=4ecc30f8f9da0c28750cc71b5b667f29&oe=6028F2AE"
-          />
+          <img alt="img" className={classes.avatar} src={avatarUrl} />
           <div style={{ width: "100%", marginRight: 10 }}>
-            <div className={classes.username}>baobao_1234</div>
+            <div className={classes.username}>{username}</div>
             <div className={classes.infoBasic}>
               <div className={classes.titleInfoBasic}>ID:</div>
-              <div className={classes.valueInfoBasic}>12344</div>
+              <div className={classes.valueInfoBasic}>{id}</div>
             </div>
             <div className={classes.infoBasic}>
-              <div className={classes.titleInfoBasic}> FullName:</div>
-              <div className={classes.valueInfoBasic}>Phan Le Hoai Bao</div>
+              <div className={classes.titleInfoBasic}>FullName:</div>
+              <div className={classes.valueInfoBasic}>{fullname}</div>
             </div>
             <div className={classes.infoBasic}>
               <div className={classes.titleInfoBasic}>Email:</div>
-              <div className={classes.valueInfoBasic}>
-                phanlehoaibaok10@gmail.com
-              </div>
+              <div className={classes.valueInfoBasic}>{email}</div>
             </div>
           </div>
         </div>
@@ -128,7 +126,11 @@ const ProfilePlayer = ({ turnOnLoading, turnOffLoading }) => {
               >
                 <div className={classes.itemDetail}>
                   <div className={classes.itemDetailTitle}>
-                    <img src={Rank} style={{ width: 50, height: 50 }} />
+                    <img
+                      alt="rank"
+                      src={Rank}
+                      style={{ width: 50, height: 50 }}
+                    />
                   </div>
                   <div className={classes.itemDetailValue}>
                     <div style={{ fontSize: "1.4rem", color: "yellow" }}>
@@ -139,7 +141,11 @@ const ProfilePlayer = ({ turnOnLoading, turnOffLoading }) => {
                 </div>
                 <div className={classes.itemDetail}>
                   <div className={classes.itemDetailTitle}>
-                    <img src={Cup} style={{ width: 50, height: 50 }} />
+                    <img
+                      alt="cup"
+                      src={Cup}
+                      style={{ width: 50, height: 50 }}
+                    />
                   </div>
                   <div className={classes.itemDetailValue}>
                     <div style={{ fontSize: "1.4rem", color: "yellow" }}>
@@ -150,7 +156,11 @@ const ProfilePlayer = ({ turnOnLoading, turnOffLoading }) => {
                 </div>
                 <div className={classes.itemDetail}>
                   <div className={classes.itemDetailTitle}>
-                    <img src={Cup} style={{ width: 50, height: 50 }} />
+                    <img
+                      alt="cup"
+                      src={Cup}
+                      style={{ width: 50, height: 50 }}
+                    />
                   </div>
                   <div className={classes.itemDetailValue}>
                     <div style={{ fontSize: "1.4rem", color: "yellow" }}>

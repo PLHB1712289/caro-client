@@ -1,11 +1,8 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 import useStyle from "./style";
 
 const ItemHistoryGame = ({ data, onClick }) => {
   const classes = useStyle();
-
-  // const history = useHistory();
 
   const { no, _id, name, player1, player2, created_at } = data;
   const date = new Date(created_at);
